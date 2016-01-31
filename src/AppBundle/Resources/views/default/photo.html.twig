@@ -1,0 +1,39 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+<div class="myPage">
+    <div class="myTop">
+        <div class="innerDiv">
+            <img src="{{ asset('bundles/app/default/') }}images/endImg3.png" style="display:block;">
+            <img src="{{ asset('bundles/app/default/') }}images/downArrow2.png" class="abs downArrow">
+        </div>
+    </div>
+    
+    <div class="myBottom">
+      <div class="innerDiv">
+            <img src="{{ photo.user.headImg }}" class="abs face">
+            <p class="myName">
+                {{ photo.user.nickname }}
+            </p>
+            <p class="myNote">
+                <span>您造的第<font>{{ rank }}</font>份祝福</span><br>
+                {{ photo.title }}<br>
+                成功送出！
+            </p>
+            <p class="myNumb">
+                造福指数：<font class="mNumb">{{ photo.favourNum }}</font>个<br>
+                造福排名：<font class="mRank">{{ favourRank }}</font>位
+            </p>
+            <div class="eList">
+                {% for user in users %}
+                <div class="eInit">
+                    <img src="{{ user.headImg }}" class="eFace">
+                    <p class="eName">{{ user.nickname }}</p>
+                    <p class="eTime">{{ user.createTime | date('n.j H:i') }}</p>
+                    <p class="eTxt"><font>{{ user.favourNum }}</font>个 {% if loop.index == 1 %}飞欧洲飞你莫属{% elseif loop.index == 2 %}往前一步换你飞{% elseif loop.index == 3 %}加油加油看好你哟{% endif %}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

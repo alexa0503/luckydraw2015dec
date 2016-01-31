@@ -1,0 +1,93 @@
+{% extends 'AppBundle:admin:base.html.twig' %}
+
+{% block body %}
+	<div class="signinpanel">
+		
+		<div class="row">
+			
+			<div class="col-md-7">
+				
+				<div class="signin-info">
+					<div class="logopanel">
+						<h1><span>[</span> 后台管理系统 <span>]</span></h1>
+					</div><!-- logopanel -->
+				
+					<div class="mb20"></div>
+				
+					<h5><strong>欢迎来到后台管理系统!</strong></h5>
+					<ul>
+						<li><i class="fa fa-arrow-circle-o-right mr5"></i> 响应式布局</li>
+						<li><i class="fa fa-arrow-circle-o-right mr5"></i> 支持HTML5/CSS3</li>
+						<li><i class="fa fa-arrow-circle-o-right mr5"></i> 支持Retina</li>
+					</ul>
+					<!--<div class="mb20"></div>
+					<strong>Not a member? <a href="signup.html">Sign Up</a></strong>-->
+				</div><!-- signin0-info -->
+			
+			</div><!-- col-sm-7 -->
+			
+			<div class="col-md-5">
+				
+				<form method="post" action="{{ path('login_check') }}">
+					<h4 class="nomargin">管理员登录</h4>
+					{% if error %}
+					<p class="mt5 mb20" style="color:red;">{{ error.message | trans }}</p>
+					{% endif %}
+					
+				
+					<input name="_username" type="text" class="form-control uname" placeholder="账户" value="{{ last_username }}" />
+					<input name="_password" type="password" class="form-control pword" placeholder="密码" />
+
+					<a href="{{ url('forgetpwd') }}"><small>忘记密码?</small></a>
+					<button class="btn btn-success btn-block">登&nbsp;录</button>
+					
+				</form>
+			</div><!-- col-sm-5 -->
+			
+		</div><!-- row -->
+		
+		<div class="signup-footer">
+			<div class="pull-left">
+				&copy; 2015. All Rights Reserved. 
+			</div>
+			<div class="pull-right">
+				Created By: <a href="http://" target="_blank">Alexa Wang</a>
+			</div>
+		</div>
+		
+	</div><!-- signin -->
+
+
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+<script src="{{ asset('bundles/app/admin/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('bundles/app/admin/js/modernizr.min.js') }}"></script>
+<script src="{{ asset('bundles/app/admin/js/jquery.sparkline.min.js') }}"></script>
+<script src="{{ asset('bundles/app/admin/js/jquery.cookies.js') }}"></script>
+
+<script src="{{ asset('bundles/app/admin/js/toggles.min.js') }}"></script>
+<script src="{{ asset('bundles/app/admin/js/retina.min.js') }}"></script>
+
+<script src="{{ asset('bundles/app/admin/js/custom.js') }}"></script>
+<script>
+	jQuery(document).ready(function(){
+		
+		// Please do not use the code below
+		// This is for demo purposes only
+		var c = jQuery.cookie('change-skin');
+		if (c && c == 'greyjoy') {
+			jQuery('.btn-success').addClass('btn-orange').removeClass('btn-success');
+		} else if(c && c == 'dodgerblue') {
+			jQuery('.btn-success').addClass('btn-primary').removeClass('btn-success');
+		} else if (c && c == 'katniss') {
+			jQuery('.btn-success').addClass('btn-primary').removeClass('btn-success');
+		}
+	});
+</script>
+<script>
+$().ready(function(){
+	$('body').addClass('signin');
+})
+</script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+
+
+<div class="pageOuter">
+    <div class="innerDiv">
+        {% if photo.type == 0 %}
+        <div class="page finishA">
+            <div class="h1008">
+                <div class="innerDiv">
+                    <img src="{{ asset('bundles/app/default/') }}images/{{ photo.imgUrl }}" class="resImg">
+                    <a href="{{ url('_index') }}" class="abs page3Btn1"><img src="{{ asset('bundles/app/default/') }}images/page3Btn1.png"></a>
+                    <a href="javascript:void(0);" class="abs page3Btn2" onClick="showShareNote();"><img src="{{ asset('bundles/app/default/') }}images/page3Btn2.png"></a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="page finishB" style="display:none;">
+            <div class="h1008">
+                <div class="innerDiv">
+                    <div class="page7Img1 abs imgDiv" style="display:none;"></div>
+                    <div class="page7Img2 abs imgDiv" style="display:none;"></div>
+                    <img src="{{ asset('uploads/') }}{{ photo.imgUrl }}" class="resImg2">
+                    <div class="finishWish">
+                        <table>
+                            <tr>
+                                <td rowspan="2"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="1" height="120"></td>
+                                <td><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="164" height="1"></td>
+                            </tr>
+                            <tr>
+                                
+                                <td valign="middle" class="finishWishTd">{{ photo.title }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <a href="{{ url('_index') }}" class="abs page3Btn1"><img src="{{ asset('bundles/app/default/') }}images/page3Btn1.png"></a>
+                    <a href="javascript:void(0);" class="abs page3Btn2" onClick="showShareNote();"><img src="{{ asset('bundles/app/default/') }}images/page3Btn2.png"></a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="shareBg" onClick="closeShare();" style="display:none;"></div>
+<img src="{{ asset('bundles/app/default/') }}images/shareNote.png" class="shareNote" onClick="closeShare();" style="display:none;">
+{% endblock %}
+{% block javascripts %}
+{% if photo.type == 1 %}
+<script>
+window.onload=winOnload;
+function winOnload(){
+    $('.finishB').fadeIn(500);
+    setTimeout(function(){
+        $('.page7Img1').addClass('titleShow').show();
+        setTimeout(function(){
+            $('.page7Img2').fadeIn(500);
+            },500);
+        },600);
+    }
+</script>
+{% endif %}
+{% endblock %}

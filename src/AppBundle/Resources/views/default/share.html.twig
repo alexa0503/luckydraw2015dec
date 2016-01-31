@@ -1,0 +1,25 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+<div class="shareOuter">
+    <div class="innerDiv">
+        {% if photo.type == 1 %}
+        <img src="/uploads/{{ photo.imgUrl }}" class="shareShowImg">
+        <div class="shareWish">
+            <table>
+                <tr>
+                    <td rowspan="2"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="1" height="120"></td>
+                    <td><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="299" height="1"></td>
+                </tr>
+                <tr>
+                    
+                    <td valign="middle" class="wishTd">{{ photo.title }}</td>
+                </tr>
+            </table>
+        </div>
+        {% else %}
+        <img src="{{ asset('bundles/app/default/') }}images/{{ photo.imgUrl }}" class="shareShowImg">
+        {% endif %}
+        <a href="{{ url('_index') }}" class="abs shareBtn1"><img src="{{ asset('bundles/app/default/') }}images/shareBtn1.png"></a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+# you can read more about security in the related section of the documentation
+# http://symfony.com/doc/current/book/security.html
+security:
+    # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
+    encoders:
+        AppBundle\Entity\User:
+            algorithm:   sha1
+            iterations: 10
+            encode_as_base64: false
+
+    # http://symfony.com/doc/current/book/security.html#hierarchical-roles
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        main:
+            entity: { class : AppBundle\Entity\User, property: username}
+
+    # the main part of the security, where you can set up firewalls
+    # for specific sections of your app
+    firewalls:
+        #main:
+        #    remember_me:
+        #        key:      "%secret%"
+        #        lifetime: 31536000 # 365 days in seconds
+        #        path:     /
+        #        domain:   ~ # Defaults to the current domain from $_SERVER
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        # the login page has to be accessible for everybody
+        default_login:
+            pattern:  ^/admin/login/
+            security: false
+
+        # secures part of the application
+        secured_area:
+            pattern:    ^/admin/
+            # are route names and that they are specified in the AcmeDemoBundle
+            form_login: 
+                #provider: entity
+                login_path: /admin/login/
+                check_path: /admin/login_check/
+                default_target_path: /admin/
+                always_use_default_target_path: true
+            logout:
+                path:   /admin/logout/
+                target: /admin/
+            #stateless: true
+            #http_basic: ~
+        free_area:
+            pattern: ^/
+            anonymous: ~
+
+    # with these settings you can restrict or allow access for different parts
+    # of your application based on roles, ip, host or methods
+    # http://symfony.com/doc/current/cookbook/security/access_control.html
+    access_control:
+        #- { path: .*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/user, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/, roles: ROLE_ADMIN }

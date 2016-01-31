@@ -1,0 +1,56 @@
+{% extends 'AppBundle:admin:base.html.twig' %}
+
+{% block body %}
+	{{ include('AppBundle:admin:leftpanel.html.twig') }}
+	<div class="mainpanel">
+		{{ include('AppBundle:admin:headerbar.html.twig') }}
+
+		<div class="pageheader">
+			<h2><i class="fa fa-home"></i> Dashboard <span>{% block title %}{% endblock %}</span></h2>
+			<div class="breadcrumb-wrapper">
+				<span class="label">You are here:</span>
+				<ol class="breadcrumb">
+					<!--<li><a href="index.html">Bracket</a></li>-->
+					{% block breadcrumb %}<li class="active">Dashboard</li>{% endblock %}
+				</ol>
+			</div>
+		</div>
+
+		<div class="contentpanel">
+			{% block content %}
+			{% endblock %}
+		</div><!-- contentpanel -->
+
+	</div><!-- mainpanel -->
+	{{ include('AppBundle:admin:rightpanel.html.twig') }}
+{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<link href="{{ asset('bundles/app/admin/css/jquery.datatables.css') }}" rel="stylesheet">
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('bundles/app/admin/js/jquery-ui-1.10.3.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/modernizr.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/jquery.sparkline.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/toggles.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/retina.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/jquery.cookies.js') }}"></script>
+
+	<script src="{{ asset('bundles/app/admin/js/flot/jquery.flot.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/flot/jquery.flot.resize.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/flot/jquery.flot.spline.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/morris.min.js') }}"></script>
+	<script src="{{ asset('bundles/app/admin/js/raphael-2.1.0.min.js') }}"></script>
+
+	<script src="{{ asset('bundles/app/admin/js/custom.js') }}"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $('.active').parent('ul').parent('li').addClass('nav-active');
+            $('.active').parent('ul').slideDown(200, function(){
+                //adjustmainpanelheight();
+
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+			<div class="headerbar">
+
+				<a class="menutoggle"><i class="fa fa-bars"></i></a>
+
+				<form class="searchform" action="index.html" method="post">
+					<input type="text" class="form-control" name="keyword" placeholder="Search here..." />
+				</form>
+
+				<div class="header-right">
+					<ul class="headermenu">
+						<li>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									<img src="{{ asset('bundles/app/admin/images/photos/loggeduser.png') }}" alt="" />
+									{{ app.user.username }}
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+									<li><a href="index.html#"><i class="glyphicon glyphicon-cog"></i> 账户设置</a></li>
+									<li><a href="{{ url('logout') }}"><i class="glyphicon glyphicon-log-out"></i> 登出</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div><!-- header-right -->
+
+			</div><!-- headerbar -->

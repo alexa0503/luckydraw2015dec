@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>{% block title %}汉莎航空{% endblock %}</title>
+<link rel="stylesheet" href="{{ asset('bundles/app/default/') }}css/common.css">
+<script src="{{ asset('bundles/app/default/') }}js/jquery-1.9.1.min.js"></script>
+<script src="{{ asset('bundles/app/default/') }}js/jquery.touchSwipe.min.js"></script>
+<script src="{{ asset('bundles/app/default/') }}js/jquery.imgpreload.js"></script>
+<script src="{{ asset('bundles/app/default/') }}js/swiper.min.js"></script>
+<script src="{{ asset('bundles/app/default/') }}js/hammer.min.js" ></script>
+<script src="{{ asset('bundles/app/default/') }}js/hammer.fakemultitouch.js" ></script>
+<script src="{{ asset('bundles/app/default/') }}js/hammer.showtouches.js" ></script>
+<script src="{{ asset('bundles/app/default/') }}js/common.js"></script>
+<!--移动端版本兼容 -->
+<script type="text/javascript">
+         var phoneWidth =  parseInt(window.screen.width);
+         var phoneScale = phoneWidth/640;
+         var ua = navigator.userAgent;
+         if (/Android (\d+\.\d+)/.test(ua)){
+                   var version = parseFloat(RegExp.$1);
+                   if(version>2.3){
+                            document.write('<meta name="viewport" content="width=640, minimum-scale = '+phoneScale+', maximum-scale = '+phoneScale+', target-densitydpi=device-dpi">');
+                   }else{
+                            document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+                   }
+         } else {
+                   document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+         }
+</script>
+<!--移动端版本兼容 end -->
+  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+  <script>
+    var wxData = {
+              appId: '{{ app.session.get("wx_app_id") }}',
+              timestamp: '{{ app.session.get("wx_timestamp") }}',
+              nonceStr: '{{ app.session.get("wx_nonce_str") }}',
+              signature: '{{ app.session.get("wx_signature") }}',
+              title: '{{ app.session.get("wechat_title") }}',
+              desc: '{{ app.session.get("wechat_desc") }}',
+              shareUrl: '{{ app.session.get("wx_share_url") }}',
+              imgUrl: 'http://{{ app.request.host }}/{{ app.session.get("wechat_img_url") }}',
+    };
+    function wxShare(data){
+      wx.config({
+        debug: false,
+        appId: data.appId,
+        timestamp: data.timestamp,
+        nonceStr: data.nonceStr,
+        signature: data.signature,
+        jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage'
+        ]
+      });
+      wx.ready(function () {
+        wx.onMenuShareAppMessage({
+          title: data.title,
+          desc: data.desc,
+          link: data.shareUrl,
+          imgUrl: data.imgUrl,
+          trigger: function (res) {
+          },
+          success: function (res) {
+          },
+          cancel: function (res) {
+          },
+          fail: function (res) {
+          }
+        });
+        wx.onMenuShareTimeline({
+          title: data.desc,
+          desc: data.desc,
+          link: data.shareUrl,
+          imgUrl: data.imgUrl,
+          trigger: function (res) {
+          },
+          success: function (res) {
+          },
+          cancel: function (res) {
+          },
+          fail: function (res) {
+          }
+        });
+      });
+    }
+    wxShare(wxData)
+  </script>
+</head>
+<body>
+	{% block body %}{% endblock %}
+	{% block javascripts %}
+	{% endblock %}
+</body>
+</html>

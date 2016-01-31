@@ -1,0 +1,8 @@
+{% use "bootstrap_3_layout.html.twig" %}
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+      {%- for error in errors -%}
+        <label class="error">{{ error.message | trans}}</label>
+      {%- endfor -%}
+    {%- endif %}
+{%- endblock form_errors %}
