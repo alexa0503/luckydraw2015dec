@@ -85,3 +85,18 @@ knp_paginator:
     template:
         pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+#缩略图配置
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+    filter_sets:
+        cache: ~
+        thumb1:
+            quality: 100
+            filters:
+                thumbnail: { size: [600, 600], mode: outbound }
+        thumb2:
+            quality: 100
+            filters:
+                thumbnail: { size: [135, 180], mode: outbound }

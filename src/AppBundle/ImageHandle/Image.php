@@ -25,9 +25,9 @@ class Image {
 	public function create()
 	{
 		$image_path = $this->file_path.'/'.$this->file_name;
-		$imagine = new Imagine();
 		$exif = @exif_read_data($image_path, 0, true);
 		if (isset($exif['IFD0']['Orientation'])) {
+			$imagine = new Imagine();
 			$image = $imagine->open($image_path);
 			if ($exif['IFD0']['Orientation'] == 6) {
 				$image->rotate(90)->save($image_path);

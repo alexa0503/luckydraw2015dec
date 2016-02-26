@@ -97,4 +97,118 @@ class ApiController extends Controller
 		}
 		return new Response(json_encode($result));
 	}
+	/**
+	 * @Route("/search", name="api_search")
+	 */
+	public function searchAction(Request $request)
+	{
+		$page = null === $request->get('page') || (int)$request->get('page') < 1 ? 1 : (int)$request->get('page');
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('AppBundle:Info');
+    $qb = $repo->createQueryBuilder('a');
+		if( null !== $request->get('mobile')){
+			$qb->andWhere('a.mobile LIKE :mobile');
+			$qb->setParameter(':mobile', '%'.$request->get('mobile').'%');
+		}
+		if( null !== $request->get('username')){
+			$qb->andWhere('a.username LIKE :username');
+			$qb->setParameter(':username', '%'.$request->get('username').'%');
+		}
+		$limit = 20;
+		$offset = ($page-1)*$limit;
+		$qb->setMaxResults($limit);
+		$qb->setFirstResult($offset);
+    $info = $qb->getQuery()->getResult();
+    
+    $data = array();
+    $cacheManager = $this->container->get('liip_imagine.cache.manager');
+    foreach ($info as $value) {
+    	$data[] = array(
+    		'username' => $value->getUsername(),
+    		'mobile' => $value->getMobile(),
+    		'headImg' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
+    	);
+    }
+    $result = array(
+    	'ret' => 0,
+    	'data' => $data,
+    );
+    $callback = $request->get('callback') ? : 'callback';
+		return new Response($callback.'('.json_encode($result).')');
+	}
+	/**
+	 * @Route("/info/{id}", name="api_info")
+	 */
+	public function infoAction(Request $request,$id = null)
+	{
+		if( null === $id){
+			$result = array(
+	    	'ret' => 1001,
+	    	'msg' => '没有您要的数据',
+	    );
+		}
+		$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
+		if( $info == null ){
+			$result = array(
+	    	'ret' => 1001,
+	    	'msg' => '没有您要的数据',
+	    );
+		}
+		else{
+			$cacheManager = $this->container->get('liip_imagine.cache.manager');
+			$data = array(
+				'username' => $info->getUsername(),
+	  		'mobile' => $info->getMobile(),
+	  		'headImg' => $cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'),
+			);
+			$result = array(
+	    	'ret' => 0,
+	    	'data' => $data,
+	    );
+		}
+    $callback = $request->get('callback') ? : 'callback';
+		return new Response($callback.'('.json_encode($result).')');
+	}
+	/**
+	 * @Route("/like/{id}", name="api_like")
+	 */
+	public function likeAction(Request $request,$id = null)
+	{
+		$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
+		if( $info == null ){
+			$result = array(
+	    	'ret' => 1001,
+	    	'msg' => '该信息不存在',
+	    );
+		}
+		else{
+			$result = array(
+	    	'ret' => 0,
+	    	'msg' => '',
+	    );
+		}
+		$callback = $request->get('callback') ? : 'callback';
+		return new Response($callback.'('.json_encode($result).')');
+	}
+	/**
+	 * @Route("/lottery/{id}", name="api_lottery")
+	 */
+	public function lotteryAction(Request $request,$id = null)
+	{
+		$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
+		if( $info == null ){
+			$result = array(
+	    	'ret' => 1001,
+	    	'msg' => '该信息不存在',
+	    );
+		}
+		else{
+			$result = array(
+	    	'ret' => 0,
+	    	'msg' => '',
+	    );
+		}
+		$callback = $request->get('callback') ? : 'callback';
+		return new Response($callback.'('.json_encode($result).')');
+	}
 }

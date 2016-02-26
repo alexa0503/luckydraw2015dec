@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             //new BushidoIO\QRCodeBundle\BushidoIOQRCodeBundle(),
             //new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
-            //new Liip\ImagineBundle\LiipImagineBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
