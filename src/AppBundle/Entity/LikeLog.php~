@@ -1,0 +1,32 @@
+<?php
+namespace AppBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="t_like_log")
+ */
+class LikeLog
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+   
+    /**
+     * @ORM\ManyToOne(targetEntity="info", inversedBy="likeLogs")
+     * @ORM\JoinColumn(name="info_id", referencedColumnName="id")
+     */
+    private $info;
+    /**
+     * @ORM\Column(name="create_time",  type="datetime")
+     */
+    private $createTime;
+    /**
+     * @ORM\Column(name="create_ip", type="string", length=60)
+     */
+    private $createIp;
+
+}

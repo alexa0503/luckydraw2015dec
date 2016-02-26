@@ -53,7 +53,6 @@ class ApiController extends Controller
 				$em = $this->getDoctrine()->getManager();
 		    $em->getConnection()->beginTransaction();
 		    try{
-
 	        $repo = $em->getRepository('AppBundle:Info');
 	        $qb = $repo->createQueryBuilder('a');
 	        $qb->select('COUNT(a)');
@@ -77,7 +76,7 @@ class ApiController extends Controller
 							$em->persist($info);
 			        $em->flush();
 				      $em->getConnection()->commit();
-							$session->set('mobile',$mobile);
+							$session->set('id',$info->getId());
 							$result['ret'] = 0;
 							$result['msg'] = '';
 						}
@@ -126,6 +125,7 @@ class ApiController extends Controller
     	$data[] = array(
     		'username' => $value->getUsername(),
     		'mobile' => $value->getMobile(),
+    		'likeNum' => $value->getLikeNum(),
     		'headImg' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
     	);
     }
@@ -159,6 +159,7 @@ class ApiController extends Controller
 			$data = array(
 				'username' => $info->getUsername(),
 	  		'mobile' => $info->getMobile(),
+    		'likeNum' => $info->getLikeNum(),
 	  		'headImg' => $cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'),
 			);
 			$result = array(
@@ -174,39 +175,107 @@ class ApiController extends Controller
 	 */
 	public function likeAction(Request $request,$id = null)
 	{
-		$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
-		if( $info == null ){
-			$result = array(
-	    	'ret' => 1001,
-	    	'msg' => '该信息不存在',
+		$em = $this->getDoctrine()->getManager();
+    $em->getConnection()->beginTransaction();
+    try{
+    	$info = $em->getRepository('AppBundle:Info')->find($id);
+			if( $info == null ){
+				$result = array(
+		    	'ret' => 1001,
+		    	'msg' => '该信息不存在',
+		    );
+			}
+			else{
+				$create_ip = $request->getClientIp();
+
+		    $repo = $em->getRepository('AppBundle:LikeLog');
+				$qb = $repo->createQueryBuilder('a');
+	      $qb->select('COUNT(a)');
+	      $qb->where('a.createIp = :createIp');
+	      $qb->setParameter('createIp', $create_ip);
+	      $count = $qb->getQuery()->getSingleScalarResult();
+
+	      if( $count < 1){
+	      	$info->increaseLikeNum();
+					$em->persist($info);
+					$like_log = new Entity\LikeLog();
+					$like_log->setInfo($info);
+		      $like_log->setCreateIp($create_ip);
+		      $like_log->setCreateTime(new \DateTime('now'));
+					$em->persist($like_log);
+		      $em->flush();
+					$result = array(
+			    	'ret' => 0,
+			    	'msg' => '',
+			    );
+	      }
+	      else{
+	      	$result = array(
+			    	'ret' => 1200,
+			    	'msg' => '您已经投过票了',
+			    );
+	      }
+				
+			}
+			$em->getConnection()->commit();
+    }
+    catch (Exception $e) {
+      $em->getConnection()->rollback();
+      $result = array(
+	    	'ret' => 2001,
+	    	'msg' => $e->getMessage(),
 	    );
-		}
-		else{
-			$result = array(
-	    	'ret' => 0,
-	    	'msg' => '',
-	    );
-		}
+    }
+		
 		$callback = $request->get('callback') ? : 'callback';
 		return new Response($callback.'('.json_encode($result).')');
 	}
 	/**
-	 * @Route("/lottery/{id}", name="api_lottery")
+	 * @Route("/lottery", name="api_lottery")
 	 */
-	public function lotteryAction(Request $request,$id = null)
+	public function lotteryAction(Request $request)
 	{
-		$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
-		if( $info == null ){
+		$session = $request->getSession();
+		if( null == $session->get('id')){
 			$result = array(
-	    	'ret' => 1001,
-	    	'msg' => '该信息不存在',
+	    	'ret' => 3001,
+	    	'msg' => '您没有抽奖资格',
 	    );
 		}
 		else{
-			$result = array(
-	    	'ret' => 0,
-	    	'msg' => '',
-	    );
+			$em = $this->getDoctrine()->getManager();
+	    $em->getConnection()->beginTransaction();
+	    try{
+				$info = $em->getRepository('AppBundle:Info')->find($session->get('id'));
+				if( $info == null ){
+					$result = array(
+			    	'ret' => 1001,
+			    	'msg' => '该信息不存在',
+			    );
+				}
+				else{
+					$em = $this->getDoctrine()->getManager();
+					$rand1 = rand(1,10);
+					$rand2 = rand(1,10);
+					$prize = $rand1 == $rand2 ? rand(1,4) : 0;
+					$info->getHasLottery(true);
+					$info->setPrize($prize);
+					$em->persist($info);
+		      $em->flush();
+					$result = array(
+			    	'ret' => 0,
+			    	'msg' => '',
+			    );
+				}
+				$em->getConnection()->commit();
+	    }
+	    catch (Exception $e) {
+	      $em->getConnection()->rollback();
+	      $result = array(
+		    	'ret' => 2001,
+		    	'msg' => $e->getMessage(),
+		    );
+	    }
 		}
 		$callback = $request->get('callback') ? : 'callback';
 		return new Response($callback.'('.json_encode($result).')');
