@@ -131,6 +131,8 @@ class Wechat {
 
 
     private function httpGet($url) {
+        $res = file_get_contents($url);
+        /*
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_TIMEOUT, 500);
@@ -140,6 +142,7 @@ class Wechat {
 
         $res = curl_exec($curl);
         curl_close($curl);
+        */
 
         return $res;
     }

@@ -47,24 +47,15 @@ class WechatUser
      */
     protected $createTime;
     /**
-     * @ORM\Column(name="favour_num",  type="integer")
-     */
-    private $favourNum = 0;
-    /**
      * @ORM\Column(name="create_ip",type="string", length=60)
      */
     protected $createIp;
     
     /**
-     * @ORM\OneToMany(targetEntity="Photo", mappedBy="user")
-     */
-    protected $photo;
-    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->photo = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -282,61 +273,5 @@ class WechatUser
     public function getCreateIp()
     {
         return $this->createIp;
-    }
-
-    /**
-     * Add photo
-     *
-     * @param \AppBundle\Entity\Photo $photo
-     * @return WechatUser
-     */
-    public function addPhoto(\AppBundle\Entity\Photo $photo)
-    {
-        $this->photo[] = $photo;
-
-        return $this;
-    }
-
-    /**
-     * Remove photo
-     *
-     * @param \AppBundle\Entity\Photo $photo
-     */
-    public function removePhoto(\AppBundle\Entity\Photo $photo)
-    {
-        $this->photo->removeElement($photo);
-    }
-
-    /**
-     * Get photo
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    /**
-     * Set favourNum
-     *
-     * @param integer $favourNum
-     * @return WechatUser
-     */
-    public function setFavourNum($favourNum)
-    {
-        $this->favourNum = $favourNum;
-
-        return $this;
-    }
-
-    /**
-     * Get favourNum
-     *
-     * @return integer 
-     */
-    public function getFavourNum()
-    {
-        return $this->favourNum;
     }
 }

@@ -6,11 +6,14 @@ parameters:
             currentClass: active
 
 services:
-    listener.wechat:
-         class: AppBundle\EventListener\OAuthListener
-         arguments: [ "@router", "@service_container","@doctrine.orm.entity_manager"]
-         tags:
-           - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    image.handle:
+      class: AppBundle\ImageHandle\Image
+      arguments: ["@service_container"]
+    #listener.wechat:
+    #     class: AppBundle\EventListener\OAuthListener
+    #     arguments: [ "@router", "@service_container","@doctrine.orm.entity_manager"]
+    #     tags:
+    #       - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
            #- { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
            #- { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 #    service_name:

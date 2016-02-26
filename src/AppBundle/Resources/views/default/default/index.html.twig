@@ -1,0 +1,222 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+    <div class="pageOuter">
+        <div class="innerDiv">
+            <div class="page pageLoading" style="display:none;">
+                <div class="h1008">
+                    <div class="innerDiv">
+                        <div class="logo abs imgDiv"></div>
+                        <div class="pageLoadingImg2 abs imgDiv"></div>
+                        <div class="pageLoadingImg1 abs imgDiv"></div>
+                        <div class="loadingTxt">L o a d i n g <span>. . . </span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page page1" style="display:none;">
+                <div class="h1008">
+                    <div class="innerDiv">
+                        <img src="{{ asset('bundles/app/default/') }}images/star.png" class="abs star star1">
+                        <img src="{{ asset('bundles/app/default/') }}images/star.png" class="abs star star2">
+                        <div class="logo abs imgDiv"></div>
+                        <div class="page1Img1 abs imgDiv"></div>
+                        <div class="page1Img2 abs imgDiv" style="display:none;"></div>
+                        <div class="page1Img3 abs imgDiv" style="display:none;"></div>
+                        <div class="page1Img4 abs imgDiv" style="display:none;"></div>
+                        <div class="page1Img5 abs imgDiv" style="display:none;"></div>
+                        <div class="page1Img6 abs imgDiv" style="display:none;"></div>
+                        <div class="page1Img7 abs imgDiv" style="display:none;"></div>
+                        <div class="page1Img8 abs imgDiv" style="display:none;"></div>
+                        <img src="{{ asset('bundles/app/default/') }}images/downArrow.png" class="abs downArrow2" style="display:none;">
+                        <a href="javascript:void(0);" class="abs ruleBtn" onClick="showRule();"><img src="{{ asset('bundles/app/default/') }}images/ruleBtn.png"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page page2" style="display:none;">
+                <div class="h1008">
+                    <div class="innerDiv">
+                        <div class="page2Img1 abs imgDiv"></div>
+                        <div class="page2Img2 abs imgDiv"></div>
+                        <a href="javascript:void(0);" class="abs page2Btn1" onClick="goPage3();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="401" height="408"></a>
+                        <a href="javascript:void(0);" class="abs page2Btn2" onClick="goPage4();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="401" height="408"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page page3" style="display:none;">
+                <div class="h1008">
+                    <div class="innerDiv">
+                        <div class="sebBlock">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide selA1"><img src="{{ asset('bundles/app/default/') }}images/photoA1.png" class="selImg"></div>
+                                    <div class="swiper-slide selA2"><img src="{{ asset('bundles/app/default/') }}images/photoA2.png" class="selImg"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0);" class="abs leftArrow swiper-button-next"><img src="{{ asset('bundles/app/default/') }}images/leftArrow.png"></a>
+                        <a href="javascript:void(0);" class="abs rightArrow swiper-button-prev"><img src="{{ asset('bundles/app/default/') }}images/rightArrow.png"></a>
+                        <a href="javascript:void(0);" class="abs page4Btn1" onClick="goPage7(1);"><img src="{{ asset('bundles/app/default/') }}images/page4Btn1.png"></a>
+						<a href="javascript:void(0);" class="abs page4Btn3" onClick="backSel();"><img src="{{ asset('bundles/app/default/') }}images/page4Btn2.png"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page page4" style="display:none;">
+                <div class="h1008">
+                    <div class="innerDiv">
+                        <div class="page4Img1 abs imgDiv" style="display:none;"></div>
+                        <div class="page4Img2 abs imgDiv" style="display:none;"></div>
+                        <div class="sebBlock2">
+                            <img src="{{ asset('bundles/app/default/') }}images/photoB1s.png" width="680" class="sel2Img sel2Img1">
+                            <img src="{{ asset('bundles/app/default/') }}images/photoB2s.png" width="680" class="sel2Img sel2Img2" style="display:none;">
+                            <img src="{{ asset('bundles/app/default/') }}images/photoB3s.png" width="680" class="sel2Img sel2Img3" style="display:none;">
+                            <img src="{{ asset('bundles/app/default/') }}images/photoB4s.png" width="680" class="sel2Img sel2Img4" style="display:none;">
+                            <img src="{{ asset('bundles/app/default/') }}images/photoB5s.png" width="680" class="sel2Img sel2Img5" style="display:none;">
+                            <img src="{{ asset('bundles/app/default/') }}images/photoB6s.png" width="680" class="sel2Img sel2Img6" style="display:none;">
+                        </div>
+						<div class="sebBlock3"></div>
+						<p class="abs selTxt">兄弟 祝你猴想事成</p>
+                        <a href="javascript:void(0);" class="abs leftArrow" onClick="goLeft();"><img src="{{ asset('bundles/app/default/') }}images/leftArrow.png"></a>
+                        <a href="javascript:void(0);" class="abs rightArrow" onClick="goRight();"><img src="{{ asset('bundles/app/default/') }}images/rightArrow.png"></a>
+                        <a href="javascript:void(0);" class="abs page4Btn2" onClick="goPage5a();"><img src="{{ asset('bundles/app/default/') }}images/page4Btn1.png"></a>
+						<a href="javascript:void(0);" class="abs page4Btn4" onClick="backSel();"><img src="{{ asset('bundles/app/default/') }}images/page4Btn2.png"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page page5" style="display:none;">
+                <form method="post" action="{{ url('_upload',{t:'b'}) }}" enctype="multipart/form-data" id="upload">
+                    <div class="h1008">
+                        <div class="innerDiv">
+                            <div class="page5Img1 abs imgDiv" style="display:none;"></div>
+                            <div class="page5Img2 abs imgDiv" style="display:none;"></div>
+
+                            <div class="preImg" id="preImg">
+                                <div class="innerDiv">
+                                    <img src="" class="abs upBtnImg upLoadImg" style="display:none;" id="upBtnImg">
+                                    <img src="" class="abs upLoadImg" style="display:none;" id="preview" />
+                                    <img src="" class="abs upLoadImg" style="display:none;" id="localImag" />
+
+                                    <img src="" class="coverImg" />
+                                </div>
+                            </div>
+
+                            <a href="javascript:void(0);" class="abs page5Btn1"><img src="{{ asset('bundles/app/default/') }}images/page5Btn1.png"></a>
+                            <input type="file" class="fileBtn" id="uploadBtn" style="display:none;"  />
+
+                            <a href="javascript:void(0);" class="abs page5Btn2" onClick="goPage6();"><img src="{{ asset('bundles/app/default/') }}images/page5Btn2.png"></a>
+                        </div>
+                        <input type="hidden" value="0" id="pos_x" name="pos_x">
+                        <input type="hidden" value="0" id="pos_y" name="pos_y">
+                        <input type="hidden" value="1" id="scale" name="scale">
+                        <input type="hidden" value="0" id="num" name="num">
+                        <input type="hidden" value="" id="title" name="title">
+                        <input type="hidden" value="" id="imageId" name="imageId">
+                    </form>
+                </div>
+            </div>
+
+            <div class="page page6" style="display:none;">
+                <div class="h1008">
+                    <div class="innerDiv">
+
+                        <img src="" class="selFile">
+                        <img src="{{ asset('bundles/app/default/') }}images/photoB1.png" class="selCover">
+
+                        <div class="page6Img1 abs imgDiv"></div>
+                        <div class="page6Img2 abs imgDiv" style="display:none;"></div>
+                        <div class="page6Img3 abs imgDiv" style="display:none;"></div>
+                        <input type="text" class="wishTxt" maxlength="30">
+                        <a href="javascript:void(0);" class="abs page6Btn1" onClick="goPage7(2);"><img src="{{ asset('bundles/app/default/') }}images/page6Btn1.png"></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ruleBg" onClick="closeRule();" style="display:none;"></div>
+    <div class="ruleBlockBg" style="display:none;"></div>
+    <div class="ruleBlock" style="display:none;">
+        <img src="{{ asset('bundles/app/default/') }}images/rule.png">
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+            indexLoad();
+        });
+    var imgId;
+    function goPage7(x){
+            if(x==1){
+        //alert(selANumb);
+        window.location.href="{{ url('_upload',{t:'a'}) }}?num="+selANumb;
+    }
+    else if(x==2){
+        var iWish=$.trim($('.wishTxt').val());
+        if(iWish==''){
+            alert('请输入祝福语');
+            return false;
+        }
+        else{
+            $('.page6Img2').addClass('titleHide');
+                    //alert(selBNumb);
+                    //alert('posX:'+posX/352*640+' posY:'+posY/352*640+' scale:'+scale);
+                    //window.location.href="finishB.html";
+                    $('#title').val(iWish);
+                    $('#pos_x').val(posX/300*640);
+                    $('#pos_y').val(posY/300*640);
+                    $('#scale').val(scale);
+                    $('#num').val(selBNumb);
+                    wx.uploadImage({
+                        localId: imgId, // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var serverId = res.serverId; // 返回图片的服务器端ID
+                            $('#imageId').val(res.serverId);
+                            $('#upload').submit();
+                        }
+                    });
+                }
+            }
+        }
+
+        $('.page5Btn1').on('click',function(){
+            goPage5a();
+        })
+        function goPage5a(){
+            $('.coverImg').attr('src','bundles/app/default/images/photoB'+selBNumb+'.png');
+            $('.selCover').attr('src','bundles/app/default/images/photoB'+selBNumb+'.png');
+            //$('.fileBtn').click();
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    //$('#uploadBtn').val(res.localIds);
+                    $('.upLoadImg').attr('src',res.localIds);
+                    $('.selFile').attr('src',res.localIds);
+					$('#preview').show();
+					
+					isSelectedImg=true;
+					$('.upLoadImg').css('webkitTransform','');
+					$('.selFile').css('webkitTransform','');
+					posX = 0, posY = 0, lastposX = 0, lastposY = 0, scale = 1, last_scale = 1, rotation = 0, last_rotation = 0;
+					
+					move_picture();
+					goPage5b();
+					window.scroll(0,0);
+                    imgId = res.localIds.pop();
+					
+					
+                    //setImagePreview();
+                    //var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                }
+            });
+        }
+
+    </script>
+
+{% endblock %}
