@@ -1,17 +1,16 @@
 <?php
 namespace AppBundle\ImageHandle;
 #use AppBundle\Helper;
-#use Symfony\Component\HttpKernel\Kernel;
-use Imagine\Gd\Imagine;
-#use Imagine\Image\Box;
-#use Imagine\Image\Point;
-#use Imagine\Image\ImageInterface;
-#use Imagine\Image\Palette;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface; 
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
+use Imagine\Image\ImageInterface;
+use Imagine\Image\Palette;
 class Image {
 	private $file_name;
 	private $file_path;
