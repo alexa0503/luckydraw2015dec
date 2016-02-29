@@ -97,15 +97,15 @@ function loadingImg(){
 	
 function loadingShare(){
 	var images=[];
-    images.push("images/bg.png");
+    images.push("/bundles/app/default/images//bg.png");
 	
-	images.push("images/page6Img1.png");
+	images.push("/bundles/app/default/images/page6Img1.png");
 	
-	images.push("images/rule1.png");
-	images.push("images/rule2.png");
-	images.push("images/rule3.png");
+	images.push("/bundles/app/default/images/rule1.png");
+	images.push("/bundles/app/default/images/rule2.png");
+	images.push("/bundles/app/default/images/rule3.png");
 	
-	images.push("images/topImg1.png");
+	images.push("/bundles/app/default/images/topImg1.png");
 	
 	
     /*图片预加载*/
@@ -133,15 +133,15 @@ function loadingShare(){
 	
 function loadingTop(){
 	var images=[];
-    images.push("images/bg.png");
+    images.push("/bundles/app/default/images/bg.png");
 	
-	images.push("images/topBg.png");
+	images.push("/bundles/app/default/images/topBg.png");
 	
-	images.push("images/rule1.png");
-	images.push("images/rule2.png");
-	images.push("images/rule3.png");
+	images.push("/bundles/app/default/images/rule1.png");
+	images.push("/bundles/app/default/images/rule2.png");
+	images.push("/bundles/app/default/images/rule3.png");
 	
-	images.push("images/topImg1.png");
+	images.push("/bundles/app/default/images/topImg1.png");
 	
 	
     /*图片预加载*/

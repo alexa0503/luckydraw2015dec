@@ -163,7 +163,14 @@ class ApiController extends Controller
     	'data' => $data,
     );
     $callback = $request->get('callback') ? : 'callback';
-		return new Response($callback.'('.json_encode($result).')');
+		//return new Response($callback.'('.json_encode($result).')');
+		$response = new Response();
+		if( null == $request->get('callback'))
+			$response->setContent(json_encode($result));
+		else
+			$response->setContent($callback.'('.json_encode($result).')');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		return $response;
 	}
 	/**
 	 * @Route("/info/{id}", name="api_info")
@@ -199,7 +206,14 @@ class ApiController extends Controller
 	    );
 		}
     $callback = $request->get('callback') ? : 'callback';
-		return new Response($callback.'('.json_encode($result).')');
+		//return new Response($callback.'('.json_encode($result).')');
+		$response = new Response();
+		if( null == $request->get('callback'))
+			$response->setContent(json_encode($result));
+		else
+			$response->setContent($callback.'('.json_encode($result).')');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		return $response;
 	}
 	/**
 	 * @Route("/like/{id}", name="api_like")
@@ -261,7 +275,10 @@ class ApiController extends Controller
 		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
 		$response = new Response();
-		$response->setContent($callback.'('.json_encode($result).')');
+		if( null == $request->get('callback'))
+			$response->setContent(json_encode($result));
+		else
+			$response->setContent($callback.'('.json_encode($result).')');
 		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
 		return $response;
 	}
@@ -320,7 +337,14 @@ class ApiController extends Controller
 	    }
 		}
 		$callback = $request->get('callback') ? : 'callback';
-		return new Response($callback.'('.json_encode($result).')');
+		//return new Response($callback.'('.json_encode($result).')');
+		$response = new Response();
+		if( null == $request->get('callback'))
+			$response->setContent(json_encode($result));
+		else
+			$response->setContent($callback.'('.json_encode($result).')');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		return $response;
 	}
 	/**
 	 * @Route("/count", name="api_count")
@@ -337,6 +361,13 @@ class ApiController extends Controller
     	'data' => array('count'=>$count),
     );
 		$callback = $request->get('callback') ? : 'callback';
-		return new Response($callback.'('.json_encode($result).')');
+		//return new Response($callback.'('.json_encode($result).')');
+		$response = new Response();
+		if( null == $request->get('callback'))
+			$response->setContent(json_encode($result));
+		else
+			$response->setContent($callback.'('.json_encode($result).')');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		return $response;
 	}
 }
