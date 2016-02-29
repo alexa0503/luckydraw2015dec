@@ -67,6 +67,19 @@ class DefaultController extends Controller
         }
         return $this->render('AppBundle:default:info.html.twig', array('info'=>$info));
     }
+    /**
+     * @Route("/mobile/top", name="_top")
+     */
+    public function topAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('AppBundle:Info');
+        $qb = $repo->createQueryBuilder('a');
+        $qb->orderBy('a.likeNum','desc');
+        $qb->setMaxResults(10);
+        $info_list = $qb->getQuery()->getResult();
+        return $this->render('AppBundle:default:top.html.twig',array('list'=>$info_list));
+    }
   /**
    * @Route("/callback", name="_callback")
    */
