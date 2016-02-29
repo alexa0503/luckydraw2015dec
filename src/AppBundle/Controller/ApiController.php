@@ -170,7 +170,7 @@ class ApiController extends Controller
 	 */
 	public function infoAction(Request $request,$id = null)
 	{
-		if( null === $id){
+		if( null == $id){
 			$result = array(
 	    	'ret' => 1001,
 	    	'msg' => '没有您要的数据',
@@ -189,9 +189,9 @@ class ApiController extends Controller
 				'username' => $info->getUsername(),
 	  		'mobile' => $info->getMobile(),
     		'likeNum' => $info->getLikeNum(),
-    		'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
-    		'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
-    		'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
+    		'headImg' => 'http://'.$request->getHost().'/uploads/'.$info->getHeadImg(),
+    		'thumb' => $cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'),
+    		'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$info->getHeadImg(),
 			);
 			$result = array(
 	    	'ret' => 0,
@@ -259,7 +259,11 @@ class ApiController extends Controller
     }
 		
 		$callback = $request->get('callback') ? : 'callback';
-		return new Response($callback.'('.json_encode($result).')');
+		//return new Response($callback.'('.json_encode($result).')');
+		$response = new Response();
+		$response->setContent($callback.'('.json_encode($result).')');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		return $response;
 	}
 	/**
 	 * @Route("/lottery", name="api_lottery")

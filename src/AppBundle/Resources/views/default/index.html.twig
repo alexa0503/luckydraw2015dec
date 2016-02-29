@@ -78,44 +78,13 @@
 		</div>
 	</div>
 
-	<img src="{{ asset('bundles/app/default/') }}images/bg.png" class="abs ruleBg" style="display:none;">
-	<div class="pop popRule" style="display:none;">
-		<div class="page pageRule">
-			<div class="h1008">
-				<div class="innerDiv">
-					<div class="swiper-container abs bgImg">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide rule1"></div>
-							<div class="swiper-slide rule2"></div>
-							<div class="swiper-slide rule3"></div>
-						</div>
-					</div>
-					<a href="javascript:void(0);" class="abs closeBtn" onClick="closeRule();"><img src="{{ asset('bundles/app/default/') }}images/closeBtn.png"></a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="topBar" style="display:none;">
-		<div class="innerDiv">
-			<a href="javascript:void(0);" class="topBtn1 abs" onClick="showRule();"><img src="{{ asset('bundles/app/default/') }}images/topBtn1.png"></a>
-		</div>
-	</div>
-
-	<div class="popBg" onClick="closePop();" style="display:none;"></div>
-	<div class="pop popShare1" style="display:none;" onClick="closePop();"></div>
-	<div class="pop popShare2" style="display:none;" onClick="closePop();">
-		<div class="innerDiv">
-			<a href="javascript:void(0);" class="shareBtn1 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
-			<a href="javascript:void(0);" class="shareBtn2 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
-			<a href="javascript:void(0);" class="shareBtn3 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
-		</div>
-	</div>
+	
 {% endblock %}
 {% block javascripts %}
+	{{ parent() }}
 	<script>
 		$(document).ready(function(){
-			loadingImg();
+    loadingImg();
 			$('#form-submit').click(function(){
 				var headImg = $('#headImg').val();
 				var username = $('#username').val();

@@ -94,6 +94,79 @@ function loadingImg(){
             });
 	}
 	
+	
+function loadingShare(){
+	var images=[];
+    images.push("images/bg.png");
+	
+	images.push("images/page6Img1.png");
+	
+	images.push("images/rule1.png");
+	images.push("images/rule2.png");
+	images.push("images/rule3.png");
+	
+	images.push("images/topImg1.png");
+	
+	
+    /*图片预加载*/
+    var imgNum=0;
+    $.imgpreload(images,
+            {
+                each: function () {
+                    var status = $(this).data('loaded') ? 'success' : 'error';
+                    if (status == "success") {
+                        var v = (parseFloat(++imgNum) / images.length).toFixed(2);
+                        //$("#percentShow").html('已加载:'+Math.round(v * 100) + "%");
+						$('.loadingProgress').stop().animate({height:v*lh},100,'linear');
+                    }
+                },
+                all: function () {
+
+                    //$("#percentShow").html("已加载:100%");
+                    //图片加载完成 加载动画
+					setTimeout(function(){
+						goPage6();
+						},500);
+                }
+            });
+	}
+	
+function loadingTop(){
+	var images=[];
+    images.push("images/bg.png");
+	
+	images.push("images/topBg.png");
+	
+	images.push("images/rule1.png");
+	images.push("images/rule2.png");
+	images.push("images/rule3.png");
+	
+	images.push("images/topImg1.png");
+	
+	
+    /*图片预加载*/
+    var imgNum=0;
+    $.imgpreload(images,
+            {
+                each: function () {
+                    var status = $(this).data('loaded') ? 'success' : 'error';
+                    if (status == "success") {
+                        var v = (parseFloat(++imgNum) / images.length).toFixed(2);
+                        //$("#percentShow").html('已加载:'+Math.round(v * 100) + "%");
+						$('.loadingProgress').stop().animate({height:v*lh},100,'linear');
+                    }
+                },
+                all: function () {
+
+                    //$("#percentShow").html("已加载:100%");
+                    //图片加载完成 加载动画
+					setTimeout(function(){
+						goPage7();
+						},500);
+                }
+            });
+	}
+	
 function goPage1(){
 	$('.page0').fadeOut(500);
 	$('.topBar').fadeIn(500);
@@ -109,7 +182,12 @@ function goPage2(){
 function choseQ(e){
 	$('.page2Q li').removeClass('on');
 	$(e).parents('li').addClass('on');
-	$('#wishText').val($(this).text());
+	var sHtml=$(e).html();
+	$('.page2Q li').removeClass('on');
+	$(e).parents('li').addClass('on');
+	$('.wish').html(sHtml);
+	$('.wish').val(sHtml);
+	$('#wishText').val($(e).text());
 	}	
 	
 var isWechat=false;//是否加载完js-sdk
@@ -294,3 +372,40 @@ function closeRule(){
 	$('.ruleBg').fadeOut(500);
 	$('.popRule').fadeOut(500);
 }
+
+function goPage6(){
+	$('.page0').fadeOut(500);
+	$('.topBar').fadeIn(500);
+	$('.page6').fadeIn(500);
+	$('body').css('background','url(images/bg2.png) top center no-repeat');
+	}
+	
+function goPage7(){
+	$('.page0').fadeOut(500);
+	$('.topBar').fadeIn(500);
+	$('.page7').fadeIn(500);
+	$('body').css('background','#f9ecbe');
+	var tLen=$('.topBlock').length;
+	for(var i=0;i<tLen;i++){
+		$('.topBlock').eq(i).find('.swiper-container3').attr('id','swiper-container3'+i);
+		$('.topBlock').eq(i).find('.tBtn1').attr('id','tBtn1'+i);
+		$('.topBlock').eq(i).find('.tBtn2').attr('id','tBtn2'+i);
+		}
+	setTimeout(function(){
+		var swiper = new Swiper('.swiper-container2', {
+			direction: 'vertical',
+			slidesPerView: 'auto'
+			});			
+		setTimeout(function(){
+			var tLen2=$('.topBlock').length;
+			for(var i=0;i<tLen2;i++){
+				 var swiper = new Swiper('#swiper-container3'+i, {
+					nextButton: '#tBtn1'+i,
+					prevButton: '#tBtn2'+i,
+					spaceBetween: 1,
+					loop: true
+					});
+				}
+			},500);
+		},510);
+	}

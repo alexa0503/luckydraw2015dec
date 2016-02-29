@@ -1,0 +1,50 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+	<div class="pageOuter">
+	<div class="innerDiv">
+    	
+    	<div class="page page0">
+        	<div class="h1008">
+            	<div class="innerDiv">
+                	<div class="loadingProgress" style="height:0;"></div>
+                	<div class="abs bgImg loading"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page page6" style="display:none;">
+        	<div class="h1008">
+           	  <div class="innerDiv">
+              	<div class="abs bgImg page6Img1"></div>
+              	<img src="{{ (asset('uploads/')~info.headImg) | imagine_filter('thumb1') }}" class="face">
+                <p class="sTitle"><span>{{ info.username }}</span><br>刚为秀发许下了一个美丽心愿<br>点个赞令她心愿成真吧！</p>
+                <div class="sName"><span>{{ info.username }}</span></div>
+                <div class="sVote"><img src="{{ asset('bundles/app/default/') }}images/page6Icon1.png">{{ info.likeNum }}赞</div>
+                <div class="sWish">{{ info.wishText }}</div>
+                <a href="javascript:void(0);" class="abs page6Btn1"><img src="{{ asset('bundles/app/default/') }}images/page6Btn1.png"></a>
+                <a href="javascript:void(0);" class="abs page6Btn2"><img src="{{ asset('bundles/app/default/') }}images/page6Btn2.png"></a>
+                <a href="{{ url('_index') }}" class="abs page6Btn3"><img src="{{ asset('bundles/app/default/') }}images/page6Btn3.png"></a>
+              </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+	<script>
+		$(document).ready(function(){
+			loadingShare();
+			var  url = 'http://luckydraw2015dec.himyweb.com/like/'+'{{ info.id }}';
+			$('.page6Btn2').click(function(){
+				$.getJSON(url,function(json){
+					if(json.ret == 0){
+					}
+					else{
+						alert(json.msg);
+					}
+				})
+			})
+		});
+	</script>
+{% endblock %}

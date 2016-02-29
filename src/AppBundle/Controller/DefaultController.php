@@ -53,6 +53,20 @@ class DefaultController extends Controller
     {
         return $this->render('AppBundle:default:success.html.twig');
     }
+    /**
+     * @Route("/mobile/info/{id}", name="_info")
+     */
+    public function infoAction(Request $request, $id = null)
+    {
+        if( null == $id){
+            return $this->redirect($this->generateUrl('_index'));
+        }
+        $info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
+        if( $info == $id){
+            return $this->redirect($this->generateUrl('_index'));
+        }
+        return $this->render('AppBundle:default:info.html.twig', array('info'=>$info));
+    }
   /**
    * @Route("/callback", name="_callback")
    */
