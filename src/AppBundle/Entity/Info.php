@@ -27,6 +27,10 @@ class Info
      */
     protected $headImg;
     /**
+     * @ORM\Column(name="wish_text",type="string", length=500, nullable = true)
+     */
+    protected $wishText;
+    /**
      * @ORM\Column(name="like_num",type="integer")
      */
     protected $likeNum = 0;
@@ -321,5 +325,28 @@ class Info
     {
         ++$this->likeNum;
         return $this;
+    }
+
+    /**
+     * Set wishText
+     *
+     * @param string $wishText
+     * @return Info
+     */
+    public function setWishText($wishText)
+    {
+        $this->wishText = $wishText;
+
+        return $this;
+    }
+
+    /**
+     * Get wishText
+     *
+     * @return string 
+     */
+    public function getWishText()
+    {
+        return $this->wishText;
     }
 }

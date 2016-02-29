@@ -1,0 +1,9 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+{% endblock %}
+{% block javascripts %}
+	<script>
+	alert('{{ errorInfo }}');
+	location.href = '{{ url }}';
+	</script>
+{% endblock %}

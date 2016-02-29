@@ -42,6 +42,12 @@ class ApiController extends Controller
 				$result['ret'] = 1005;
 				$result['msg'] = '手机号不能为空';
 			}
+			/*
+			elseif( null == $request->get('wishText')){
+				$result['ret'] = 1008;
+				$result['msg'] = '心愿清单不能为空';
+			}
+			*/
 			elseif( !preg_match('/^1\d{10}$/', $request->get('mobile'))){
 				$result['ret'] = 1006;
 				$result['msg'] = '手机格式不正确';
@@ -49,6 +55,7 @@ class ApiController extends Controller
 			else{
 				$username = $request->get('username');
 				$mobile = $request->get('mobile');
+				$wish_text = $request->get('wishText');
 				
 				$em = $this->getDoctrine()->getManager();
 		    $em->getConnection()->beginTransaction();
@@ -71,6 +78,7 @@ class ApiController extends Controller
 							$info->setUsername($username);
 							$info->setMobile($mobile);
 							$info->setHeadImg($image_path);
+							$info->setWishText($wish_text);
 				      $info->setCreateIp($request->getClientIp());
 				      $info->setCreateTime(new \DateTime('now'));
 							$em->persist($info);
@@ -94,6 +102,13 @@ class ApiController extends Controller
 		    }
 			}
 		}
+		if( $result['ret'] === 0 && null !== $request->get('url')){
+			return $this->redirect(urldecode($request->get('url')));
+		}
+		elseif( $result['ret'] !== 0 && null !== $request->get('failUrl')){
+			return $this->redirect(urldecode($request->get('failUrl')).'?info='.urlencode($result['msg']));
+		}
+
 		return new Response(json_encode($result));
 	}
 	/**
@@ -253,18 +268,25 @@ class ApiController extends Controller
 			    	'msg' => '该信息不存在',
 			    );
 				}
+				elseif( $info->getHasLottery() == true){
+					$result = array(
+			    	'ret' => 1002,
+			    	'msg' => '您已经抽过将了哦~',
+			    );
+				}
 				else{
 					$em = $this->getDoctrine()->getManager();
 					$rand1 = rand(1,10);
 					$rand2 = rand(1,10);
 					$prize = $rand1 == $rand2 ? rand(1,4) : 0;
-					$info->getHasLottery(true);
+					$info->setHasLottery(true);
 					$info->setPrize($prize);
 					$em->persist($info);
 		      $em->flush();
 					$result = array(
 			    	'ret' => 0,
 			    	'msg' => '',
+			    	'data' => array('prize'=>$prize),
 			    );
 				}
 				$em->getConnection()->commit();

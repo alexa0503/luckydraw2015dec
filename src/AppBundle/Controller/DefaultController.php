@@ -23,14 +23,28 @@ use Symfony\Component\Filesystem\Filesystem;
 class DefaultController extends Controller
 {
 	/**
-	 * @Route("/", name="_index")
+	 * @Route("/mobile", name="_index")
 	 */
 	public function indexAction(Request $request)
 	{
-		//return new Response('');
 		return $this->render('AppBundle:default:index.html.twig');
 	}
-
+    /**
+     * @Route("/mobile/error", name="_error")
+     */
+    public function errorAction(Request $request)
+    {
+        $errorInfo = $request->get('info') ? urldecode($request->get('info')) : '';
+        $url = null != $request->get('url') ? urldecode($request->get('url')) : $this->generateUrl('_index');
+        return $this->render('AppBundle:default:error.html.twig',array('errorInfo'=>$errorInfo,'url'=>$url));
+    }
+    /**
+     * @Route("/mobile/success", name="_success")
+     */
+    public function successAction(Request $request)
+    {
+        return $this->render('AppBundle:default:success.html.twig');
+    }
   /**
    * @Route("/callback", name="_callback")
    */

@@ -1,0 +1,109 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+	<div class="pageOuter">
+		<div class="innerDiv">
+			
+			<div class="page page0">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="loadingProgress" style="height:0;"></div>
+						<div class="abs bgImg loading"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="page page1" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page1Img1 abs bgImg"></div>
+						<div class="page1Img5 abs bgImg"></div>
+						<div class="abs page1Img2 page1Img2Act"></div>
+						<div class="abs page1Img6"></div>
+						<div class="pNumb abs"><img src="{{ asset('bundles/app/default/') }}images/page1Img3.png"><font>9999</font><img src="{{ asset('bundles/app/default/') }}images/page1Img4.png"></div>
+						<a href="javascript:void(0);" onClick="goPage2();" class="abs page1Btn1"><img src="{{ asset('bundles/app/default/') }}images/page1Btn1.png"></a>
+						<div class="abs page1Img7"></div>
+					</div>
+				</div>
+			</div>
+			<div class="page page4" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page4Img1 abs bgImg"></div>
+						<div class="page4Img3 abs bgImg"></div>
+						<img src="{{ asset('bundles/app/default/') }}images/page4Img5.png" class="abs page4Img5">
+					</div>
+				</div>
+			</div>
+			<img src="{{ asset('bundles/app/default/') }}images/page4Img4.png" class="page4Img4" style="display:none;">
+			<div class="page page4b" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page4Img2 abs bgImg"></div>
+						<a href="javascript:void(0);" onClick="showShareNote();" class="abs page4Btn1"><img src="{{ asset('bundles/app/default/') }}images/page4Btn1.png"></a>
+						<a href="javascript:void(0);" onClick="getLottery();" class="abs page4Btn2" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/page4Btn2.png"></a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="page page5" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page5Img2 abs bgImg"></div>
+						<div class="page5Img3 abs"></div>
+						<div class="page5Img4 abs bgImg"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="page page5end" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page5endImg1 abs bgImg"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<img src="{{ asset('bundles/app/default/') }}images/bg.png" class="abs ruleBg" style="display:none;">
+	<div class="pop popRule" style="display:none;">
+		<div class="page pageRule">
+			<div class="h1008">
+				<div class="innerDiv">
+					<div class="swiper-container abs bgImg">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide rule1"></div>
+							<div class="swiper-slide rule2"></div>
+							<div class="swiper-slide rule3"></div>
+						</div>
+					</div>
+					<a href="javascript:void(0);" class="abs closeBtn" onClick="closeRule();"><img src="{{ asset('bundles/app/default/') }}images/closeBtn.png"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="topBar" style="display:none;">
+		<div class="innerDiv">
+			<a href="javascript:void(0);" class="topBtn1 abs" onClick="showRule();"><img src="{{ asset('bundles/app/default/') }}images/topBtn1.png"></a>
+		</div>
+	</div>
+
+	<div class="popBg" onClick="closePop();" style="display:none;"></div>
+	<div class="pop popShare1" style="display:none;" onClick="closePop();"></div>
+	<div class="pop popShare2" style="display:none;" onClick="closePop();">
+		<div class="innerDiv">
+			<a href="javascript:void(0);" class="shareBtn1 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+			<a href="javascript:void(0);" class="shareBtn2 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+			<a href="javascript:void(0);" class="shareBtn3 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script>
+		$(document).ready(function(){
+			goPage4();
+		});
+	</script>
+{% endblock %}

@@ -1,14 +1,145 @@
 {% extends 'AppBundle:default:layout.html.twig' %}
 {% block content %}
-    <form method="post" enctype="multipart/form-data" action="{{ url('api_form') }}">
-        <table>
-            <tr><td>用户名</td><td><input name="username"></input></td></tr>
-            <tr><td>手机号</td><td><input name="mobile"></input></td></tr>
-            <tr><td>头像</td><td><input name="headImg" type="file"></input></td></tr>
-            <tr><td></td><td><input type="submit"></input></td></tr>
-        </table>
-        
-    </form>
+	<div class="pageOuter">
+		<div class="innerDiv">
+			
+			<div class="page page0">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="loadingProgress" style="height:0;"></div>
+						<div class="abs bgImg loading"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="page page1" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page1Img1 abs bgImg"></div>
+						<div class="page1Img5 abs bgImg"></div>
+						<div class="abs page1Img2 page1Img2Act"></div>
+						<div class="abs page1Img6"></div>
+						<div class="pNumb abs"><img src="{{ asset('bundles/app/default/') }}images/page1Img3.png"><font>9999</font><img src="{{ asset('bundles/app/default/') }}images/page1Img4.png"></div>
+						<a href="javascript:void(0);" onClick="goPage2();" class="abs page1Btn1"><img src="{{ asset('bundles/app/default/') }}images/page1Btn1.png"></a>
+						<div class="abs page1Img7"></div>
+					</div>
+				</div>
+			</div>
+			<form action="/form" enctype="multipart/form-data" method="post" id="form">
+				<div class="page page2" style="display:none;">
+					<div class="h1008">
+						<div class="innerDiv">
+							<div class="page2Img1 abs bgImg"></div>
+							<ul class="abs page2Q">
+								<li>
+									<a href="javascript:void(0);" onClick="choseQ(this);">想亲眼看看郭碧婷美丽的黑长直</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);" onClick="choseQ(this);">逃离PM2.5，和头发一起吹吹自然风</a>
+								</li>
+								<li style="padding-bottom:0;">
+									<a href="javascript:void(0);" onClick="choseQ(this);">头发一天天长长，就像一个孩子的成长，想记录美丽秀发的每一个瞬间</a>
+								</li>
+							</ul>
+							<textarea class="wish" id="wish">每一个空着的心愿瓶，都在等你。快来为你的秀发定制一个独家心愿，用你的创意让心愿被看见。</textarea>
+							<input name="wishText" value="" type="hidden" id="wishText">
+							<img src="{{ asset('bundles/app/default/') }}images/page2Img2.png" class="abs page2Img2">
+							<a href="javascript:void(0);" onClick="goPage3();" class="abs page2Btn1"><img src="{{ asset('bundles/app/default/') }}images/page2Btn1.png"></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="page page3" style="display:none;">
+					<div class="h1008">
+						<div class="innerDiv">
+							<div class="page3Img1 abs bgImg"></div>
+							<img src="{{ asset('bundles/app/default/') }}images/page3Img2.png" class="abs page3Img2">
+							<div class="page3Con">
+								<div class="page3Img3 abs bgImg"></div>
+								
+								<img src="" class="abs upBtnImg upLoadImg" style="display:none;" id="upBtnImg">
+								<img src="" class="abs upLoadImg" style="display:none;" id="preview" />
+								<img src="" class="abs upLoadImg" style="display:none;" id="localImag" />
+								
+								<input type="file" name="headImg" id="headImg" class="fileBtn" id="uploadBtn" style="display:none;" onChange="setImagePreview();" />
+								<a href="javascript:void(0);" class="wechatPhoto" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/uploadBtn.png"></a>
+								
+								<input type="text" maxlength="20" class="iTxt iTxt1" name="username" id="username">
+								<input type="tel" maxlength="11" class="iTxt iTxt2" name="mobile" id="mobile">
+								<input type="hidden" value="" name="url" id="url">
+								<input type="hidden" value="" name="failUrl" id="failUrl">
+								<a href="javascript:void(0);"  class="abs page2Btn1" id="form-submit"><img src="{{ asset('bundles/app/default/') }}images/page3Btn1.png"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+	<img src="{{ asset('bundles/app/default/') }}images/bg.png" class="abs ruleBg" style="display:none;">
+	<div class="pop popRule" style="display:none;">
+		<div class="page pageRule">
+			<div class="h1008">
+				<div class="innerDiv">
+					<div class="swiper-container abs bgImg">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide rule1"></div>
+							<div class="swiper-slide rule2"></div>
+							<div class="swiper-slide rule3"></div>
+						</div>
+					</div>
+					<a href="javascript:void(0);" class="abs closeBtn" onClick="closeRule();"><img src="{{ asset('bundles/app/default/') }}images/closeBtn.png"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="topBar" style="display:none;">
+		<div class="innerDiv">
+			<a href="javascript:void(0);" class="topBtn1 abs" onClick="showRule();"><img src="{{ asset('bundles/app/default/') }}images/topBtn1.png"></a>
+		</div>
+	</div>
+
+	<div class="popBg" onClick="closePop();" style="display:none;"></div>
+	<div class="pop popShare1" style="display:none;" onClick="closePop();"></div>
+	<div class="pop popShare2" style="display:none;" onClick="closePop();">
+		<div class="innerDiv">
+			<a href="javascript:void(0);" class="shareBtn1 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+			<a href="javascript:void(0);" class="shareBtn2 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+			<a href="javascript:void(0);" class="shareBtn3 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+		</div>
+	</div>
 {% endblock %}
 {% block javascripts %}
+	<script>
+		$(document).ready(function(){
+			loadingImg();
+			$('#form-submit').click(function(){
+				var headImg = $('#headImg').val();
+				var username = $('#username').val();
+				var mobile = $('#mobile').val();
+				$('#url').val('{{ url("_success") }}');
+				$('#failUrl').val('{{ url("_error") }}');
+				var pattern = /^1\d{10}$/;
+				if( headImg == ''){
+					alert('请上传头像~');
+				}
+				else if(username == ''){
+					alert('请输入姓名~');
+				}
+				else if( mobile == ''){
+					alert('请输入手机号~')
+				}
+				else if(!pattern.test(mobile)){
+					alert('请输入正确的手机号~')
+				}
+				else{
+					$('#form').submit();
+				}
+				
+			})
+		});
+	</script>
 {% endblock %}

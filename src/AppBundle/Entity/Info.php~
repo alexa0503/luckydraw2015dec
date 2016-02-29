@@ -27,6 +27,10 @@ class Info
      */
     protected $headImg;
     /**
+     * @ORM\Column(name="wish_text",type="string", length=500, nullable = true)
+     */
+    protected $wishText;
+    /**
      * @ORM\Column(name="like_num",type="integer")
      */
     protected $likeNum = 0;
@@ -39,7 +43,7 @@ class Info
      */
     protected $prize = 0;
     /**
-     * @ORM\OneToMany(targetEntity="InfoLog", mappedBy="photo")
+     * @ORM\OneToMany(targetEntity="LikeLog", mappedBy="photo")
      */
     private $likeLogs;
     /**
@@ -283,5 +287,66 @@ class Info
     public function getInfoLogs()
     {
         return $this->infoLogs;
+    }
+
+    /**
+     * Add likeLogs
+     *
+     * @param \AppBundle\Entity\InfoLog $likeLogs
+     * @return Info
+     */
+    public function addLikeLog(\AppBundle\Entity\InfoLog $likeLogs)
+    {
+        $this->likeLogs[] = $likeLogs;
+
+        return $this;
+    }
+
+    /**
+     * Remove likeLogs
+     *
+     * @param \AppBundle\Entity\InfoLog $likeLogs
+     */
+    public function removeLikeLog(\AppBundle\Entity\InfoLog $likeLogs)
+    {
+        $this->likeLogs->removeElement($likeLogs);
+    }
+
+    /**
+     * Get likeLogs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLikeLogs()
+    {
+        return $this->likeLogs;
+    }
+    public function increaseLikeNum()
+    {
+        ++$this->likeNum;
+        return $this;
+    }
+
+    /**
+     * Set wishText
+     *
+     * @param string $wishText
+     * @return Info
+     */
+    public function setWishText($wishText)
+    {
+        $this->wishText = $wishText;
+
+        return $this;
+    }
+
+    /**
+     * Get wishText
+     *
+     * @return string 
+     */
+    public function getWishText()
+    {
+        return $this->wishText;
     }
 }
