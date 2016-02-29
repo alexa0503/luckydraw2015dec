@@ -132,7 +132,7 @@ var originalImgHeight;//原图高度
 
 //图片预览
 function setImagePreview() {
-    var docObj = document.getElementById("uploadBtn");
+    var docObj = document.getElementById("headImg");
     var fileName = docObj.value;
     if (!fileName.match(/.jpg|.jpeg|.gif|.png/i)) {
         alert('您上传的图片格式不正确，请重新选择！');

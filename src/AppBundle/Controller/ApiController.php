@@ -276,8 +276,8 @@ class ApiController extends Controller
 				}
 				else{
 					$em = $this->getDoctrine()->getManager();
-					$rand1 = rand(1,10);
-					$rand2 = rand(1,10);
+					$rand1 = rand(1,2);
+					$rand2 = rand(1,2);
 					$prize = $rand1 == $rand2 ? rand(1,4) : 0;
 					$info->setHasLottery(true);
 					$info->setPrize($prize);
