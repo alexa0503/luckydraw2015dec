@@ -23,9 +23,9 @@ use Symfony\Component\Filesystem\Filesystem;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="__index")
+     * @Route("/", name="default")
      */
-    public function indexAction(Request $request)
+    public function defaultAction(Request $request)
     {
         return $this->redirect($this->generateUrl('_index'));
         //return $this->render('AppBundle:default:index.html.twig');
