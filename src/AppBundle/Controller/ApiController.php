@@ -280,4 +280,21 @@ class ApiController extends Controller
 		$callback = $request->get('callback') ? : 'callback';
 		return new Response($callback.'('.json_encode($result).')');
 	}
+	/**
+	 * @Route("/count", name="api_count")
+	 */
+	public function countAction(Request $request,$id = null)
+	{
+		$em = $this->getDoctrine()->getManager();
+    $repo = $em->getRepository('AppBundle:Info');
+    $qb = $repo->createQueryBuilder('a');
+    $qb->select('COUNT(a)');
+    $count = $qb->getQuery()->getSingleScalarResult();
+    $result = array(
+    	'ret' => 0,
+    	'data' => array('count'=>$count),
+    );
+		$callback = $request->get('callback') ? : 'callback';
+		return new Response($callback.'('.json_encode($result).')');
+	}
 }
