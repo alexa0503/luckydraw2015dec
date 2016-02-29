@@ -22,6 +22,14 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class DefaultController extends Controller
 {
+    /**
+     * @Route("/", name="__index")
+     */
+    public function indexAction(Request $request)
+    {
+        return $this->redirect($this->generateUrl('_index'));
+        //return $this->render('AppBundle:default:index.html.twig');
+    }
 	/**
 	 * @Route("/mobile", name="_index")
 	 */
