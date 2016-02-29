@@ -130,6 +130,17 @@ class ApiController extends Controller
 		}
 		$limit = 20;
 		$offset = ($page-1)*$limit;
+		if( null == $request->get('order')){
+			$order = array('username','desc');
+		}
+		else{
+			$order = explode('.', $request->get('order'));
+			if( isset($order[1]) && !in_array(strtolower($order[1]), array('desc','asc')))
+				$order[1] = 'desc';
+			if( isset($order[0]) && !in_array($order[0], array('username','createTime','mobile')))
+				$order[0] = 'createTime';
+		}
+		$qb->orderBy('a.'.$order[0],strtoupper($order[1]));
 		$qb->setMaxResults($limit);
 		$qb->setFirstResult($offset);
     $info = $qb->getQuery()->getResult();
@@ -138,12 +149,13 @@ class ApiController extends Controller
     $cacheManager = $this->container->get('liip_imagine.cache.manager');
     foreach ($info as $value) {
     	$data[] = array(
+    		'id' => $value->getId(),
     		'username' => $value->getUsername(),
     		'mobile' => $value->getMobile(),
     		'likeNum' => $value->getLikeNum(),
     		'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
     		'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
-    		'grayThumb' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
+    		'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
     	);
     }
     $result = array(
@@ -179,7 +191,7 @@ class ApiController extends Controller
     		'likeNum' => $info->getLikeNum(),
     		'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
     		'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
-    		'grayThumb' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
+    		'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
 			);
 			$result = array(
 	    	'ret' => 0,
