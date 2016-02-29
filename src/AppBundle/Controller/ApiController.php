@@ -141,7 +141,9 @@ class ApiController extends Controller
     		'username' => $value->getUsername(),
     		'mobile' => $value->getMobile(),
     		'likeNum' => $value->getLikeNum(),
-    		'headImg' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
+    		'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
+    		'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
+    		'grayThumb' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
     	);
     }
     $result = array(
@@ -175,7 +177,9 @@ class ApiController extends Controller
 				'username' => $info->getUsername(),
 	  		'mobile' => $info->getMobile(),
     		'likeNum' => $info->getLikeNum(),
-	  		'headImg' => $cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'),
+    		'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
+    		'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
+    		'grayThumb' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
 			);
 			$result = array(
 	    	'ret' => 0,

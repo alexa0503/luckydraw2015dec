@@ -25,16 +25,18 @@ class Image {
 	public function create()
 	{
 		$image_path = $this->file_path.'/'.$this->file_name;
+		$imagine = new Imagine();
+		$image = $imagine->open($image_path);
 		$exif = @exif_read_data($image_path, 0, true);
 		if (isset($exif['IFD0']['Orientation'])) {
-			$imagine = new Imagine();
-			$image = $imagine->open($image_path);
 			if ($exif['IFD0']['Orientation'] == 6) {
 				$image->rotate(90)->save($image_path);
 			} elseif ($exif['IFD0']['Orientation'] == 3) {
 				$image->rotate(180)->save($image_path);
 			}
 		}
+		$image->effects()->grayscale();
+		$image->save($this->file_path.'/gray/'.$this->file_name);
 		return $this->file_name;
 		#缩放图片
 		/*
