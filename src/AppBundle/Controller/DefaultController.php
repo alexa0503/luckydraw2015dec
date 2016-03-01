@@ -35,7 +35,12 @@ class DefaultController extends Controller
 	 */
 	public function indexAction(Request $request)
 	{
-		return $this->render('AppBundle:default:index.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('AppBundle:Info');
+        $qb = $repo->createQueryBuilder('a');
+        $qb->select('COUNT(a)');
+        $count = $qb->getQuery()->getSingleScalarResult();
+		return $this->render('AppBundle:default:index.html.twig',array('count'=>$count));
 	}
     /**
      * @Route("/mobile/error", name="_error")
