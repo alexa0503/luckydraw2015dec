@@ -185,8 +185,8 @@ function choseQ(e){
 	var sHtml=$(e).html();
 	$('.page2Q li').removeClass('on');
 	$(e).parents('li').addClass('on');
-	$('.wish').html(sHtml);
-	$('.wish').val(sHtml);
+	//$('.wish').html(sHtml);
+	//$('.wish').val(sHtml);
 	$('#wishText').val($(e).text());
 	}	
 	

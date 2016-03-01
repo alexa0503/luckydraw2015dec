@@ -41,7 +41,7 @@
 									<a href="javascript:void(0);" onClick="choseQ(this);">头发一天天长长，就像一个孩子的成长，想记录美丽秀发的每一个瞬间</a>
 								</li>
 							</ul>
-							<textarea class="wish" id="wish">每一个空着的心愿瓶，都在等你。快来为你的秀发定制一个独家心愿，用你的创意让心愿被看见。</textarea>
+							<textarea class="wish">每一个空着的心愿瓶，都在等你。快来为你的秀发定制一个独家心愿，用你的创意让心愿被看见。</textarea>
 							<input name="wishText" value="" type="hidden" id="wishText">
 							<img src="{{ asset('bundles/app/default/') }}images/page2Img2.png" class="abs page2Img2">
 							<a href="javascript:void(0);" onClick="goPage3();" class="abs page2Btn1"><img src="{{ asset('bundles/app/default/') }}images/page2Btn1.png"></a>
@@ -85,6 +85,14 @@
 	<script>
 		$(document).ready(function(){
     loadingImg();
+    $('.wish').on('click',function(){
+    	$('.page2Q li').removeClass('on');
+    	$('#wishText').val($('.wish').text());
+    });
+    $('.wish').on('change',function(){
+    	$('.page2Q li').removeClass('on');
+    	$('#wishText').val($('.wish').text());
+    });
 			$('#form-submit').click(function(){
 				var headImg = $('#headImg').val();
 				var username = $('#username').val();
