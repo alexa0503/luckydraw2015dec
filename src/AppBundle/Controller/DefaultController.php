@@ -76,7 +76,7 @@ class DefaultController extends Controller
         $repo = $em->getRepository('AppBundle:Info');
         $qb = $repo->createQueryBuilder('a');
         $qb->orderBy('a.likeNum','desc');
-        $qb->setMaxResults(10);
+        $qb->setMaxResults(20);
         $info_list = $qb->getQuery()->getResult();
         return $this->render('AppBundle:default:top.html.twig',array('list'=>$info_list));
     }

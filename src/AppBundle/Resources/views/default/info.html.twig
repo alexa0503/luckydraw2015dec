@@ -21,7 +21,7 @@
                 <div class="sName"><span>{{ info.username }}</span></div>
                 <div class="sVote"><img src="{{ asset('bundles/app/default/') }}images/page6Icon1.png">{{ info.likeNum }}赞</div>
                 <div class="sWish">{{ info.wishText }}</div>
-                <a href="javascript:void(0);" class="abs page6Btn1"><img src="{{ asset('bundles/app/default/') }}images/page6Btn1.png"></a>
+                <a href="{{ url('_top') }}" class="abs page6Btn1"><img src="{{ asset('bundles/app/default/') }}images/page6Btn1.png"></a>
                 <a href="javascript:void(0);" class="abs page6Btn2"><img src="{{ asset('bundles/app/default/') }}images/page6Btn2.png"></a>
                 <a href="{{ url('_index') }}" class="abs page6Btn3"><img src="{{ asset('bundles/app/default/') }}images/page6Btn3.png"></a>
               </div>
@@ -35,7 +35,7 @@
 	<script>
 		$(document).ready(function(){
 			loadingShare();
-			var  url = 'http://luckydraw2015dec.himyweb.com/like/'+'{{ info.id }}';
+			var  url = '{{ url("api_like",{id:info.id}) }}';
 			$('.page6Btn2').click(function(){
 				$.getJSON(url,function(json){
 					if(json.ret == 0){

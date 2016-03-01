@@ -24,10 +24,12 @@
                             	<img src="{{ (asset('uploads/')~info.headImg) | imagine_filter('thumb1') }}" class="face2 abs">
                                 <div class="tName"><span>{{ info.username }}</span></div>
                                 <div class="tVote"><img src="{{ asset('bundles/app/default/') }}images/topIcon1.png">{{ info.likeNum }}赞</div>
-                                <div class="tWish">请郭碧婷为我和我的好姐妹们设计一款“闺蜜头”，然后一起度过美妙的下午茶时光！</div>
+                                <div class="tWish">{{ info.wishText }}</div>
                                 <div class="tTitle">
                                 	<font>Ta的美丽心愿：</font><br>
-                                	{{ info.wishText }}
+                                    带头发吹吹风，<br>
+                                    远离雾霾和PM2.5的自然风
+                                	<!--{{ info.wishText }}-->
                                 </div>
                                 <div class="tPhoto">
                                 	<div class="swiper-container3 abs topPl">
