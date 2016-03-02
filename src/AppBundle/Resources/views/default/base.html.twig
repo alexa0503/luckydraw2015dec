@@ -80,7 +80,7 @@
     $.getJSON(url,{url:location.href},function(data){
       data.desc = '分享描述';
       data.title = '分享标题';
-      data.shareUrl = 'http://{{ app.request.host }}/{{ url("_index") }}';
+      data.shareUrl = '{{ url("_index") }}';
       data.imgUrl = '';
       wxShare(data);
     });
