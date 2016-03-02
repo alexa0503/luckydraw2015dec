@@ -34,7 +34,7 @@
 
   function wxShare(data){
     wx.config({
-      debug: false,
+      debug: true,
       appId: data.appId,
       timestamp: data.timestamp,
       nonceStr: data.nonceStr,
@@ -76,12 +76,11 @@
     });
   }
   $().ready(function(){
-
     var url = '{{ url("api_wechat_sign") }}'
     $.getJSON(url,{url:location.href},function(data){
-      data.desc = '';
-      data.title = '';
-      data.shareUrl = '';
+      data.desc = '分享描述';
+      data.title = '分享标题';
+      data.shareUrl = 'http://{{ app.request.host }}/{{ url("_index") }}';
       data.imgUrl = '';
       wxShare(data);
     });
