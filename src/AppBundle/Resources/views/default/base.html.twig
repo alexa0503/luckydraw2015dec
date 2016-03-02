@@ -31,16 +31,7 @@
 
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
-  var wxData = {
-            appId: '{{ app.session.get("wx_app_id") }}',
-            timestamp: '{{ app.session.get("wx_timestamp") }}',
-            nonceStr: '{{ app.session.get("wx_nonce_str") }}',
-            signature: '{{ app.session.get("wx_signature") }}',
-            title: '{{ app.session.get("wechat_title") }}',
-            desc: '{{ app.session.get("wechat_desc") }}',
-            shareUrl: '{{ app.session.get("wx_share_url") }}',
-            imgUrl: '{{ app.session.get("wechat_img_url") }}',
-  };
+
   function wxShare(data){
     wx.config({
       debug: false,
@@ -50,11 +41,7 @@
       signature: data.signature,
       jsApiList: [
       'onMenuShareTimeline',
-      'onMenuShareAppMessage',
-      'previewImage',
-      'chooseImage',
-      'uploadImage',
-      'downloadImage'
+      'onMenuShareAppMessage'
       ]
     });
     wx.ready(function () {
@@ -88,7 +75,17 @@
       });
     });
   }
-  wxShare(wxData)
+  $().ready(function(){
+
+    var url = '{{ url("api_wechat_sign") }}'
+    $.getJSON(url,{url:location.href},function(data){
+      data.desc = '';
+      data.title = '';
+      data.shareUrl = '';
+      data.imgUrl = '';
+      wxShare(data);
+    });
+  })
 </script>
 </head>
 <body>

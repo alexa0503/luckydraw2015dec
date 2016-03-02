@@ -170,7 +170,7 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
 		return $response;
 	}
 	/**
@@ -214,7 +214,7 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
 		return $response;
 	}
 	/**
@@ -281,7 +281,7 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
 		return $response;
 	}
 	/**
@@ -345,7 +345,7 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
 		return $response;
 	}
 	/**
@@ -369,7 +369,28 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://api.dev.com');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
+		return $response;
+	}
+
+	/**
+	 * @Route("/sign", name="api_wechat_sign")
+	 */
+	public function getWechatSign(Request $request)
+	{
+		if( null == $request->get('url')){
+			$result = json_encode(array('ret'=>1001,'msg'=>'url不能为空~'));
+		}
+		else{
+			$url = 'http://campaign.slek.com.cn/wxtoken/ticket.php?url='.urlencode($request->get('url'));
+			$result = file_get_contents($url);
+		}
+		$response = new Response();
+		if( null == $request->get('callback'))
+			$response->setContent($result);
+		else
+			$response->setContent($callback.'('.$result.')');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
 		return $response;
 	}
 }
