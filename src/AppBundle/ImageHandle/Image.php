@@ -27,6 +27,7 @@ class Image {
 		$image_path = $this->file_path.'/'.$this->file_name;
 		$imagine = new Imagine();
 		$image = $imagine->open($image_path);
+		/*
 		$exif = @exif_read_data($image_path, 0, true);
 		if (isset($exif['IFD0']['Orientation'])) {
 			if ($exif['IFD0']['Orientation'] == 6) {
@@ -35,6 +36,7 @@ class Image {
 				$image->rotate(180)->save($image_path);
 			}
 		}
+		*/
 		$image->effects()->grayscale();
 		$image->save($this->file_path.'/gray/'.$this->file_name);
 		return $this->file_name;
