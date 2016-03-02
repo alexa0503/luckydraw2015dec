@@ -56,6 +56,12 @@ class DefaultController extends Controller
      */
     public function successAction(Request $request)
     {
+        $session = $request->getSession();
+        if( null == $session->get('id') ){
+            return $this->redirect($this->generateUrl('_index'));
+        }
+
+        $session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_info',array('id'=>$session->get('id'))));
         return $this->render('AppBundle:default:success.html.twig');
     }
     /**
