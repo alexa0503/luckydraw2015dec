@@ -68,7 +68,7 @@
 								<input type="tel" maxlength="11" class="iTxt iTxt2" name="mobile" id="mobile">
 								<input type="hidden" value="" name="url" id="url">
 								<input type="hidden" value="" name="failUrl" id="failUrl">
-								<a href="javascript:void(0);"  class="abs page2Btn1" id="form-submit"><img src="{{ asset('bundles/app/default/') }}images/page3Btn1.png"></a>
+								<a href="javascript:void(0);"  class="abs page2Btn1" onClick="go4();" id="form-submit"><img src="{{ asset('bundles/app/default/') }}images/page3Btn1.png"></a>
 							</div>
 						</div>
 					</div>
@@ -84,16 +84,18 @@
 	{{ parent() }}
 	<script>
 		$(document).ready(function(){
-    loadingImg();
-    $('.wish').on('click',function(){
-    	$('.page2Q li').removeClass('on');
-    	$('#wishText').val($('.wish').text());
-    });
-    $('.wish').on('change',function(){
-    	$('.page2Q li').removeClass('on');
-    	$('#wishText').val($('.wish').text());
-    });
-			$('#form-submit').click(function(){
+			loadingImg();
+			$('.wish').on('click',function(){
+				$('.page2Q li').removeClass('on');
+				$('#wishText').val($('.wish').text());
+			});
+			$('.wish').on('change',function(){
+				$('.page2Q li').removeClass('on');
+				$('#wishText').val($('.wish').text());
+			});
+		});
+		
+	function submitInfo(){
 				var headImg = $('#headImg').val();
 				var username = $('#username').val();
 				var mobile = $('#mobile').val();
@@ -102,21 +104,23 @@
 				var pattern = /^1\d{10}$/;
 				if( headImg == ''){
 					alert('请上传头像~');
+					return false;
 				}
 				else if(username == ''){
 					alert('请输入姓名~');
+					return false;
 				}
 				else if( mobile == ''){
-					alert('请输入手机号~')
+					alert('请输入手机号~');
+					return false;
 				}
 				else if(!pattern.test(mobile)){
-					alert('请输入正确的手机号~')
+					alert('请输入正确的手机号~');
+					return false;
 				}
 				else{
 					$('#form').submit();
 				}
-				
-			})
-		});
+			}
 	</script>
 {% endblock %}

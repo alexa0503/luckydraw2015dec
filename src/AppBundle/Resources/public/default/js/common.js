@@ -47,7 +47,7 @@ function loadingImg(){
 	images.push("/bundles/app/default/images/page3Img1.png");
 	images.push("/bundles/app/default/images/page3Img3.png");
 	
-	images.push("/bundles/app/default/images/page4Img1.png");
+	/*images.push("/bundles/app/default/images/page4Img1.png");
 	images.push("/bundles/app/default/images/page4Img2.png");
 	
 	images.push("/bundles/app/default/images/page5Award0.png");
@@ -59,7 +59,7 @@ function loadingImg(){
 	images.push("/bundles/app/default/images/page5Award6.png");
 	images.push("/bundles/app/default/images/page5Img2.png");
 	images.push("/bundles/app/default/images/page5Img3.png");
-	images.push("/bundles/app/default/images/page5Img4.png");
+	images.push("/bundles/app/default/images/page5Img4.png");*/
 	
 	images.push("/bundles/app/default/images/rule1.png");
 	images.push("/bundles/app/default/images/rule2.png");
@@ -97,7 +97,7 @@ function loadingImg(){
 	
 function loadingShare(){
 	var images=[];
-    images.push("/bundles/app/default/images//bg.png");
+    images.push("/bundles/app/default/images/bg2.png");
 	
 	images.push("/bundles/app/default/images/page6Img1.png");
 	
@@ -162,6 +162,57 @@ function loadingTop(){
                     //图片加载完成 加载动画
 					setTimeout(function(){
 						goPage7();
+						},500);
+                }
+            });
+	}
+	
+function loadSuccess(){
+	var images=[];
+    images.push("/bundles/app/default/images/bg.png");
+	
+	images.push("/bundles/app/default/images/page4Img1.png");
+	images.push("/bundles/app/default/images/page4Img2.png");
+	
+	images.push("/bundles/app/default/images/page5Award0.png");
+	images.push("/bundles/app/default/images/page5Award1.png");
+	images.push("/bundles/app/default/images/page5Award2.png");
+	images.push("/bundles/app/default/images/page5Award3.png");
+	images.push("/bundles/app/default/images/page5Award4.png");
+	images.push("/bundles/app/default/images/page5Award5.png");
+	images.push("/bundles/app/default/images/page5Award6.png");
+	images.push("/bundles/app/default/images/page5Img2.png");
+	images.push("/bundles/app/default/images/page5Img3.png");
+	images.push("/bundles/app/default/images/page5Img4.png");
+	
+	images.push("/bundles/app/default/images/rule1.png");
+	images.push("/bundles/app/default/images/rule2.png");
+	images.push("/bundles/app/default/images/rule3.png");
+	
+	images.push("/bundles/app/default/images/share1.png");
+	images.push("/bundles/app/default/images/share2.png");
+	
+	images.push("/bundles/app/default/images/topImg1.png");
+	
+	
+    /*图片预加载*/
+    var imgNum=0;
+    $.imgpreload(images,
+            {
+                each: function () {
+                    var status = $(this).data('loaded') ? 'success' : 'error';
+                    if (status == "success") {
+                        var v = (parseFloat(++imgNum) / images.length).toFixed(2);
+                        //$("#percentShow").html('已加载:'+Math.round(v * 100) + "%");
+						$('.loadingProgress').stop().animate({height:v*lh},100,'linear');
+                    }
+                },
+                all: function () {
+
+                    //$("#percentShow").html("已加载:100%");
+                    //图片加载完成 加载动画
+					setTimeout(function(){
+						goPage4();
 						},500);
                 }
             });
@@ -280,9 +331,32 @@ function setImagePreview() {
         return true;
     }
 	
-function goPage4(){
-	$('.page3Img1').addClass('page3Img1Act');
+
+function go4(){
+	//$('.page3Img1').addClass('page3Img1Act');
 	$('.page3Con').fadeOut(500);
+	setTimeout(function(){
+		$('.page3Img1').css('background-position','-640px 0');
+		setTimeout(function(){
+			$('.page3Img1').css('background-position','-1280px 0');
+			setTimeout(function(){
+				$('.page3Img1').hide();
+				submitInfo();
+				},200);
+			},200);
+		},200);
+	setTimeout(function(){
+		
+		},250);
+	}	
+	
+function goPage4(){
+	$('.page0').fadeOut(500);
+	$('.topBar').fadeIn(500);
+	$('body').css('background','url(/bundles/app/default/images/bg.png) top center no-repeat');
+	
+	//$('.page3Img1').addClass('page3Img1Act');
+	//$('.page3Con').fadeOut(500);
 	setTimeout(function(){
 		goPage4b();
 		},250);
@@ -326,7 +400,7 @@ function showRule(){
 		var swiper = new Swiper('.swiper-container', {
 			direction: 'vertical'
 			});
-		},510);
+		},550);
 	}
 	
 function getLottery(){
@@ -350,6 +424,8 @@ function getLottery(){
     	if(json.ret == 0){
     		//请求成功后
 				//var aNumb=1;//奖项 0-6 0未中奖 1一等奖 2二等奖……
+				$('.prize0').hide();
+				$('.page5endImg1').show();
 				$('.page5endImg1').css('background-image','url(/bundles/app/default/images/page5Award'+json.data.prize+'.png)');
 				setTimeout(function(){
 					$('.page5').hide();
@@ -358,6 +434,8 @@ function getLottery(){
     	}
     	else{
     		//alert(json.msg);
+			$('.prize0').show();
+			$('.page5endImg1').hide();
     		$('.page5endImg1').css('background-image','url(/bundles/app/default/images/page5Award0.png)');
 				setTimeout(function(){
 					$('.page5').hide();
@@ -377,7 +455,7 @@ function goPage6(){
 	$('.page0').fadeOut(500);
 	$('.topBar').fadeIn(500);
 	$('.page6').fadeIn(500);
-	$('body').css('background','url(images/bg2.png) top center no-repeat');
+	$('body').css('background','url(/bundles/app/default/images/bg2.png) top center no-repeat');
 	}
 	
 function goPage7(){
