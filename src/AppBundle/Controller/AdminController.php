@@ -10,8 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use AppBundle\Entity;
 use Symfony\Component\Validator\Constraints\Time;
-use AppBundle\Form\Type\TimeOddsType;
-use AppBundle\Form\Type\AwardType;
+use AppBundle\Form\Type\InfoType;
 
 //use Liuggio\ExcelBundle;
 
@@ -34,116 +33,12 @@ class AdminController extends Controller
 	{
 		
 	}
-	/**
-	 * @Route("/admin/log", name="admin_lottery_log")
-	 */
-	public function logAction(Request $request)
-	{
-		$repository = $this->getDoctrine()->getRepository('AppBundle:LotteryLog');
-		$queryBuilder = $repository->createQueryBuilder('a');
-		
-		$query = $queryBuilder->getQuery();
-		$paginator  = $this->get('knp_paginator');
-
-		$pagination = $paginator->paginate(
-			$query,
-			$request->query->get('page', 1),/*page number*/
-			$this->pageSize
-			);
-		return $this->render('AppBundle:admin:log.html.twig', array('pagination'=>$pagination));
-	}
-	/**
-	 * @Route("/admin/timeodds", name="admin_timeodds")
-	 */
-	public function timeoddsAction(Request $request)
-	{
-		$repository = $this->getDoctrine()->getRepository('AppBundle:TimeOdds');
-		$queryBuilder = $repository->createQueryBuilder('a');
-		
-		$query = $queryBuilder->getQuery();
-		$paginator  = $this->get('knp_paginator');
-
-		$pagination = $paginator->paginate(
-			$query,
-			$request->query->get('page', 1),/*page number*/
-			$this->pageSize
-			);
-		return $this->render('AppBundle:admin:timeodds.html.twig', array('pagination'=>$pagination));
-	}
-	/**
-	 * @Route("/admin/timeodds/add", name="admin_timeodds_add")
-	 */
-	public function timeoddsAddAction(Request $request)
-	{
-		$em = $this->getDoctrine()->getEntityManager();
-		$timeodds = new Entity\TimeOdds();
-		$form = $this->createForm(new TimeOddsType(), $timeodds);
-		$form->handleRequest($request);
-		if ($form->isValid()) {
-			$data = $form->getData();
-			$em->persist($timeodds);
-			$em->flush();
-			return $this->redirectToRoute('admin_timeodds');
-		}
-		return $this->render('AppBundle:admin:timeoddsForm.html.twig', array(
-			'form' => $form->createView(),
-			));
-	}
-	/**
-	 * @Route("/admin/timeodds/edit/{id}", name="admin_timeodds_edit")
-	 */
-	public function timeoddsEditAction(Request $request, $id)
-	{
-		$em = $this->getDoctrine()->getEntityManager();
-		$timeodds = $em->getRepository('AppBundle:TimeOdds')->find($id);
-		$form = $this->createForm(new TimeOddsType(), $timeodds);
-		$form->handleRequest($request);
-		if ($form->isValid()) {
-			$data = $form->getData();
-
-			$em->persist($timeodds);
-			$em->flush();
-			return $this->redirectToRoute('admin_timeodds');
-		}
-		return $this->render('AppBundle:admin:timeoddsForm.html.twig', array(
-			'form' => $form->createView(),
-			));
-	}
-	/**
-	 * @Route("/admin/timeodds/delete/{id}", name="admin_timeodds_delete")
-	 */
-	public function timeoddsDeleteAction(Request $request, $id)
-	{
-		$em = $this->getDoctrine()->getManager();
-		$timeodds = $em->getRepository('AppBundle:TimeOdds')->find($id);
-		$em->remove($timeodds);
-		$em->flush();
-		return new Response(json_encode(array('ret'=>0, 'msg'=>'')));
-	}
+	
 
 	/**
-	 * @Route("/admin/sn", name="admin_sn")
+	 * @Route("/admin/info", name="admin_info")
 	 */
-	public function snAction(Request $request)
-	{
-		$repository = $this->getDoctrine()->getRepository('AppBundle:SnLog');
-		$queryBuilder = $repository->createQueryBuilder('a');
-		
-		$query = $queryBuilder->getQuery();
-		$paginator  = $this->get('knp_paginator');
-
-		$pagination = $paginator->paginate(
-			$query,
-			$request->query->get('page', 1),/*page number*/
-			$this->pageSize
-			);
-		return $this->render('AppBundle:admin:sn.html.twig', array('pagination'=>$pagination));
-	}
-
-	/**
-	 * @Route("/admin/award", name="admin_award")
-	 */
-	public function awardAction(Request $request)
+	public function infoAction(Request $request)
 	{
 		$repository = $this->getDoctrine()->getRepository('AppBundle:Award');
 		$queryBuilder = $repository->createQueryBuilder('a');
@@ -159,21 +54,32 @@ class AdminController extends Controller
 		return $this->render('AppBundle:admin:award.html.twig', array('pagination'=>$pagination));
 	}
 	/**
-	 * @Route("/admin/award/add", name="admin_award_add")
+	 * @Route("/admin/info/add", name="admin_info_add")
 	 */
-	public function awardAddAction(Request $request)
+	public function infoAddAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getEntityManager();
-		$award = new Entity\Award();
-		$form = $this->createForm(new AwardType(), $award);
+		$info = new Entity\Info();
+		$form = $this->createForm(new InfoType(), $info);
 		$form->handleRequest($request);
 		if ($form->isValid()) {
 			$data = $form->getData();
-			$em->persist($award);
+			$image_path = null;
+			$file = $data->getHeadImg();
+			$image = $this->get('image.handle');
+			if( $image->upload($file)){
+				$image_path = $image->create();
+			}
+			var_dump($image_path);
+			$info->setHeadImg($image_path);
+			$info->setCreateTime(new \DateTime("now"));
+			$info->setCreateIp($this->container->get('request')->getClientIp());
+
+			$em->persist($info);
 			$em->flush();
-			return $this->redirectToRoute('admin_award');
+			return $this->redirectToRoute('admin_info');
 		}
-		return $this->render('AppBundle:admin:awardForm.html.twig', array(
+		return $this->render('AppBundle:admin:form.html.twig', array(
 			'form' => $form->createView(),
 			));
 	}
@@ -193,7 +99,7 @@ class AdminController extends Controller
 			$em->flush();
 			return $this->redirectToRoute('admin_award');
 		}
-		return $this->render('AppBundle:admin:awardForm.html.twig', array(
+		return $this->render('AppBundle:admin:form.html.twig', array(
 			'form' => $form->createView(),
 			));
 	}
@@ -207,27 +113,6 @@ class AdminController extends Controller
 		$em->remove($award);
 		$em->flush();
 		return new Response(json_encode(array('ret'=>0, 'msg'=>'')));
-	}
-	/**
-	 * @Route("/admin/info", name="admin_info")
-	 */
-	public function infoAction(Request $request)
-	{
-		$repository = $this->getDoctrine()->getRepository('AppBundle:LotteryLog');
-		$queryBuilder = $repository->createQueryBuilder('l')
-		->leftJoin('l.user', 'u')
-		->leftJoin('u.info', 'i')
-		->where("l.hasWin = 1");
-		
-		$query = $queryBuilder->getQuery();
-		$paginator  = $this->get('knp_paginator');
-
-		$pagination = $paginator->paginate(
-			$query,
-			$request->query->get('page', 1),/*page number*/
-			$this->pageSize
-			);
-		return $this->render('AppBundle:admin:info.html.twig', array('pagination'=>$pagination));
 	}
 	/**
 	 * @Route("/admin/export/", name="admin_export")

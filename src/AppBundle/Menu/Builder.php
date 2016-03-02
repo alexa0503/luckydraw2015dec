@@ -19,6 +19,12 @@ class Builder extends ContainerAware
 		$menu->setChildrenAttribute('id', 'leftmenu');
 
 		$menu->addChild('Dashboard', array('route' => 'admin_index'));
+		$info = $menu->addChild('信息查看', array('route' => 'admin_info'));
+		$info->setAttribute('class', 'nav-parent');
+		$info->setChildrenAttribute('class', 'children');
+		$info->addChild('查看', array('route' => 'admin_info'));
+		$info->addChild('添加', array('route' => 'admin_info_add'));
+		/*
 		$storage = $menu->addChild('中奖时间段设置', array('route' => 'admin_timeodds'));
 		$storage->setAttribute('class', 'nav-parent');
 		$storage->setChildrenAttribute('class', 'children');
@@ -33,6 +39,7 @@ class Builder extends ContainerAware
 		$menu->addChild('lottery_log', array('route' => 'admin_lottery_log', 'label' => '中奖日志'));
 		$menu->addChild('info', array('route' => 'admin_info', 'label' => '用户信息'));
 		$menu->addChild('sn', array('route' => 'admin_sn', 'label' => 'SN信息'));
+		*/
 		return $menu;
 	}
 }

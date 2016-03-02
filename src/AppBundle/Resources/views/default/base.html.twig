@@ -79,9 +79,10 @@
     var url = '{{ url("api_wechat_sign") }}'
     $.getJSON(url,{url:location.href},function(data){
       data.desc = '分享描述';
-      data.title = '';
+      data.title = '分享标题';
       data.shareUrl = '{% if null == app.session.get("wx_share_url") %}{{ url("_index") }}{% else %}{{ app.session.get("wx_share_url") }}{% endif %}';
-      data.imgUrl = '';
+      data.imgUrl = 'http://{{ app.request.host }}/{{ asset("bundles/app/default/images/share.jpg") }}';
+      isWechat = true;
       wxShare(data);
     });
   })

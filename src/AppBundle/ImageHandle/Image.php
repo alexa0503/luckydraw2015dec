@@ -81,7 +81,6 @@ class Image {
 	#上传图片
 	public function upload(UploadedFile $file)
 	{
-		
 		if( !in_array($file->guessExtension(), array('png','gif','jpeg','png'))){
 			return false;
 		}
