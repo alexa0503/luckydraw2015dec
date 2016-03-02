@@ -81,7 +81,8 @@
       data.desc = '分享描述';
       data.title = '分享标题';
       data.shareUrl = '{% if null == app.session.get("wx_share_url") %}{{ url("_index") }}{% else %}{{ app.session.get("wx_share_url") }}{% endif %}';
-      data.imgUrl = 'http://{{ app.request.host }}/{{ asset("bundles/app/default/images/share.jpg") }}';
+      //data.imgUrl = 'http://{{ app.request.host }}/{{ asset("bundles/app/default/images/share.jpg") }}';
+      data.imgUrl = 'http://t.himyweb.com/shiseidowp/src/img/share.jpg';
       isWechat = true;
       wxShare(data);
     });
