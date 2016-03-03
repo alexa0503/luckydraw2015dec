@@ -118,7 +118,7 @@ class Image {
 		$file_name = uniqid().date('ymdhis').'.jpg';
 		$data = Helper\HttpClient::get($url);
 		if( null != @json_decode($data)){
-			var_dump($data);
+			var_dump($data,$url);
 			exit;
 			return false;
 		}
