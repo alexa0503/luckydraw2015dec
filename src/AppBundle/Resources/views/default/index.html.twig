@@ -6,6 +6,7 @@
 			<div class="page page0">
 				<div class="h1008">
 					<div class="innerDiv">
+						<div class="loadingBg"></div>
 						<div class="loadingProgress" style="height:0;"></div>
 						<div class="abs bgImg loading"></div>
 					</div>
@@ -32,7 +33,7 @@
 							<div class="page2Img1 abs bgImg"></div>
 							<ul class="abs page2Q">
 								<li>
-									<a href="javascript:void(0);" onClick="choseQ(this);">想亲眼看看郭碧婷美丽的黑长直</a>
+									<a href="javascript:void(0);" onClick="choseQ(this);" style="color:#cb152b;">想亲眼看看郭碧婷美丽的黑长直</a>
 								</li>
 								<li>
 									<a href="javascript:void(0);" onClick="choseQ(this);">逃离PM2.5，和头发一起吹吹自然风</a>
@@ -86,12 +87,21 @@
 		$(document).ready(function(){
 			loadingImg();
 			$('.wish').on('click',function(){
+				if($(this).html()=="每一个空着的心愿瓶，都在等你。快来为你的秀发定制一个独家心愿，用你的创意让心愿被看见。"){
+					$(this).html('');
+					$(this).val('');
+					}
 				$('.page2Q li').removeClass('on');
 				$('#wishText').val($('.wish').text());
 			});
 			$('.wish').on('change',function(){
 				$('.page2Q li').removeClass('on');
-				$('#wishText').val($('.wish').text());
+				$('#wishText').val($('.wish').val());
+			});
+			$('.wish').blur(function(){
+				if($(this).val()==""){
+					$(this).text('每一个空着的心愿瓶，都在等你。快来为你的秀发定制一个独家心愿，用你的创意让心愿被看见。');
+					}
 			});
 		});
 		
@@ -102,11 +112,17 @@
 				$('#url').val('{{ url("_success") }}');
 				$('#failUrl').val('{{ url("_error") }}');
 				var pattern = /^1\d{10}$/;
-				if( headImg == ''){
-					alert('请上传头像~');
-					return false;
-				}
-				else if(username == ''){
+				if(!isWechat){
+					if( headImg == ''){
+						alert('请上传头像~');
+						return false;
+						}
+					}
+					else{
+						//微信端提交表单判断头像   imgId
+						
+						}
+				if(username == ''){
 					alert('请输入姓名~');
 					return false;
 				}

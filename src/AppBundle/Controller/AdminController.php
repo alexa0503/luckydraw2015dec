@@ -50,7 +50,7 @@ class AdminController extends Controller
 			$query,
 			$request->query->get('page', 1),/*page number*/
 			$this->pageSize
-			);
+		);
 		return $this->render('AppBundle:admin:award.html.twig', array('pagination'=>$pagination));
 	}
 	/**

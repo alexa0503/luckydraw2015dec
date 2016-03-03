@@ -228,6 +228,15 @@ function goPage1(){
 function goPage2(){
 	$('.page1').fadeOut(500);
 	$('.page2').fadeIn(500);
+	
+	wx.checkJsApi({
+		jsApiList: [
+			'chooseImage'
+			],
+		success: function (res) {
+			isWechat=true;
+			}
+		});
 	}
 	
 function choseQ(e){
@@ -242,9 +251,35 @@ function choseQ(e){
 	}	
 	
 var isWechat=false;//是否加载完js-sdk
+var imgId;
 function goPage3(){
+	var wish=$('#wishText').val();
+	if(wish==''){
+		alert('请选择或者填写心愿');
+		return false;
+		}
 	if(isWechat){
 		$('.wechatPhoto').show();
+		$('.wechatPhoto').click(function(){
+			wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    $('.upLoadImg').attr('src',res.localIds);
+					$('#preview').show();
+					isSelectedImg=true;
+                    imgId = res.localIds.pop();
+                },
+				cancel:function(res){
+					alert('请允许');
+					window.location.reload();
+					},
+				fail:function(res){
+					alert('请重新选择');
+					}
+            	});
+			});
 		}
 		else{
 			$('.fileBtn').show();
@@ -252,6 +287,7 @@ function goPage3(){
 	$('.page2').fadeOut(500);
 	$('.page3').fadeIn(500);
 	}
+	
 
 /*图片上传*/
 //全局变量
@@ -340,8 +376,26 @@ function go4(){
 		setTimeout(function(){
 			$('.page3Img1').css('background-position','-1280px 0');
 			setTimeout(function(){
-				$('.page3Img1').hide();
-				submitInfo();
+				$('.page3').hide();
+				$('.page0').show();
+				$('.topBar').hide();
+				
+				if(isWechat){
+					wx.uploadImage({
+						localId: imgId, // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var serverId = res.serverId; // 返回图片的服务器端ID
+                            //$('#imageId').val(res.serverId);
+                            submitInfo();
+							}
+						});
+					}
+					else{
+						submitInfo();
+						}
+				
+				
 				},200);
 			},200);
 		},200);
@@ -351,12 +405,18 @@ function go4(){
 	}	
 	
 function goPage4(){
+	wx.checkJsApi({
+		jsApiList: [
+			'chooseImage'
+			],
+		success: function (res) {
+			isWechat=true;
+			}
+		});
+	
 	$('.page0').fadeOut(500);
 	$('.topBar').fadeIn(500);
 	$('body').css('background','url(/bundles/app/default/images/bg.png) top center no-repeat');
-	
-	//$('.page3Img1').addClass('page3Img1Act');
-	//$('.page3Con').fadeOut(500);
 	setTimeout(function(){
 		goPage4b();
 		},250);
@@ -368,6 +428,9 @@ function goPage4b(){
 		$('.page4').fadeIn(1000);
 		$('.page4b').fadeIn(1000);
 		$('.page4Img4').fadeIn(500);
+		setTimeout(function(){
+			$('.page4Img5').addClass('page4Img5Act');
+			},500);
 		},500);
 	}
 	
@@ -390,7 +453,6 @@ function goLotteryPage(){
 	closePop();
 	$('.page4Btn1').hide();
 	$('.page4Btn2').show();
-	$('.page4Img5').addClass('page4Img5Act');
 	}
 	
 function showRule(){

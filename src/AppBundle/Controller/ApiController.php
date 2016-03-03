@@ -128,7 +128,7 @@ class ApiController extends Controller
 			$qb->andWhere('a.username LIKE :username');
 			$qb->setParameter(':username', '%'.$request->get('username').'%');
 		}
-		$limit = 20;
+		$limit = 8;
 		$offset = ($page-1)*$limit;
 		if( null == $request->get('order')){
 			$order = array('username','desc');
