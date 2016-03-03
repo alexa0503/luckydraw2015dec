@@ -407,7 +407,13 @@ function setImagePreview() {
 function goPage4(){
 	wx.checkJsApi({
 		jsApiList: [
-		'chooseImage'
+			'onMenuShareTimeline',
+			'onMenuShareAppMessage',
+			'chooseImage',
+			'previewImage',
+			'uploadImage',
+			'downloadImage',
+			'getNetworkType'
 		],
 		success: function (res) {
 			isWechat=true;
