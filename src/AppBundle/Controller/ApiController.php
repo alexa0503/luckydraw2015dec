@@ -11,14 +11,6 @@ use AppBundle\Entity;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\Cookie;
 use AppBundle\ImageHandle;
-#use AppBundle\Weibo;
-#use Imagine\Gd\Imagine;
-#use Imagine\Image\Box;
-#use Imagine\Image\Point;
-#use Imagine\Image\ImageInterface;
-#use Imagine\Image\Palette;
-#use Symfony\Component\Filesystem\Filesystem;
-#use Symfony\Component\Validator\Constraints\Image;
 
 class ApiController extends Controller
 {
