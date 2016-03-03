@@ -116,8 +116,9 @@ class Image {
 		}
 		//$file_name = uniqid().date('ymdhis').'.'.$path_parts['extension'];
 		$file_name = uniqid().date('ymdhis').'.jpg';
-		$handle = fopen($file_path.'/'.$file_name, "r+");
-		fwrite($handle, file_get_contents($url));
+		$handle = fopen($file_path.'/'.$file_name, "a+");
+		$data = HttpClient::get($url);
+		fwrite($handle, $data);
 		fclose($handle);
 		$this->file_name = $file_name;
 		//file_put_contents($file_path.'/'.$file_name, file_get_contents($url));
