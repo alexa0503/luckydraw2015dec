@@ -105,10 +105,15 @@ class Image {
 	{
 		$url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$token.'&media_id='.$imageId;
 		$file_path = $this->file_path;
+		/*
 		if( exif_imagetype($url) === false ){
 			return false;
 		}
+		*/
 		$path_parts = pathinfo($url);
+		if( null == $path_parts){
+			return false;
+		}
 		$file_name = uniqid().date('ymdhis').'.'.$path_parts['extension'];
 		file_put_contents($file_path.'/'.$file_name, file_get_contents($url));
 		return true;
