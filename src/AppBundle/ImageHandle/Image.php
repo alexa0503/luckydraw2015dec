@@ -120,7 +120,6 @@ class Image {
 		if( null != @json_decode($data)){
 			var_dump($data);
 			return false;
-			exit();
 		}
 		$handle = fopen($file_path.'/'.$file_name, "a+");
 		fwrite($handle, $data);
