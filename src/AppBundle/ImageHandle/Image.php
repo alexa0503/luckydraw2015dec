@@ -1,6 +1,6 @@
 <?php
 namespace AppBundle\ImageHandle;
-#use AppBundle\Helper;
+use AppBundle\Helper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
