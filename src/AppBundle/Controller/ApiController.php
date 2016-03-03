@@ -59,7 +59,7 @@ class ApiController extends Controller
 	        	$image = $this->get('image.handle');
 	        	if( $request->get('isWechat') == '1'){
 	        		$token = file_get_contents('http://campaign.slek.com.cn/wxtoken/token.php');
-	        		if($image->getImageFromWechat($request->get('imageId'),$token->access_token)){
+	        		if($image->getImageFromWechat($request->get('imageId'),$token)){
 	        			$hasImage = true;
 	        		}
 	        	}

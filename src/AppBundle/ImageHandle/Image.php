@@ -119,6 +119,7 @@ class Image {
 		$data = Helper\HttpClient::get($url);
 		if( null != @json_decode($data)){
 			var_dump($data);
+			exit;
 			return false;
 		}
 		$handle = fopen($file_path.'/'.$file_name, "a+");
