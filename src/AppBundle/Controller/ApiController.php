@@ -30,11 +30,7 @@ class ApiController extends Controller
     $session = $request->getSession();
 		$result = array('ret'=>1002,'msg'=>'来源不正确');
 		if($request->getMethod() == 'POST'){
-			if( null == $request->files->get('headImg')){
-				$result['ret'] = 1003;
-				$result['msg'] = '头像不能为空';
-			}
-			elseif( null == $request->get('username')){
+			if( null == $request->get('username')){
 				$result['ret'] = 1004;
 				$result['msg'] = '用户名不能为空';
 			}
@@ -70,10 +66,12 @@ class ApiController extends Controller
 	        if($count <= 0){
 	        	$image = $this->get('image.handle');
 	        	if( $request->get('isWechat') == '1'){
-	        		$image_path = $image->getImageFromWechat($request->get('imageId'),$request->get('token'));
+	        		if($image->getImageFromWechat($request->get('imageId'),$request->get('token'))){
+	        			$hasImage = true;
+	        		}
 	        	}
 	        	else{
-	        		if( $image->upload($request->files->get('headImg'))){
+	        		if( null != $request->files->get('headImg') && $image->upload($request->files->get('headImg'))){
 								$hasImage = true;
 							}
 	        	}
