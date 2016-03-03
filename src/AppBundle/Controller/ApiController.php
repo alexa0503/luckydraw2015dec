@@ -144,7 +144,12 @@ class ApiController extends Controller
 		$qb->setMaxResults($limit);
 		$qb->setFirstResult($offset);
     $info = $qb->getQuery()->getResult();
-    
+
+    $repo = $em->getRepository('AppBundle:Info');
+    $qb = $repo->createQueryBuilder('a');
+    $qb->select('COUNT(a)');
+    $count = $qb->getQuery()->getSingleScalarResult();
+
     $data = array();
     $cacheManager = $this->container->get('liip_imagine.cache.manager');
     foreach ($info as $value) {
@@ -157,6 +162,7 @@ class ApiController extends Controller
     		'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
     		'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
     		'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
+    		'sum' => $count,
     	);
     }
     $result = array(
