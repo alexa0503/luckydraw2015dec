@@ -387,8 +387,6 @@ function setImagePreview() {
 						success: function (res) {
 							var serverId = res.serverId; // 返回图片的服务器端ID
 							$('#imageId').val(res.serverId);
-							alert(res.serverId);
-							alert(imgId);
 							submitInfo();
 						}
 					});

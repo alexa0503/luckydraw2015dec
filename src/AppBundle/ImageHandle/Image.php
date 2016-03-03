@@ -114,8 +114,13 @@ class Image {
 		if( null == $path_parts){
 			return false;
 		}
-		$file_name = uniqid().date('ymdhis').'.'.$path_parts['extension'];
-		file_put_contents($file_path.'/'.$file_name, file_get_contents($url));
+		//$file_name = uniqid().date('ymdhis').'.'.$path_parts['extension'];
+		$file_name = uniqid().date('ymdhis').'.jpg';
+		$handle = fopen($file_path.'/'.$file_name, "r+");
+		fwrite($handle, file_get_contents($url));
+		fclose($handle);
+		$this->file_name = $file_name;
+		//file_put_contents($file_path.'/'.$file_name, file_get_contents($url));
 		return true;
 	}
 }
