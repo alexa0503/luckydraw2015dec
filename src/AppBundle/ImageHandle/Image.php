@@ -116,8 +116,12 @@ class Image {
 		}
 		//$file_name = uniqid().date('ymdhis').'.'.$path_parts['extension'];
 		$file_name = uniqid().date('ymdhis').'.jpg';
+		$data = Helper\HttpClient::get($url);
+		if( null != @json_decode($data)){
+			var_dump($data);
+			return false;
+		}
 		$handle = fopen($file_path.'/'.$file_name, "a+");
-		$data = HttpClient::get($url);
 		fwrite($handle, $data);
 		fclose($handle);
 		$this->file_name = $file_name;
