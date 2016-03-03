@@ -103,7 +103,7 @@ class Image {
 	}
 	public function getImageFromWechat($image_id, $token)
 	{
-		$url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$token.'&media_id='.$imageId;
+		$url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$token.'&media_id='.$image_id;
 		$file_path = $this->file_path;
 		/*
 		if( exif_imagetype($url) === false ){
