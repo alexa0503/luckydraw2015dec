@@ -66,12 +66,21 @@ class ApiController extends Controller
 	        $qb->where('a.mobile = :mobile');
 	        $qb->setParameter('mobile', $mobile);
 	        $count = $qb->getQuery()->getSingleScalarResult();
+	        $hasImage = false;
 	        if($count <= 0){
 	        	$image = $this->get('image.handle');
-						if( !$image->upload($request->files->get('headImg'))){
-							$result['ret'] = 1007;
-							$result['msg'] = '头像的格式不正确';
-						}
+	        	if( $request->get('isWechat') == '1'){
+	        		$image_path = $image->getImageFromWechat($request->get('imageId'),$request->get('token'));
+	        	}
+	        	else{
+	        		if( $image->upload($request->files->get('headImg'))){
+								$hasImage = true;
+							}
+	        	}
+	        	if( !$hasImage ){
+	        		$result['ret'] = 1007;
+							$result['msg'] = '图片上传不正确';
+	        	}
 						else{
 							$image_path = $image->create();
 		        	$info = new Entity\Info();
@@ -93,7 +102,6 @@ class ApiController extends Controller
 	        	$result['ret'] = 1100;
 						$result['msg'] = '该手机已经被注册';
 	        }
-					
 		    }
 		    catch (Exception $e) {
 		      $em->getConnection()->rollback();

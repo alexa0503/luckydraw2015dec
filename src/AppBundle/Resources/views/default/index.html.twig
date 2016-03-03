@@ -69,6 +69,10 @@
 								<input type="tel" maxlength="11" class="iTxt iTxt2" name="mobile" id="mobile">
 								<input type="hidden" value="" name="url" id="url">
 								<input type="hidden" value="" name="failUrl" id="failUrl">
+								<input type="hidden" value="" name="imageId" id="imageId">
+								<input type="hidden" value="0" name="isWechat" id="isWechat">
+								<input type="hidden" value="" name="token" id="token">
+
 								<a href="javascript:void(0);"  class="abs page2Btn1" onClick="go4();" id="form-submit"><img src="{{ asset('bundles/app/default/') }}images/page3Btn1.png"></a>
 							</div>
 						</div>
@@ -113,15 +117,25 @@
 				$('#failUrl').val('{{ url("_error") }}');
 				var pattern = /^1\d{10}$/;
 				if(!isWechat){
+					$('#isWechat').val(0);
 					if( headImg == ''){
 						alert('请上传头像~');
 						return false;
-						}
 					}
-					else{
-						//微信端提交表单判断头像   imgId
-						
+				}
+				else{
+					$('#isWechat').val(1);
+					//微信端提交表单判断头像   imgId
+					wx.uploadImage({
+						localId: imgId, // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+							var serverId = res.serverId; // 返回图片的服务器端ID
+							$('#imageId').val(res.serverId);
 						}
+					});
+					
+				}
 				if(username == ''){
 					alert('请输入姓名~');
 					return false;
