@@ -31,7 +31,12 @@
 
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script>
-
+	
+	{% if success is defined and success == true %}
+	var lottery = true;
+	{% else %}
+	var lottery = false;
+	{% endif %}
 		function wxShare(data){
 			wx.config({
 				debug: false,
@@ -50,7 +55,6 @@
 				]
 			});
 			wx.ready(function () {
-				isWechat=ture;
 				wx.onMenuShareAppMessage({
 					title: data.title,
 					desc: data.desc,
@@ -59,6 +63,9 @@
 					trigger: function (res) {
 					},
 					success: function (res) {
+						if(lottery == true){
+							getLottery();
+						}
 					},
 					cancel: function (res) {
 					},
@@ -73,6 +80,9 @@
 					trigger: function (res) {
 					},
 					success: function (res) {
+						if(lottery == true){
+							getLottery();
+						}
 					},
 					cancel: function (res) {
 					},

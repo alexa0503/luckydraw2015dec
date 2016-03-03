@@ -62,7 +62,7 @@ class DefaultController extends Controller
         }
 
         $session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_info',array('id'=>$session->get('id'))));
-        return $this->render('AppBundle:default:success.html.twig');
+        return $this->render('AppBundle:default:success.html.twig', array('success'=>true));
     }
     /**
      * @Route("/mobile/info/{id}", name="_info")
