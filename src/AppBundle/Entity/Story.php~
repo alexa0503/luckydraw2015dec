@@ -1,0 +1,157 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Story
+ *
+ * @ORM\Table(name="t_story")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\StoryRepository")
+ * @ORM\HasLifecycleCallbacks
+ */
+class Story
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var File
+     *
+     * @ORM\OneToMany(targetEntity="File", mappedBy="story", cascade={"persist", "remove"})
+     *
+     */
+    private $files;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $uploadedFiles;
+
+     /**
+     * @ORM\Column(name="username",type="string", length=40)
+     */
+    protected $username;
+    /**
+     * @ORM\Column(name="like_num",type="integer")
+     */
+    protected $likeNum;
+
+    /**
+     * @ORM\Column(name="head_img",type="string", length=200,nullable=true)
+     * @Assert\File(
+     *     maxSize = "5M",
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+     *     maxSizeMessage = "图片最大只能为5M.",
+     *     mimeTypesMessage = "只能上传图片."
+     * )
+     */
+    protected $headImg;
+     /**
+     * @ORM\Column(name="wish_title",type="string", length=500, nullable = true)
+     */
+    protected $wishTitle;
+    /**
+     * @ORM\Column(name="wish_text",type="string", length=500, nullable = true)
+     */
+    protected $wishText;
+
+    /**
+     * @ORM\Column(name="create_time",type="datetime")
+     */
+    protected $createTime;
+    /**
+     * @ORM\Column(name="create_ip",type="string", length=60)
+     */
+    protected $createIp;
+
+    public function __construct() {
+        $this->files = new ArrayCollection();
+        $this->uploadedFiles = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    public function getFiles() {
+        return $this->files;
+    }
+    public function setFiles(array $files) {
+        $this->files = $files;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUploadedFiles()
+    {
+        return $this->uploadedFiles;
+    }
+
+    /**
+     * @param ArrayCollection $uploadedFiles
+     */
+    public function setUploadedFiles($uploadedFiles)
+    {
+        $this->uploadedFiles = $uploadedFiles;
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function upload()
+    {
+        foreach($this->uploadedFiles as $uploadedFile)
+        {
+            if ($uploadedFile) {
+                $file = new File($uploadedFile);
+
+                $this->getFiles()->add($file);
+                $file->setStory($this);
+
+                unset($uploadedFile);
+            }
+        }
+    }
+
+    /**
+     * Add files
+     *
+     * @param \AppBundle\Entity\File $files
+     * @return Story
+     */
+    public function addFile(\AppBundle\Entity\File $files)
+    {
+        $this->files[] = $files;
+
+        return $this;
+    }
+
+    /**
+     * Remove files
+     *
+     * @param \AppBundle\Entity\File $files
+     */
+    public function removeFile(\AppBundle\Entity\File $files)
+    {
+        $this->files->removeElement($files);
+    }
+}

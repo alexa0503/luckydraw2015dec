@@ -95,15 +95,17 @@
 			var url = '{{ url("api_wechat_sign") }}'
 			$.getJSON(url,{url:location.href},function(data){
 				$('#token').val(data.access_token);
-				data.desc = '分享描述';
-				data.title = '分享标题';
+				data.desc = '刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？';
+				data.title = '美丽心愿，从头开始';
 				data.shareUrl = '{% if null == app.session.get("wx_share_url") %}{{ url("_index") }}{% else %}{{ app.session.get("wx_share_url") }}{% endif %}';
-			//data.imgUrl = 'http://{{ app.request.host }}/{{ asset("bundles/app/default/images/share.jpg") }}';
-			data.imgUrl = 'http://t.himyweb.com/shiseidowp/src/img/share.jpg';
+			data.imgUrl = 'http://{{ app.request.host }}/{{ asset("bundles/app/default/images/share.jpg?v=1") }}';
+			//data.imgUrl = 'http://t.himyweb.com/shiseidowp/src/img/share.jpg?v=1';
 			//isWechat = true;
 			wxShare(data);
 		});
 		})
+		
+	var notWechatSharlUrl='{% if null == app.session.get("wx_share_url") %}{{ url("_index") }}{% else %}{{ app.session.get("wx_share_url") }}{% endif %}';
 	</script>
 </head>
 <body>

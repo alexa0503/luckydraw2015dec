@@ -26,8 +26,52 @@ $(document).ready(function(){
 		$('.page').height(1008);
 		$('.h1008').css('padding-top','0px');
 		$('.page').css('-webkit-transform','scale('+bli+')');
-		$('.page').css('-webkit-transform-origin','50% 0');
+		$('.page').css('-webkit-transform-origin','50% '+(1008-wHeight)/2+'px');
+		$('.page4Img4').css('bottom','-'+(1008-wHeight)/3*2+'px');
+		
+	$('.page5end').on('touchmove',function(e){
+		e.preventDefault();
+		});
 	}
+	
+	
+	var _title="美丽心愿，从头开始";
+	var _pageurl=notWechatSharlUrl;
+	var _picurl="http://dev.slek.com.cn/bundles/app/default/images/share.jpg";
+	var _sharetext="刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？";
+	
+		$(".douban").click(function(){
+
+			shareToDouban(_title,_pageurl,_sharetext,_picurl);
+			// ga('send', 'event', 'Social', 'share','douban')
+		});
+		$(".shareto .renren").click(function(){
+
+			shareToRenRen(_title,_pageurl,_sharetext,_picurl);
+			// ga('send', 'event', 'Social', 'share','Renren')
+		});
+		$(".shareto .weibo").click(function(){
+
+			shareToSina(_sharetext,_pageurl,_picurl);
+			// ga('send', 'event', 'Social', 'share','Sina')
+		});
+		$(".shareto .tengxun").click(function(){
+
+			shareToTencent(_title,_pageurl,_sharetext);
+			// ga('send', 'event', 'Social', 'share','Tencent')
+		});
+		
+		$('.sinaShare').click(function(){
+			shareToSina(_sharetext,_pageurl,_picurl);
+			});
+			
+		$('.qqShare').click(function(){
+			shareToTencent(_title,_pageurl,_sharetext);
+			});
+			
+		$('.qzoneShare').click(function(){
+			shareToQzone(_title,_pageurl,_sharetext,_picurl);
+			});
 });
 
 var lh=380;
@@ -219,13 +263,16 @@ function loadSuccess(){
 }
 
 function goPage1(){
-	$('.page0').fadeOut(500);
+	$('.topBtn1').show();
+	$('.page0').hide();
 	$('.topBar').fadeIn(500);
 	$('.page1').fadeIn(500);
 	$('body').css('background','url(/bundles/app/default/images/bg.png) top center no-repeat');
+	$('input').val('');
 }
 
 function goPage2(){
+	$('.topBtn1').hide();
 	$('.page1').fadeOut(500);
 	$('.page2').fadeIn(500);
 	
@@ -252,6 +299,13 @@ function choseQ(e){
 
 var isWechat=false;//是否加载完js-sdk
 var imgId;
+
+function backPage2(){
+	$('.page3').fadeOut(500);
+	$('.page2').fadeIn(500);
+	$('.backPage2').hide();
+	}
+
 function goPage3(){
 	var wish=$('#wishText').val();
 	if(wish==''){
@@ -268,15 +322,28 @@ function goPage3(){
 				success: function (res) {
 					$('.upLoadImg').attr('src',res.localIds);
 					$('#preview').show();
+					setTimeout(function(){
+						resizePhoto();
+						},200);
 					isSelectedImg=true;
 					imgId = res.localIds.pop();
+					
+					wx.uploadImage({
+						  localId: imgId, // 需要上传的图片的本地ID，由chooseImage接口获得
+						  isShowProgressTips: 1, // 默认为1，显示进度提示
+						  success: function (res) {
+							  var serverId = res.serverId; // 返回图片的服务器端ID
+							  $('#imageId').val(res.serverId);
+						  }
+					  });
 				},
-				cancel:function(res){
+				/*cancel:function(res){
 					alert('请允许');
 					window.location.reload();
-				},
+				},*/
 				fail:function(res){
-					alert('请重新选择');
+					alert('选择照片失败，请重试');
+					window.location.reload();
 				}
 			});
 		});
@@ -286,7 +353,29 @@ function goPage3(){
 	}
 	$('.page2').fadeOut(500);
 	$('.page3').fadeIn(500);
+	$('.backPage2').show();
 }
+
+function resizePhoto(){
+	var oW=148;
+	var oH=188;
+	var pw=148;
+	var ph=$('#preview').height();
+	var obl=148/188;
+	var pbl=pw/ph;
+	if(pbl>obl){
+		$('#preview').height(188);
+		$('#preview').width(pw/ph*188);
+		$('#preview').css('left',-(pw/ph*188-148)/2+'px');
+		$('#preview').css('top','0');
+		}
+		else{
+			$('#preview').width(148);
+			$('#preview').height(148*ph/pw);
+			$('#preview').css('top',-(148*ph/pw-188)/2+'px');
+			$('#preview').css('left','0');
+			}
+	}
 
 
 /*图片上传*/
@@ -364,44 +453,15 @@ function setImagePreview() {
 						document.selection.empty();
 					}
 					isSelectedImg=true;
+					setTimeout(function(){
+						resizePhoto();
+						},200);
 					return true;
 				}
 				
 
-				function go4(){
-	//$('.page3Img1').addClass('page3Img1Act');
-	$('.page3Con').fadeOut(500);
-	setTimeout(function(){
-		$('.page3Img1').css('background-position','-640px 0');
-		setTimeout(function(){
-			$('.page3Img1').css('background-position','-1280px 0');
-			setTimeout(function(){
-				$('.page3').hide();
-				$('.page0').show();
-				$('.topBar').hide();
-				
-				if(isWechat){
-					wx.uploadImage({
-						localId: imgId, // 需要上传的图片的本地ID，由chooseImage接口获得
-						isShowProgressTips: 1, // 默认为1，显示进度提示
-						success: function (res) {
-							var serverId = res.serverId; // 返回图片的服务器端ID
-							$('#imageId').val(res.serverId);
-							submitInfo();
-						}
-					});
-				}
-				else{
-					submitInfo();
-				}
-				
-
-			},200);
-		},200);
-	},200);
-	setTimeout(function(){
-		
-	},250);
+function go4(){
+	submitInfo();
 }	
 
 function goPage4(){
@@ -420,7 +480,7 @@ function goPage4(){
 		}
 	});
 	
-	$('.page0').fadeOut(500);
+	$('.page0').hide();
 	$('.topBar').fadeIn(500);
 	$('body').css('background','url(/bundles/app/default/images/bg.png) top center no-repeat');
 	setTimeout(function(){
@@ -472,6 +532,7 @@ function showRule(){
 }
 
 function getLottery(){
+	closePop();
 	$('.page4').fadeOut(500);
 	$('.page4b').fadeOut(500);
 	$('.page4Img4').fadeOut(500);
@@ -520,14 +581,14 @@ function closeRule(){
 }
 
 function goPage6(){
-	$('.page0').fadeOut(500);
+	$('.page0').hide();
 	$('.topBar').fadeIn(500);
 	$('.page6').fadeIn(500);
 	$('body').css('background','url(/bundles/app/default/images/bg2.png) top center no-repeat');
 }
 
 function goPage7(){
-	$('.page0').fadeOut(500);
+	$('.page0').hide();
 	$('.topBar').fadeIn(500);
 	$('.page7').fadeIn(500);
 	$('body').css('background','#f9ecbe');
@@ -555,3 +616,34 @@ function goPage7(){
 		},500);
 	},510);
 }
+
+	
+
+	var target_str='_blank';
+	//打开窗口的大小
+	var window_size="scrollbars=no,width=600,height=450,"+"left=75,top=20,status=no,resizable=yes";	
+
+			//分享到新浪网
+	function shareToSina(sharetext, pageurl, picUrl) {
+		window.open("http://v.t.sina.com.cn/share/share.php?title=" + encodeURIComponent(sharetext) + "&url=" + encodeURIComponent(pageurl)+"&pic="+encodeURIComponent(picUrl), target_str,window_size)}
+	
+	
+	//分享到腾讯微博
+	function shareToTencent(title, pageurl, sharetext) {
+		window.open('http://share.v.t.qq.com/index.php?c=share&a=index&title='+encodeURIComponent(sharetext)+'&url='+encodeURIComponent(pageurl), target_str,window_size)}
+	
+	//分享到豆瓣网
+	function shareToDouban(title, pageurl, sharetext,picurl) {
+		window.open('http://www.douban.com/recommend/?title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(pageurl) +"&image="+encodeURIComponent(picurl), target_str,window_size);}
+		
+	//分享到QQ空间
+	function shareToQzone(title, pageurl, sharetext,picurl) {	
+		window.open("http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url="+encodeURIComponent(pageurl)+"&title="+encodeURIComponent(title)+"&pics="+encodeURIComponent(picurl)+"&summary="+encodeURIComponent(sharetext), target_str,window_size);
+	}
+	
+	
+	//share to renren
+	function shareToRenRen(title, pageurl,sharetext,picurl){
+		
+	window.open("http://widget.renren.com/dialog/share?url="+encodeURIComponent(pageurl)+"&title="+encodeURIComponent(title)+"&content="+encodeURIComponent(sharetext)+"&pic="+encodeURIComponent(picurl)+"&message="+encodeURIComponent(sharetext), target_str,window_size);
+	}

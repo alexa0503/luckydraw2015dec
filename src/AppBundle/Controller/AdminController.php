@@ -8,9 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use AppBundle\Entity;
 use Symfony\Component\Validator\Constraints\Time;
-use AppBundle\Form\Type\InfoType;
+use AppBundle\Entity;
+use AppBundle\Form\Type;
+//use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 //use Liuggio\ExcelBundle;
 
@@ -36,11 +37,11 @@ class AdminController extends Controller
 	
 
 	/**
-	 * @Route("/admin/info", name="admin_info")
+	 * @Route("/admin/story", name="admin_story")
 	 */
-	public function infoAction(Request $request)
+	public function storyAction(Request $request)
 	{
-		$repository = $this->getDoctrine()->getRepository('AppBundle:Award');
+		$repository = $this->getDoctrine()->getRepository('AppBundle:Story');
 		$queryBuilder = $repository->createQueryBuilder('a');
 		
 		$query = $queryBuilder->getQuery();
@@ -51,136 +52,90 @@ class AdminController extends Controller
 			$request->query->get('page', 1),/*page number*/
 			$this->pageSize
 		);
-		return $this->render('AppBundle:admin:award.html.twig', array('pagination'=>$pagination));
+		return $this->render('AppBundle:admin:story.html.twig', array('pagination'=>$pagination));
 	}
 	/**
-	 * @Route("/admin/info/add", name="admin_info_add")
+	 * @Route("/admin/story/add", name="admin_story_add")
 	 */
-	public function infoAddAction(Request $request)
+	public function storyAddAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getEntityManager();
-		$info = new Entity\Info();
-		$form = $this->createForm(new InfoType(), $info);
+		$story = new Entity\Story();
+		$form = $this->createForm(new Type\StoryType(), $story);
+		//var_dump($request);
 		$form->handleRequest($request);
 		if ($form->isValid()) {
 			$data = $form->getData();
-			$image_path = null;
+			$fileDir = $this->container->getParameter('kernel.root_dir').'/../web/uploads/story';
+			$head_img = null;
 			$file = $data->getHeadImg();
-			$image = $this->get('image.handle');
-			if( $image->upload($file)){
-				$image_path = $image->create();
+			if( null != $file ){
+				$head_img = md5(uniqid()).'.'.$file->guessExtension();
+				$file->move($fileDir, $head_img);
 			}
-			var_dump($image_path);
-			$info->setHeadImg($image_path);
-			$info->setCreateTime(new \DateTime("now"));
-			$info->setCreateIp($this->container->get('request')->getClientIp());
+			$story->setHeadImg($head_img);
 
-			$em->persist($info);
+			$story->setCreateTime(new \DateTime("now"));
+			$story->setCreateIp($this->container->get('request')->getClientIp());
+
+			$em->persist($story);
 			$em->flush();
-			return $this->redirectToRoute('admin_info');
+			return $this->redirectToRoute('admin_story');
 		}
 		return $this->render('AppBundle:admin:form.html.twig', array(
 			'form' => $form->createView(),
 			));
 	}
+
 	/**
-	 * @Route("/admin/award/edit/{id}", name="admin_award_edit")
+	 * @Route("/admin/story/edit/{id}", name="admin_story_edit")
 	 */
-	public function awardEditAction(Request $request, $id)
+	public function storyEditAction(Request $request, $id = null)
 	{
 		$em = $this->getDoctrine()->getEntityManager();
-		$award = $em->getRepository('AppBundle:Award')->find($id);
-		$form = $this->createForm(new AwardType(), $award);
+		$story = $em->getRepository('AppBundle:Story')->find($id);
+		$head_img = $story->getHeadImg();
+		$form = $this->createForm(new Type\StoryType(), $story);
 		$form->handleRequest($request);
 		if ($form->isValid()) {
 			$data = $form->getData();
-
-			$em->persist($award);
-			$em->flush();
-			return $this->redirectToRoute('admin_award');
-		}
-		return $this->render('AppBundle:admin:form.html.twig', array(
-			'form' => $form->createView(),
-			));
-	}
-	/**
-	 * @Route("/admin/award/delete/{id}", name="admin_award_delete")
-	 */
-	public function awardDeleteAction(Request $request, $id)
-	{
-		$em = $this->getDoctrine()->getManager();
-		$award = $em->getRepository('AppBundle:Award')->find($id);
-		$em->remove($award);
-		$em->flush();
-		return new Response(json_encode(array('ret'=>0, 'msg'=>'')));
-	}
-	/**
-	 * @Route("/admin/export/", name="admin_export")
-	 */
-	public function exportAction(Request $request)
-	{
-		$em = $this->getDoctrine()->getManager();
-		$repository = $em->getRepository('AppBundle:Info');
-		$queryBuilder = $repository->createQueryBuilder('a');
-		$info = $queryBuilder->getQuery()->getResult();
-		//$output = '';
-		$arr = array(
-			'id,对应微信昵称,姓名,手机,地址,中奖信息,抽奖时间,抽奖IP'
-			);
-		foreach($info as $v){
-			$_string = $v->getId().','.$v->getUser()->getNickname().','.$v->getUsername().','.$v->getMobile().','.$v->getMobile().','.$v->getAddress().',';
-			if( null != $v->getUser()->getLotteryLogs() ){
-				foreach ($v->getUser()->getLotteryLogs() as $log) {
-					if($log->getHasWin() == true){
-						$_string .= $log->getType().'类型-'.$log->getAwardType().'等奖 | ';
-					}
+			$fileDir = $this->container->getParameter('kernel.root_dir').'/../web/uploads/story';
+			$file = $data->getHeadImg();
+			if( null != $file ){
+				$head_img = md5(uniqid()).'.'.$file->guessExtension();
+				$file->move($fileDir, $head_img);
+			}
+			$upload_files = $data->getUploadedFiles();
+			if( null != $upload_files[0]){
+				$files = $story->getFiles();
+				foreach ($files as $file) {
+					$story->removeFile($file);
+					$em->remove($file);
 				}
 			}
-			//var_dump($v->getCreateTime());
-			$_string .= ','.$v->getCreateTime()->format('Y-m-d H:i:s').','.$v->getCreateIp();
-			$arr[] = $_string;
+			$story->setHeadImg($head_img);
+			//$story->setCreateTime(new \DateTime("now"));
+			//$story->setCreateIp($this->container->get('request')->getClientIp());
+
+			$em->persist($story);
+			$em->flush();
+			return $this->redirectToRoute('admin_story');
 		}
-		$output = implode("\n", $arr);
+		return $this->render('AppBundle:admin:form.html.twig', array(
+			'form' => $form->createView(),
+			));
+	}
 
-		//$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
-		/*
-		$phpExcelObject = new \PHPExcel();
-		$phpExcelObject->getProperties()->setCreator("liuggio")
-			->setLastModifiedBy("Giulio De Donato")
-			->setTitle("Office 2005 XLSX Test Document")
-			->setSubject("Office 2005 XLSX Test Document")
-			->setDescription("Test document for Office 2005 XLSX, generated using PHP classes.")
-			->setKeywords("office 2005 openxml php")
-			->setCategory("Test result file");
-		$phpExcelObject->setActiveSheetIndex(0);
-		foreach($logs as $v){
-			$phpExcelObject->setCellValue('A1', $v->getId());
-		}
-		$phpExcelObject->getActiveSheet()->setTitle('Simple');
-		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-		$phpExcelObject->setActiveSheetIndex(0);
-
-		// create the writer
-		$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
-		// create the response
-		$response = $this->get('phpexcel')->createStreamedResponse($writer);
-		// adding headers
-		$dispositionHeader = $response->headers->makeDisposition(
-			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-			'stream-file.xls'
-		);
-		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-		$response->headers->set('Pragma', 'public');
-		$response->headers->set('Cache-Control', 'maxage=1');
-		$response->headers->set('Content-Disposition', $dispositionHeader);
-		*/
-
-		$response = new Response($output);
-		$response->headers->set('Content-Disposition', ':attachment; filename=data.csv');
-		$response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-		$response->headers->set('Pragma', 'public');
-		$response->headers->set('Cache-Control', 'maxage=1');
-		return $response;
+	/**
+	 * @Route("/admin/story/delete/{id}", name="admin_story_delete")
+	 */
+	public function storyDeleteAction(Request $request, $id = null)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$story = $em->getRepository('AppBundle:Story')->find($id);
+		$em->remove($story);
+		$em->flush();
+		return new Response(json_encode(array('ret'=>0, 'msg'=>'')));
 	}
 
 }

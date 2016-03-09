@@ -5,7 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 #use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class InfoType extends AbstractType
+class StoryType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
@@ -13,8 +13,8 @@ class InfoType extends AbstractType
 			->add('username', 'text', array(
 				'label' => '姓名',
 			))
-			->add('mobile', 'text', array(
-				'label' => '手机',
+			->add('likeNum', 'text', array(
+				'label' => '赞数',
 			))
 			->add('headImg', 'file', array(
 				'label' => '头像',
@@ -22,8 +22,17 @@ class InfoType extends AbstractType
 				'required' => false,
 				'attr' => array('value' => $builder->getData()->getHeadImg(),'class'=>'preview')
 			))
+		 ->add('uploadedFiles', 'file', array(
+				'label' => '图库',
+        'multiple' => true, 
+        'data_class' => null,
+				'required' => false,
+      ))
+			->add('wishTitle', 'textarea', array(
+				'label' => '心愿清单标题',
+			))
 			->add('wishText', 'textarea', array(
-				'label' => '心愿清单',
+				'label' => '心愿清单描述',
 			))
 
 			->add('save', 'submit', array('label' => '保存'))
@@ -31,6 +40,6 @@ class InfoType extends AbstractType
 	}
 	public function getName()
 	{
-		return 'info';
+		return 'story';
 	}
 }

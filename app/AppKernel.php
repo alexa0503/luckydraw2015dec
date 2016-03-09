@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             //new BushidoIO\QRCodeBundle\BushidoIOQRCodeBundle(),
             //new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
+            //new Oneup\UploaderBundle\OneupUploaderBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -7,11 +7,14 @@
 			<thead>
 			 <tr role="row">
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 40px;">ID</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">日期</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">可抽奖数</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">已中奖数</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">奖品类型</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">抽奖方式</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">用户名</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">点赞数</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">头像</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">图库</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">心愿标题</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">心愿描述</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">创建时间</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">创建IP</th>
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" width="120">操作</th>
 			</tr>
 		 </thead>
@@ -19,12 +22,15 @@
 		 {% for p in pagination %}
 			<tr class="gradeA {% if loop.index is odd %} odd{% else %} even{% endif %}" role="row">
 				<td>{{ p.id }}</td>
-				<td>{{ p.lotteryDate | date("Y-m-d") }}</td>
-				<td>{{ p.lotteryNum }}</td>
-				<td>{{ p.winNum }}</td>
-				<td>{{ p.awardType }}</td>
-				<td>{% if p.lotteryType == 'a' %}靠人品{% else %}靠装备{% endif %}</td>
-				<td><a href="{{ url('admin_award_edit',{id:p.id}) }}">编辑</a> <a href="{{ url('admin_award_delete',{id:p.id}) }}" class="delete">删除</a></td>
+				<td>{{ p.likeNUm }}</td>
+				<td>{{ p.username }}</td>
+				<td><img src="{{ asset('uploads/story/')~p.headImg }}" style="max-width:100px;max-height:100px;" /></td>
+				<td>{% for file in p.files %}<img src="{{ asset('uploads/story/')~file.path }}" style="max-width:100px;max-height:100px;" />{% endfor %}</td>
+				<td>{{ p.wishTitle }}</td>
+				<td>{{ p.wishText }}</td>
+				<td>{{ p.createTime | date("Y-m-d H:i") }}</td>
+				<td>{{ p.createIp }}</td>
+				<td><a href="{{ url('admin_story_edit',{id:p.id}) }}">编辑</a> <a href="{{ url('admin_story_delete',{id:p.id}) }}" class="delete">删除</a></td>
 			</tr>
 			{% endfor %}
 			</tbody>

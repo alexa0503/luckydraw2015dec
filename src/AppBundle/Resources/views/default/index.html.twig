@@ -20,7 +20,7 @@
 						<div class="page1Img5 abs bgImg"></div>
 						<div class="abs page1Img2 page1Img2Act"></div>
 						<div class="abs page1Img6"></div>
-						<div class="pNumb abs"><img src="{{ asset('bundles/app/default/') }}images/page1Img3.png"><font>{{ count }}</font><img src="{{ asset('bundles/app/default/') }}images/page1Img4.png"></div>
+						<div class="pNumb abs"><a href="http://www.slek.com.cn"><img src="{{ asset('bundles/app/default/') }}images/page1Img3.png"><font>{{ count }}</font><img src="{{ asset('bundles/app/default/') }}images/page1Img4.png"></a></div>
 						<a href="javascript:void(0);" onClick="goPage2();" class="abs page1Btn1"><img src="{{ asset('bundles/app/default/') }}images/page1Btn1.png"></a>
 						<div class="abs page1Img7"></div>
 					</div>
@@ -57,10 +57,13 @@
 							<img src="{{ asset('bundles/app/default/') }}images/page3Img2.png" class="abs page3Img2">
 							<div class="page3Con">
 								<div class="page3Img3 abs bgImg"></div>
-								
-								<img src="" class="abs upBtnImg upLoadImg" style="display:none;" id="upBtnImg">
-								<img src="" class="abs upLoadImg" style="display:none;" id="preview" />
-								<img src="" class="abs upLoadImg" style="display:none;" id="localImag" />
+									<div class="photoOuter">
+										<div class="innerDiv">
+											<img src="" class="abs upBtnImg upLoadImg" style="display:none;" id="upBtnImg">
+											<img src="" class="abs upLoadImg" style="display:none;" id="preview" />
+											<img src="" class="abs upLoadImg" style="display:none;" id="localImag" />
+										</div>
+									</div>
 								
 								<input type="file" name="headImg" id="headImg" class="fileBtn" style="display:none;" onChange="setImagePreview();" />
 								<a href="javascript:void(0);" class="wechatPhoto" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/uploadBtn.png"></a>
@@ -116,17 +119,7 @@
 				$('#url').val('{{ url("_success") }}');
 				$('#failUrl').val('{{ url("_error") }}');
 				var pattern = /^1\d{10}$/;
-				if(!isWechat){
-					$('#isWechat').val(0);
-					if( headImg == ''){
-						alert('请上传头像~');
-						return false;
-					}
-				}
-				else{
-					$('#isWechat').val(1);
-					//微信端提交表单判断头像   imgId
-				}
+
 				if(username == ''){
 					alert('请输入姓名~');
 					return false;
@@ -140,7 +133,38 @@
 					return false;
 				}
 				else{
-					$('#form').submit();
+					if(!isWechat){
+						$('#isWechat').val(0);
+						if( headImg == ''){
+							alert('请上传头像~');
+							return false;
+						}
+					}
+					else{
+						$('#isWechat').val(1);
+						if($('#imageId').val()== ''){
+							alert('请上传头像~');
+							return false;
+						}
+						//微信端提交表单判断头像   imgId
+					}
+					$('.page3Con').fadeOut(500);
+					setTimeout(function(){
+						$('.page3Img1').css('background-position','-640px 0');
+						setTimeout(function(){
+							$('.page3Img1').css('background-position','-1280px 0');
+							setTimeout(function(){
+								$('body').css('background','#dd1039');
+								$('.page3').hide();
+								$('.page0').show();
+								$('.topBar').hide();
+								
+								$('#form').submit();
+								
+				
+							},200);
+						},200);
+					},200);
 				}
 			}
 	</script>

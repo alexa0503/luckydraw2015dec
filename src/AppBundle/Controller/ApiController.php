@@ -19,7 +19,7 @@ class ApiController extends Controller
 	 */
 	public function formAction(Request $request)
 	{
-    $session = $request->getSession();
+		$session = $request->getSession();
 		$result = array('ret'=>1002,'msg'=>'来源不正确');
 		if($request->getMethod() == 'POST'){
 			if( null == $request->get('username')){
@@ -46,59 +46,67 @@ class ApiController extends Controller
 				$wish_text = $request->get('wishText');
 				
 				$em = $this->getDoctrine()->getManager();
-		    $em->getConnection()->beginTransaction();
-		    try{
-	        $repo = $em->getRepository('AppBundle:Info');
-	        $qb = $repo->createQueryBuilder('a');
-	        $qb->select('COUNT(a)');
-	        $qb->where('a.mobile = :mobile');
-	        $qb->setParameter('mobile', $mobile);
-	        $count = $qb->getQuery()->getSingleScalarResult();
-	        $hasImage = false;
-	        if($count <= 0){
-	        	$image = $this->get('image.handle');
-	        	if( $request->get('isWechat') == '1'){
-	        		$token = file_get_contents('http://campaign.slek.com.cn/wxtoken/token.php');
-	        		if($image->getImageFromWechat($request->get('imageId'),$token)){
-	        			$hasImage = true;
-	        		}
-	        	}
-	        	else{
-	        		if( null != $request->files->get('headImg') && $image->upload($request->files->get('headImg'))){
+				$em->getConnection()->beginTransaction();
+				try{
+					/*
+					$repo = $em->getRepository('AppBundle:Info');
+					$qb = $repo->createQueryBuilder('a');
+					$qb->select('COUNT(a)');
+					$qb->where('a.mobile = :mobile');
+					$qb->setParameter('mobile', $mobile);
+					$count = $qb->getQuery()->getSingleScalarResult();
+					*/
+					$count = 0;
+					$hasImage = false;
+					if($count <= 0){
+						$image = $this->get('image.handle');
+						if( $request->get('isWechat') == '1'){
+							$token = file_get_contents('http://campaign.slek.com.cn/wxtoken/token.php');
+							if($image->getImageFromWechat($request->get('imageId'),$token)){
 								$hasImage = true;
 							}
-	        	}
-	        	if( !$hasImage ){
-	        		$result['ret'] = 1007;
-							$result['msg'] = '图片上传不正确';
-	        	}
+						}
+						else{
+							if( null != $request->files->get('headImg') && $image->upload($request->files->get('headImg'))){
+								$hasImage = true;
+
+							}
+						}
+
+						if( !$hasImage ){
+							$image_path = 'default.png';
+							//$result['ret'] = 1007;
+							//$result['msg'] = '图片上传不正确';
+						}
 						else{
 							$image_path = $image->create();
-		        	$info = new Entity\Info();
-							$info->setUsername($username);
-							$info->setMobile($mobile);
-							$info->setHeadImg($image_path);
-							$info->setWishText($wish_text);
-				      $info->setCreateIp($request->getClientIp());
-				      $info->setCreateTime(new \DateTime('now'));
-							$em->persist($info);
-			        $em->flush();
-				      $em->getConnection()->commit();
-							$session->set('id',$info->getId());
-							$result['ret'] = 0;
-							$result['msg'] = '';
 						}
-	        }
-	        else{
-	        	$result['ret'] = 1100;
+
+						$info = new Entity\Info();
+						$info->setUsername($username);
+						$info->setMobile($mobile);
+						$info->setHeadImg($image_path);
+						$info->setWishText($wish_text);
+						$info->setCreateIp($request->getClientIp());
+						$info->setCreateTime(new \DateTime('now'));
+						$em->persist($info);
+						$em->flush();
+						$em->getConnection()->commit();
+						$session->set('id',$info->getId());
+						$result['ret'] = 0;
+						$result['msg'] = '';
+						$result['data'] = array('id'=>$info->getId(),'username'=>$username);
+					}
+					else{
+						$result['ret'] = 1100;
 						$result['msg'] = '该手机已经被注册';
-	        }
-		    }
-		    catch (Exception $e) {
-		      $em->getConnection()->rollback();
-		      $result['ret'] = 1001;
+					}
+				}
+				catch (Exception $e) {
+					$em->getConnection()->rollback();
+					$result['ret'] = 1001;
 					$result['msg'] = $e->getMessage();
-		    }
+				}
 			}
 		}
 		if( $result['ret'] === 0 && null !== $request->get('url')){
@@ -108,7 +116,13 @@ class ApiController extends Controller
 			return $this->redirect(urldecode($request->get('failUrl')).'?info='.urlencode($result['msg']));
 		}
 
-		return new Response(json_encode($result));
+		$response = new Response();
+		if( null == $request->get('callback'))
+			$response->setContent(json_encode($result));
+		else
+			$response->setContent($callback.'('.json_encode($result).')');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
+		return $response;
 	}
 	/**
 	 * @Route("/search", name="api_search")
@@ -118,7 +132,7 @@ class ApiController extends Controller
 		$page = null === $request->get('page') || (int)$request->get('page') < 1 ? 1 : (int)$request->get('page');
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('AppBundle:Info');
-    $qb = $repo->createQueryBuilder('a');
+		$qb = $repo->createQueryBuilder('a');
 		if( null !== $request->get('mobile')){
 			$qb->andWhere('a.mobile LIKE :mobile');
 			$qb->setParameter(':mobile', '%'.$request->get('mobile').'%');
@@ -130,52 +144,54 @@ class ApiController extends Controller
 		$limit = 8;
 		$offset = ($page-1)*$limit;
 		if( null == $request->get('order')){
-			$order = array('username','desc');
+			$order = array('likeNum','desc');
 		}
 		else{
 			$order = explode('.', $request->get('order'));
 			if( isset($order[1]) && !in_array(strtolower($order[1]), array('desc','asc')))
 				$order[1] = 'desc';
-			if( isset($order[0]) && !in_array($order[0], array('username','createTime','mobile')))
+			if( isset($order[0]) && !in_array($order[0], array('username','createTime','mobile','likeNum')))
 				$order[0] = 'createTime';
 		}
 		$qb->orderBy('a.'.$order[0],strtoupper($order[1]));
 		$qb->setMaxResults($limit);
 		$qb->setFirstResult($offset);
-    $info = $qb->getQuery()->getResult();
+		$info = $qb->getQuery()->getResult();
 
-    $repo = $em->getRepository('AppBundle:Info');
-    $qb = $repo->createQueryBuilder('a');
-    $qb->select('COUNT(a)');
-    $count = $qb->getQuery()->getSingleScalarResult();
+		$repo = $em->getRepository('AppBundle:Info');
+		$qb = $repo->createQueryBuilder('a');
+		$qb->select('COUNT(a)');
+		$count = $qb->getQuery()->getSingleScalarResult();
 
-    $data = array();
-    $cacheManager = $this->container->get('liip_imagine.cache.manager');
-    foreach ($info as $value) {
-    	$data[] = array(
-    		'id' => $value->getId(),
-    		'username' => $value->getUsername(),
-    		'mobile' => $value->getMobile(),
-    		'likeNum' => $value->getLikeNum(),
-    		'wishText' => $value->getWishText(),
-    		'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
-    		'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
-    		'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
-    		'sum' => $count,
-    	);
-    }
-    $result = array(
-    	'ret' => 0,
-    	'data' => $data,
-    );
-    $callback = $request->get('callback') ? : 'callback';
+		$data = array();
+		$cacheManager = $this->container->get('liip_imagine.cache.manager');
+		foreach ($info as $value) {
+			$data[] = array(
+				'id' => $value->getId(),
+				'username' => $value->getUsername(),
+				'mobile' => $value->getMobile(),
+				'likeNum' => $value->getLikeNum(),
+				'wishText' => $value->getWishText(),
+				'city' => $this->getCity($value->getCreateIp()),
+				'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
+				'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
+				'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
+				'sum' => $count,
+				'top' => $this->getRank($value->getLikeNum()),
+			);
+		}
+		$result = array(
+			'ret' => 0,
+			'data' => $data,
+		);
+		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
 		$response = new Response();
 		if( null == $request->get('callback'))
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
 		return $response;
 	}
 	/**
@@ -185,41 +201,43 @@ class ApiController extends Controller
 	{
 		if( null == $id){
 			$result = array(
-	    	'ret' => 1001,
-	    	'msg' => '没有您要的数据',
-	    );
+				'ret' => 1001,
+				'msg' => '没有您要的数据',
+			);
 		}
 		$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
 		if( $info == null ){
 			$result = array(
-	    	'ret' => 1001,
-	    	'msg' => '没有您要的数据',
-	    );
+				'ret' => 1001,
+				'msg' => '没有您要的数据',
+			);
 		}
 		else{
 			$cacheManager = $this->container->get('liip_imagine.cache.manager');
 			$data = array(
 				'username' => $info->getUsername(),
-	  		'mobile' => $info->getMobile(),
-    		'likeNum' => $info->getLikeNum(),
-    		'wishText' => $info->getWishText(),
-    		'headImg' => 'http://'.$request->getHost().'/uploads/'.$info->getHeadImg(),
-    		'thumb' => $cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'),
-    		'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$info->getHeadImg(),
+				'mobile' => $info->getMobile(),
+				'likeNum' => $info->getLikeNum(),
+				'wishText' => $info->getWishText(),
+				'city' => $this->getCity($info->getCreateIp()),
+				'headImg' => 'http://'.$request->getHost().'/uploads/'.$info->getHeadImg(),
+				'thumb' => $cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'),
+				'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$info->getHeadImg(),
+				'top' => $this->getRank($info->getLikeNum()),
 			);
 			$result = array(
-	    	'ret' => 0,
-	    	'data' => $data,
-	    );
+				'ret' => 0,
+				'data' => $data,
+			);
 		}
-    $callback = $request->get('callback') ? : 'callback';
+		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
 		$response = new Response();
 		if( null == $request->get('callback'))
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
 		return $response;
 	}
 	/**
@@ -228,56 +246,57 @@ class ApiController extends Controller
 	public function likeAction(Request $request,$id = null)
 	{
 		$em = $this->getDoctrine()->getManager();
-    $em->getConnection()->beginTransaction();
-    try{
-    	$info = $em->getRepository('AppBundle:Info')->find($id);
+		$em->getConnection()->beginTransaction();
+		try{
+			$info = $em->getRepository('AppBundle:Info')->find($id);
 			if( $info == null ){
 				$result = array(
-		    	'ret' => 1001,
-		    	'msg' => '该信息不存在',
-		    );
+					'ret' => 1001,
+					'msg' => '该信息不存在',
+				);
 			}
 			else{
 				$create_ip = $request->getClientIp();
 
-		    $repo = $em->getRepository('AppBundle:LikeLog');
+				$repo = $em->getRepository('AppBundle:LikeLog');
 				$qb = $repo->createQueryBuilder('a');
-	      $qb->select('COUNT(a)');
-	      $qb->where('a.createIp = :createIp');
-	      $qb->setParameter('createIp', $create_ip);
-	      $count = $qb->getQuery()->getSingleScalarResult();
+				$qb->select('COUNT(a)');
+				$qb->where('a.createIp = :createIp');
+				$qb->setParameter('createIp', $create_ip);
+				$count = $qb->getQuery()->getSingleScalarResult();
 
-	      if( $count < 1){
-	      	$info->increaseLikeNum();
+				if( $count < 1){
+					$info->increaseLikeNum();
 					$em->persist($info);
 					$like_log = new Entity\LikeLog();
 					$like_log->setInfo($info);
-		      $like_log->setCreateIp($create_ip);
-		      $like_log->setCreateTime(new \DateTime('now'));
+					$like_log->setCreateIp($create_ip);
+					$like_log->setCreateTime(new \DateTime('now'));
 					$em->persist($like_log);
-		      $em->flush();
+					$em->flush();
 					$result = array(
-			    	'ret' => 0,
-			    	'msg' => '',
-			    );
-	      }
-	      else{
-	      	$result = array(
-			    	'ret' => 1200,
-			    	'msg' => '您已经投过票了',
-			    );
-	      }
+						'ret' => 0,
+						'msg' => '',
+						'num' => $info->getLikeNum(),
+					);
+				}
+				else{
+					$result = array(
+						'ret' => 1200,
+						'msg' => '您已经投过票了',
+					);
+				}
 				
 			}
 			$em->getConnection()->commit();
-    }
-    catch (Exception $e) {
-      $em->getConnection()->rollback();
-      $result = array(
-	    	'ret' => 2001,
-	    	'msg' => $e->getMessage(),
-	    );
-    }
+		}
+		catch (Exception $e) {
+			$em->getConnection()->rollback();
+			$result = array(
+				'ret' => 2001,
+				'msg' => $e->getMessage(),
+			);
+		}
 		
 		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
@@ -286,7 +305,7 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
 		return $response;
 	}
 	/**
@@ -297,26 +316,56 @@ class ApiController extends Controller
 		$session = $request->getSession();
 		if( null == $session->get('id')){
 			$result = array(
-	    	'ret' => 3001,
-	    	'msg' => '您没有抽奖资格',
-	    );
+				'ret' => 3001,
+				'msg' => '您没有抽奖资格',
+			);
 		}
 		else{
 			$em = $this->getDoctrine()->getManager();
-	    $em->getConnection()->beginTransaction();
-	    try{
+			$em->getConnection()->beginTransaction();
+			try{
 				$info = $em->getRepository('AppBundle:Info')->find($session->get('id'));
+				$mobile = $info->getMobile();
+
+				#当天已抽过将
+				$repo = $em->getRepository('AppBundle:Info');
+				$qb = $repo->createQueryBuilder('a');
+				$qb->select('COUNT(a)');
+				$qb->where('a.mobile = :mobile AND a.createTime >= :createTime1 AND a.createTime < :createTime2 AND a.hasLottery = :hasLottery');
+				$qb->setParameter('mobile', $mobile);
+				$qb->setParameter('hasLottery', true);
+				$timestamp = time();
+				$date1 = date('Y-m-d',$timestamp);
+				$date2 = date('Y-m-d', strtotime('+1 day', $timestamp));
+				$qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
+				$qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
+				$count1 = $qb->getQuery()->getSingleScalarResult();
+
+				#已中将
+				$repo = $em->getRepository('AppBundle:Info');
+				$qb = $repo->createQueryBuilder('a');
+				$qb->select('COUNT(a)');
+				$qb->where('a.mobile = :mobile AND a.prize > 0');
+				$qb->setParameter('mobile', $mobile);
+				$count2 = $qb->getQuery()->getSingleScalarResult();
+
 				if( $info == null ){
 					$result = array(
-			    	'ret' => 1001,
-			    	'msg' => '该信息不存在',
-			    );
+						'ret' => 1001,
+						'msg' => '该信息不存在',
+					);
 				}
-				elseif( $info->getHasLottery() == true){
+				elseif( $count1 > 0){
 					$result = array(
-			    	'ret' => 1002,
-			    	'msg' => '您已经抽过将了哦~',
-			    );
+						'ret' => 1003,
+						'msg' => '今天已抽过奖~',
+					);
+				}
+				elseif( $count2 > 0){
+					$result = array(
+						'ret' => 1002,
+						'msg' => '您已经抽过将了哦~',
+					);
 				}
 				else{
 					$em = $this->getDoctrine()->getManager();
@@ -326,22 +375,22 @@ class ApiController extends Controller
 					$info->setHasLottery(true);
 					$info->setPrize($prize);
 					$em->persist($info);
-		      $em->flush();
+					$em->flush();
 					$result = array(
-			    	'ret' => 0,
-			    	'msg' => '',
-			    	'data' => array('prize'=>$prize),
-			    );
+						'ret' => 0,
+						'msg' => '',
+						'data' => array('prize'=>$prize),
+					);
 				}
 				$em->getConnection()->commit();
-	    }
-	    catch (Exception $e) {
-	      $em->getConnection()->rollback();
-	      $result = array(
-		    	'ret' => 2001,
-		    	'msg' => $e->getMessage(),
-		    );
-	    }
+			}
+			catch (Exception $e) {
+				$em->getConnection()->rollback();
+				$result = array(
+					'ret' => 2001,
+					'msg' => $e->getMessage(),
+				);
+			}
 		}
 		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
@@ -350,7 +399,7 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
 		return $response;
 	}
 	/**
@@ -359,14 +408,14 @@ class ApiController extends Controller
 	public function countAction(Request $request,$id = null)
 	{
 		$em = $this->getDoctrine()->getManager();
-    $repo = $em->getRepository('AppBundle:Info');
-    $qb = $repo->createQueryBuilder('a');
-    $qb->select('COUNT(a)');
-    $count = $qb->getQuery()->getSingleScalarResult();
-    $result = array(
-    	'ret' => 0,
-    	'data' => array('count'=>$count),
-    );
+		$repo = $em->getRepository('AppBundle:Info');
+		$qb = $repo->createQueryBuilder('a');
+		$qb->select('COUNT(DISTINCT a.mobile)');
+		$count = $qb->getQuery()->getSingleScalarResult();
+		$result = array(
+			'ret' => 0,
+			'data' => array('count'=>$count),
+		);
 		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
 		$response = new Response();
@@ -374,7 +423,7 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
 		return $response;
 	}
 
@@ -395,7 +444,32 @@ class ApiController extends Controller
 			$response->setContent($result);
 		else
 			$response->setContent($callback.'('.$result.')');
-		$response->headers->set('Access-Control-Allow-Origin', 'http://182.254.146.173');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
 		return $response;
+	}
+	protected function getRank($likeNum)
+	{
+		$repository = $this->getDoctrine()->getRepository('AppBundle:Info');
+		$query = $repository
+			->createQueryBuilder('a')
+			->select('count(a)')
+			->where('a.likeNum > :likeNum')
+			->setParameter('likeNum', $likeNum)
+			->orderBy('a.likeNum','ASC')
+			->getQuery();
+		return $query->getSingleScalarResult() + 1;
+	}
+	protected function getCity($ip)
+	{
+		$url = 'http://api.map.baidu.com/location/ip';
+		$data = array(
+			'ip' => $ip,
+			'ak' => '6GO8GPtURunrgj5cc5sCyfdt'
+		);
+		$result = json_decode(Helper\HttpClient::get($url.'?'.http_build_query($data)),true);
+		if($result['status'] == 0)
+			return $result['content']['address_detail']['city'];
+		else
+			return '--';
 	}
 }

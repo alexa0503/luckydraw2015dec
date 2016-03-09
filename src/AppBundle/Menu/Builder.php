@@ -19,11 +19,11 @@ class Builder extends ContainerAware
 		$menu->setChildrenAttribute('id', 'leftmenu');
 
 		$menu->addChild('Dashboard', array('route' => 'admin_index'));
-		$info = $menu->addChild('信息查看', array('route' => 'admin_info'));
+		$info = $menu->addChild('信息查看', array('route' => 'admin_story'));
 		$info->setAttribute('class', 'nav-parent');
 		$info->setChildrenAttribute('class', 'children');
-		$info->addChild('查看', array('route' => 'admin_info'));
-		$info->addChild('添加', array('route' => 'admin_info_add'));
+		$info->addChild('查看', array('route' => 'admin_story'));
+		$info->addChild('添加', array('route' => 'admin_story_add'));
 		/*
 		$storage = $menu->addChild('中奖时间段设置', array('route' => 'admin_timeodds'));
 		$storage->setAttribute('class', 'nav-parent');

@@ -22,7 +22,8 @@
 
 	<div class="topBar" style="display:none;">
 		<div class="innerDiv">
-			<a href="javascript:void(0);" class="topBtn1 abs" onClick="showRule();"><img src="{{ asset('bundles/app/default/') }}images/topBtn1.png"></a>
+			<a href="javascript:void(0);" class="topBtn1 abs" onClick="showRule();" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/topBtn1.png"></a>
+			<a href="javascript:void(0);" onclick="backPage2();" class="abs backPage2" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="66" height="20"></a>
 		</div>
 	</div>
 
@@ -30,9 +31,9 @@
 	<div class="pop popShare1" style="display:none;" onClick="closePop();"></div>
 	<div class="pop popShare2" style="display:none;" onClick="closePop();">
 		<div class="innerDiv">
-			<a href="javascript:void(0);" class="shareBtn1 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
-			<a href="javascript:void(0);" class="shareBtn2 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
-			<a href="javascript:void(0);" class="shareBtn3 abs" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+			<a href="javascript:void(0);" class="shareBtn1 abs sinaShare" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+			<a href="javascript:void(0);" class="shareBtn2 abs douban" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
+			<a href="javascript:void(0);" class="shareBtn3 abs qzoneShare" onClick="goLotteryPage();"><img src="{{ asset('bundles/app/default/') }}images/space.gif" width="104" height="104"></a>
 		</div>
 	</div>
 {% endblock %}

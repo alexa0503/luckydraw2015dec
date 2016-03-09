@@ -6,7 +6,7 @@
 				{% endfor %}
 			{% else %}
 			<div class="row">
-				{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+				{% form_theme form 'AppBundle:Form:layout.html.twig' %}
 				<div class="panel panel-default">
 					 <div class="panel-body">
 						{{ form_start(form) }}
@@ -20,4 +20,15 @@
 {% block title %}{% endblock %}
 {% block javascripts %}
 {{ parent() }}
+<script>
+	$('.preview').change(function(){
+		var obj = $(this).parent('div').find('.img-preview');
+		var file = this.files[0]; //选择上传的文件
+		var r = new FileReader();
+		r.readAsDataURL(file); //Base64
+		$(r).load(function(){
+				obj.html('<img src="'+ this.result +'" alt="" width="400" />');
+		});
+	})
+</script>
 {% endblock %}
