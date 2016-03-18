@@ -39,7 +39,7 @@ select,input,textarea{font-family:inherit; outline:none;}
 
 /*page1*/
 .page1Img1{ background:url(../images/page1Img1.png) 0 0 no-repeat;}
-.page1Img2{ background:url(../images/page1Img2.png) 0 0 no-repeat; left:395px; top:190px; width:221px; height:489px;}
+.page1Img2{ background:url(../images/page1Img2.png) 0 0 no-repeat; left:395px; top:170px; width:221px; height:489px;}
 .page1Img2Act{
 -webkit-animation:page1Img2Act 4s 0s linear both infinite;	
 -webkit-transform-origin:94px 112px;
@@ -52,31 +52,32 @@ select,input,textarea{font-family:inherit; outline:none;}
 87%{-webkit-transform:rotate(-5deg);}
 100%{-webkit-transform:rotate(0deg);}
 }
-.page1Img5{ background:url(../images/page1Img5.png) 0 0 no-repeat;}
+.page1Img5{ background:url(../images/page1Img5.png) 0 50px no-repeat;}
 .page1Img6{ background:url(../images/page1Img6.png) 0 0 no-repeat; left:20px; top:880px; width:125px; height:106px;}
 .pNumb{ top:950px; right:15px; text-align:right; font-size:34px; color:#8c5f31; line-height:34px; font-style:italic; font-weight:100; border-bottom:1px solid #8c5f31;}
 .pNumb a{ color:#8c5f31;}
 .pNumb font{ padding:0 5px 0 0;}
-.page1Img7{ background:url(../images/page1Img7.png) 0 0 no-repeat; width:107px; height:74px; position:absolute; left:407px; top:808px;}
-.page1Btn1{ left:50%; margin-left:-177px; top:840px;}
+.page1Img7{ background:url(../images/page1Img7.png) 0 0 no-repeat; width:107px; height:74px; position:absolute; left:407px; top:858px;}
+.page1Btn1{ left:50%; margin-left:-177px; top:875px;}
 
 /*page2*/
 .page2Img1{ background:url(../images/page2Img1.png) 0 0 no-repeat;}
-.page2Q{ position:absolute; left:110px; top:293px;}
-.page2Q li{ background:url(../images/page2Img3.png) 0 5px no-repeat; width:400px; padding:0 0 38px 43px;}
-.page2Q li a{ color:#8f5103; font-size:24px; line-height:34px}
+.page2Q{ position:absolute; left:110px; top:330px;}
+.page2Q li{ background:url(../images/page2Img3.png) 0 5px no-repeat; width:400px; padding:0 0 0 43px; margin-bottom:38px; height:34px; overflow:hidden;}
+.page2Q li a{ color:#8f5103; font-size:24px; line-height:34px; overflow:hidden; display:inline-block;}
 .page2Q li.on{ background-position:0 -68px;}
-/*.page2Q li.on a{ color:#cb152b;}*/
-.wish{ width:412px; height:105px; padding:20px; color:#c0a56d; font-size:24px; line-height:34px; position:absolute; left:90px; top:547px; background:none; border:none; resize:none;}
+.page2Q li.on a{ color:#cb152b;}
+.wish{ width:412px; height:135px; padding:20px; color:#c0a56d; font-size:24px; line-height:34px; position:absolute; left:85px; top:465px; background:none; border:none; resize:none;}
 .page2Img2{ left:288px; top:743px;}
 .page2Btn1{ left:50%; margin-left:-142px; top:840px;}
+.page2Btn2{ left:545px; top:325px;}
 
 /*page3*/
 .page3Img1{ background:url(../images/page3Img1.png) 0 0 no-repeat;}
 .page3Img2{ left:288px; top:107px;}
 .page3Img3{ background:url(../images/page3Img3.png) 0 0 no-repeat;}
 .fileBtn{ display:block; position:absolute; width:148px; height:188px; left:245px; top:272px; opacity:0; -webkit-opacity:0;}
-.photoOuter{ display:block; position:absolute; width:148px; height:188px; left:243px; top:270px; border:2px solid #a57d3c; border-radius:5px; overflow:hidden;}
+.photoOuter{ display:block; position:absolute; width:146px; height:186px; left:244px; top:270px; border:2px solid #a57d3c; border-radius:5px; overflow:hidden;}
 .wechatPhoto{ display:block; position:absolute; width:148px; height:188px; left:245px; top:272px; opacity:0; -webkit-opacity:0;}
 .upLoadImg{ width:148px; position:absolute; left:245px; top:272px; background:#FFFFFF; position:absolute; left:0; top:0;}
 .iTxt{ width:317px; height:57px; line-height:56px; font-size:24px; color:#c0a56d; background:none; border:none; position:absolute; left:211px; padding:0 15px;}
@@ -120,24 +121,26 @@ select,input,textarea{font-family:inherit; outline:none;}
 .page5Img4{ background:url(../images/page5Img4.png) 0 0 no-repeat;}
 .page5Img2{ background:url(../images/page5Img2.png) 0 0 no-repeat;}
 .page5Img2Act{
--webkit-animation:page5Img2Act 5s 0s linear both infinite;
+-webkit-animation:page5Img2Act 6s 0s linear both infinite;
 -webkit-transform-origin:320px 385px;
 }
 
 @-webkit-keyframes page5Img2Act{
 0%{ -webkit-transform:scale(1); background-position:0 0;}
-6%{ -webkit-transform:scale(1); background-position:-640px 0;}
-16%{ -webkit-transform:scale(1); background-position:-640px 0;}
-22%{ -webkit-transform:scale(1); background-position:-1280px 0;}
-32%{ -webkit-transform:scale(1); background-position:-1280px 0;}
-38%{ -webkit-transform:scale(1); background-position:-1920px 0;}
-50%{ -webkit-transform:scale(1); background-position:-1920px 0;}
-56%{ -webkit-transform:scale(1); background-position:-2560px 0;}
-66%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+5%{ -webkit-transform:scale(1); background-position:-640px 0;}
+15%{ -webkit-transform:scale(1); background-position:-640px 0;}
+20%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+30%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+35%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+44%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+49%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+58%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+63%{ -webkit-transform:scale(1); background-position:-3200px 0;}
 72%{ -webkit-transform:scale(1); background-position:-3200px 0;}
-82%{ -webkit-transform:scale(1); background-position:-3200px 0;}
-88%{ -webkit-transform:scale(1); background-position:-3840px 0;}
-100%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+77%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+86%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+91%{ -webkit-transform:scale(1); background-position:-4480px 0;}
+100%{ -webkit-transform:scale(1); background-position:-4480px 0;}
 }
 
 /*@-webkit-keyframes page5Img2Act{
@@ -204,6 +207,8 @@ select,input,textarea{font-family:inherit; outline:none;}
 .rule1{ background:url(../images/rule1.png) 0 0 no-repeat;}
 .rule2{ background:url(../images/rule2.png) 0 0 no-repeat;}
 .rule3{ background:url(../images/rule3.png) 0 0 no-repeat;}
+.rule4{ background:url(../images/rule4.png) 0 0 no-repeat;}
+.rule5{ background:url(../images/rule5.png) 0 0 no-repeat;}
 .closeBtn{ left:557px; top:134px;}
 
 /*page6*/

@@ -40,7 +40,7 @@
 				<div class="h1008">
 					<div class="innerDiv">
 						<div class="page4Img2 abs bgImg"></div>
-						<a href="javascript:void(0);" onClick="showShareNote();" class="abs page4Btn1"><img src="{{ asset('bundles/app/default/') }}images/page4Btn1.png"></a>
+						<a href="javascript:void(0);" onClick="showShareNote();ga('send', 'event', 'button','click','share_wish');" class="abs page4Btn1"><img src="{{ asset('bundles/app/default/') }}images/page4Btn1.png"></a>
 						<a href="javascript:void(0);" onClick="getLottery();" class="abs page4Btn2" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/page4Btn2.png"></a>
 					</div>
 				</div>
@@ -50,7 +50,7 @@
 				<div class="h1008">
 					<div class="innerDiv">
 						<div class="page5Img2 abs bgImg"></div>
-						<div class="page5Img3 abs"></div>
+						<!--<div class="page5Img3 abs"></div>-->
 						<div class="page5Img4 abs bgImg"></div>
 					</div>
 				</div>
@@ -73,6 +73,7 @@
 	<script>
 		$(document).ready(function(){
 			loadSuccess();
+			ga('send', 'pageview', '/page_share');
 		});
 	</script>
 {% endblock %}

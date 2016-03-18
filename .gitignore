@@ -33,7 +33,7 @@
 
 # Build data
 /build/
-
+/src/AppBundle/Entity/*.php~
 # Composer PHAR
 /composer.phar
 ~

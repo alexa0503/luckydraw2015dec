@@ -54,6 +54,11 @@ class Info
      * @ORM\Column(name="create_ip",type="string", length=60)
      */
     protected $createIp;
+    /**
+     * @ORM\Column(name="is_active",type="boolean")
+     */
+    protected $isActive = 1;
+
  
     /**
      * Get id
@@ -348,5 +353,28 @@ class Info
     public function getWishText()
     {
         return $this->wishText;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Info
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }

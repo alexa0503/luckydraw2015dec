@@ -14,6 +14,8 @@ function randomNumb(minNumb,maxNumb){
 	return rn;
 }
 
+var w
+
 var wHeight;
 var tempHeight;
 $(document).ready(function(){
@@ -37,8 +39,8 @@ $(document).ready(function(){
 	
 	var _title="美丽心愿，从头开始";
 	var _pageurl=notWechatSharlUrl;
-	var _picurl="http://dev.slek.com.cn/bundles/app/default/images/share.jpg";
-	var _sharetext="刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？";
+	var _picurl=noWechatShareImg;/*"http://dev.slek.com.cnbundles/app/default/images/share.jpg";*/
+	var _sharetext="＃带你和闺蜜去见郭碧婷＃刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？";
 	
 		$(".douban").click(function(){
 
@@ -77,42 +79,44 @@ $(document).ready(function(){
 var lh=380;
 function loadingImg(){
 	var images=[];
-	images.push("/bundles/app/default/images/bg.png");
+	images.push("bundles/app/default/images/bg.png");
 	
-	images.push("/bundles/app/default/images/page1Img1.png");
-	images.push("/bundles/app/default/images/page1Img2.png");
-	images.push("/bundles/app/default/images/page1Img5.png");
-	images.push("/bundles/app/default/images/page1Img6.png");
-	images.push("/bundles/app/default/images/page1Img7.png");
+	images.push("bundles/app/default/images/page1Img1.png");
+	images.push("bundles/app/default/images/page1Img2.png");
+	images.push("bundles/app/default/images/page1Img5.png");
+	images.push("bundles/app/default/images/page1Img6.png");
+	images.push("bundles/app/default/images/page1Img7.png");
 	
-	images.push("/bundles/app/default/images/page2Img1.png");
-	images.push("/bundles/app/default/images/page2Img3.png");
+	images.push("bundles/app/default/images/page2Img1.png");
+	images.push("bundles/app/default/images/page2Img3.png");
 	
-	images.push("/bundles/app/default/images/page3Img1.png");
-	images.push("/bundles/app/default/images/page3Img3.png");
+	images.push("bundles/app/default/images/page3Img1.png");
+	images.push("bundles/app/default/images/page3Img3.png");
 	
-	/*images.push("/bundles/app/default/images/page4Img1.png");
-	images.push("/bundles/app/default/images/page4Img2.png");
+	/*images.push("bundles/app/default/images/page4Img1.png");
+	images.push("bundles/app/default/images/page4Img2.png");
 	
-	images.push("/bundles/app/default/images/page5Award0.png");
-	images.push("/bundles/app/default/images/page5Award1.png");
-	images.push("/bundles/app/default/images/page5Award2.png");
-	images.push("/bundles/app/default/images/page5Award3.png");
-	images.push("/bundles/app/default/images/page5Award4.png");
-	images.push("/bundles/app/default/images/page5Award5.png");
-	images.push("/bundles/app/default/images/page5Award6.png");
-	images.push("/bundles/app/default/images/page5Img2.png");
-	images.push("/bundles/app/default/images/page5Img3.png");
-	images.push("/bundles/app/default/images/page5Img4.png");*/
+	images.push("bundles/app/default/images/page5Award0.png");
+	images.push("bundles/app/default/images/page5Award1.png");
+	images.push("bundles/app/default/images/page5Award2.png");
+	images.push("bundles/app/default/images/page5Award3.png");
+	images.push("bundles/app/default/images/page5Award4.png");
+	images.push("bundles/app/default/images/page5Award5.png");
+	images.push("bundles/app/default/images/page5Award6.png");
+	images.push("bundles/app/default/images/page5Img2.png");
+	images.push("bundles/app/default/images/page5Img3.png");
+	images.push("bundles/app/default/images/page5Img4.png");*/
 	
-	images.push("/bundles/app/default/images/rule1.png");
-	images.push("/bundles/app/default/images/rule2.png");
-	images.push("/bundles/app/default/images/rule3.png");
+	images.push("bundles/app/default/images/rule1.png");
+	images.push("bundles/app/default/images/rule2.png");
+	images.push("bundles/app/default/images/rule3.png");
+	images.push("bundles/app/default/images/rule4.png");
+	images.push("bundles/app/default/images/rule5.png");
 	
-	images.push("/bundles/app/default/images/share1.png");
-	images.push("/bundles/app/default/images/share2.png");
+	images.push("bundles/app/default/images/share1.png");
+	images.push("bundles/app/default/images/share2.png");
 	
-	images.push("/bundles/app/default/images/topImg1.png");
+	images.push("bundles/app/default/images/topImg1.png");
 	
 	
 	/*图片预加载*/
@@ -141,15 +145,15 @@ function loadingImg(){
 
 function loadingShare(){
 	var images=[];
-	images.push("/bundles/app/default/images/bg2.png");
+	images.push("bundles/app/default/images/bg2.png");
 	
-	images.push("/bundles/app/default/images/page6Img1.png");
+	images.push("bundles/app/default/images/page6Img1.png");
 	
-	images.push("/bundles/app/default/images/rule1.png");
-	images.push("/bundles/app/default/images/rule2.png");
-	images.push("/bundles/app/default/images/rule3.png");
+	images.push("bundles/app/default/images/rule1.png");
+	images.push("bundles/app/default/images/rule2.png");
+	images.push("bundles/app/default/images/rule3.png");
 	
-	images.push("/bundles/app/default/images/topImg1.png");
+	images.push("bundles/app/default/images/topImg1.png");
 	
 	
 	/*图片预加载*/
@@ -177,15 +181,15 @@ function loadingShare(){
 
 function loadingTop(){
 	var images=[];
-	images.push("/bundles/app/default/images/bg.png");
+	images.push("bundles/app/default/images/bg.png");
 	
-	images.push("/bundles/app/default/images/topBg.png");
+	images.push("bundles/app/default/images/topBg.png");
 	
-	images.push("/bundles/app/default/images/rule1.png");
-	images.push("/bundles/app/default/images/rule2.png");
-	images.push("/bundles/app/default/images/rule3.png");
+	images.push("bundles/app/default/images/rule1.png");
+	images.push("bundles/app/default/images/rule2.png");
+	images.push("bundles/app/default/images/rule3.png");
 	
-	images.push("/bundles/app/default/images/topImg1.png");
+	images.push("bundles/app/default/images/topImg1.png");
 	
 	
 	/*图片预加载*/
@@ -213,30 +217,31 @@ function loadingTop(){
 
 function loadSuccess(){
 	var images=[];
-	images.push("/bundles/app/default/images/bg.png");
+	images.push("bundles/app/default/images/bg.png");
 	
-	images.push("/bundles/app/default/images/page4Img1.png");
-	images.push("/bundles/app/default/images/page4Img2.png");
+	images.push("bundles/app/default/images/page4Img1.png");
+	images.push("bundles/app/default/images/page4Img2.png");
 	
-	images.push("/bundles/app/default/images/page5Award0.png");
-	images.push("/bundles/app/default/images/page5Award1.png");
-	images.push("/bundles/app/default/images/page5Award2.png");
-	images.push("/bundles/app/default/images/page5Award3.png");
-	images.push("/bundles/app/default/images/page5Award4.png");
-	images.push("/bundles/app/default/images/page5Award5.png");
-	images.push("/bundles/app/default/images/page5Award6.png");
-	images.push("/bundles/app/default/images/page5Img2.png");
-	images.push("/bundles/app/default/images/page5Img3.png");
-	images.push("/bundles/app/default/images/page5Img4.png");
+	images.push("bundles/app/default/images/page5Award0.png");
+	images.push("bundles/app/default/images/page5Award1.png");
+	images.push("bundles/app/default/images/page5Award2.png");
+	images.push("bundles/app/default/images/page5Award3.png");
+	images.push("bundles/app/default/images/page5Award4.png");
+	images.push("bundles/app/default/images/page5Award5.png");
+	images.push("bundles/app/default/images/page5Award6.png");
+	images.push("bundles/app/default/images/page5Award7.png");
+	images.push("bundles/app/default/images/page5Img2.png");
+	/*images.push("bundles/app/default/images/page5Img3.png");*/
+	images.push("bundles/app/default/images/page5Img4.png");
 	
-	images.push("/bundles/app/default/images/rule1.png");
-	images.push("/bundles/app/default/images/rule2.png");
-	images.push("/bundles/app/default/images/rule3.png");
+	images.push("bundles/app/default/images/rule1.png");
+	images.push("bundles/app/default/images/rule2.png");
+	images.push("bundles/app/default/images/rule3.png");
 	
-	images.push("/bundles/app/default/images/share1.png");
-	images.push("/bundles/app/default/images/share2.png");
+	images.push("bundles/app/default/images/share1.png");
+	images.push("bundles/app/default/images/share2.png");
 	
-	images.push("/bundles/app/default/images/topImg1.png");
+	images.push("bundles/app/default/images/topImg1.png");
 	
 	
 	/*图片预加载*/
@@ -267,11 +272,38 @@ function goPage1(){
 	$('.page0').hide();
 	$('.topBar').fadeIn(500);
 	$('.page1').fadeIn(500);
-	$('body').css('background','url(/bundles/app/default/images/bg.png) top center no-repeat');
+	$('body').css('background','url(bundles/app/default/images/bg.png) top center no-repeat');
 	$('input').val('');
 }
 
+var wish1=['想和闺蜜一起去见郭碧婷','想亲眼见到郭碧婷的黑长直头发','想和闺蜜去见郭碧婷不加修饰的美','想和闺蜜去见郭碧婷的纯真美'];
+var wish2=['一起去旅行，是闺蜜间都曾有过的约定。来许愿吧，那些年欠下的旅行，让舒蕾心愿团队助你实现。','想要保持苗条？别只羡慕别人了。来许愿，让舒蕾心愿团队助你实现。','想在心情不好的时候打“飞旳”去喂鸽子吗？来许愿，舒蕾心愿团队给你报销打的费。','每一个空着的心愿瓶，都在等你。快来定制一个独家心愿，用你的创意让心愿被看见。','每一个用心许下的愿望，都值得被实现。快来吧，心愿瓶里的心愿，还差你的一个。'];
+
+var wishArr=[0,1,2,3];
+var ranNumb1=parseInt(randomNumb(0,2));
+var ranNumb2=parseInt(randomNumb(0,4));
+
+function changeFirstWish(){
+	var aIndex=$('.page2Q li').index($('.page2Q li.on'));
+	ranNumb1=parseInt(randomNumb(0,2));
+	var selIndex=wishArr[ranNumb1];
+	wishArr.push(tempSelIndex);
+	tempSelIndex=selIndex;
+	wishArr.splice(ranNumb1,1);
+	$('.firstWish').html(wish1[selIndex]);
+	if(aIndex==0){
+		$('#wishText').val(wish1[selIndex]);
+		}
+	}
+	
+var tempSelIndex;
 function goPage2(){
+	var selIndex=wishArr[ranNumb1];
+	tempSelIndex=selIndex;
+	wishArr.splice(ranNumb1,1);
+	$('.firstWish').html(wish1[selIndex]);
+	$('.wish').html(wish2[ranNumb2]);
+	$('.wish').val(wish2[ranNumb2]);
 	$('.topBtn1').hide();
 	$('.page1').fadeOut(500);
 	$('.page2').fadeIn(500);
@@ -287,14 +319,15 @@ function goPage2(){
 }
 
 function choseQ(e){
+	var aIndex=$('.page2Q li').index($(e).parents('li'));
 	$('.page2Q li').removeClass('on');
 	$(e).parents('li').addClass('on');
-	var sHtml=$(e).html();
-	$('.page2Q li').removeClass('on');
-	$(e).parents('li').addClass('on');
-	//$('.wish').html(sHtml);
-	//$('.wish').val(sHtml);
-	$('#wishText').val($(e).text());
+	if(aIndex==0){
+		$('#wishText').val($(e).text());
+		}
+		else{
+			$('#wishText').val($('.wish').val());
+			}
 }	
 
 var isWechat=false;//是否加载完js-sdk
@@ -464,31 +497,36 @@ function go4(){
 	submitInfo();
 }	
 
+var p4Time;
 function goPage4(){
-	wx.checkJsApi({
-		jsApiList: [
-			'onMenuShareTimeline',
-			'onMenuShareAppMessage',
-			'chooseImage',
-			'previewImage',
-			'uploadImage',
-			'downloadImage',
-			'getNetworkType'
-		],
-		success: function (res) {
-			isWechat=true;
-		}
+	p4Time=setInterval(function(){
+		wx.checkJsApi({
+			jsApiList: [
+				'onMenuShareTimeline',
+				'onMenuShareAppMessage',
+				'chooseImage',
+				'previewImage',
+				'uploadImage',
+				'downloadImage',
+				'getNetworkType'
+			],
+			success: function (res) {
+				isWechat=true;
+				clearInterval(p4Time);
+			}
+		},500);
 	});
 	
 	$('.page0').hide();
 	$('.topBar').fadeIn(500);
-	$('body').css('background','url(/bundles/app/default/images/bg.png) top center no-repeat');
+	$('body').css('background','url(bundles/app/default/images/bg.png) top center no-repeat');
 	setTimeout(function(){
 		goPage4b();
 	},250);
 }
 
 function goPage4b(){
+	clearInterval(p4Time);
 	$('.page3').fadeOut(500);
 	setTimeout(function(){
 		$('.page4').fadeIn(1000);
@@ -501,12 +539,38 @@ function goPage4b(){
 }
 
 function showShareNote(){
+	clearInterval(p4Time);
 	$('.popBg').fadeIn(500);
 	if(isWechat){
+		//alert('isWechat:'+ua);
+		$('.popShare2').hide();
 		$('.popShare1').fadeIn(500);
 	}
 	else{
-		$('.popShare2').fadeIn(500);
+		if (/iPhone|iPod|iPad/i.test(ua)){//ios
+			if(/MicroMessenger/.test(ua)){//微信
+				//alert('iOS_MicroMessenger:'+ua);
+				$('.popShare2').hide();
+				$('.popShare1').fadeIn(500);
+				}
+				else{//非微信
+					//alert('iOS_非MicroMessenger:'+ua);
+					$('.popShare1').hide();
+					$('.popShare2').fadeIn(500);
+					}
+			}
+			else{//android
+				if(/MicroMessenger/.test(ua)){//微信
+					//alert('MicroMessenger:'+ua);
+					$('.popShare2').hide();
+					$('.popShare1').fadeIn(500);
+					}
+					else{//非微信
+						//alert('非MicroMessenger:'+ua);
+						$('.popShare1').hide();
+						$('.popShare2').fadeIn(500);
+						}
+				}
 	}
 }
 
@@ -522,6 +586,7 @@ function goLotteryPage(){
 }
 
 function showRule(){
+	ga('send', 'pageview', '/page_mechanics ');
 	$('.ruleBg').fadeIn(500);
 	$('.popRule').fadeIn(500);
 	setTimeout(function(){
@@ -531,48 +596,63 @@ function showRule(){
 	},550);
 }
 
+var endPrizeNumb;
+var isLotteryed=false;
 function getLottery(){
-	closePop();
-	$('.page4').fadeOut(500);
-	$('.page4b').fadeOut(500);
-	$('.page4Img4').fadeOut(500);
-	$('.page5').fadeIn(500);
-	setTimeout(function(){
-		$('.page5Img2').addClass('page5Img2Act');
-		$('.page5Img3').addClass('page5Img3Act');
-	},500);
-	
-	//请求抽奖接口
-	$.ajax({
-		url: "http://luckydraw2015dec.himyweb.com/lottery",
-		type: "GET",
-		dataType: 'jsonp',
-		cache: false,
-		jsonp: 'callback',
-		success: function (json) {
-			if(json.ret == 0){
-				//请求成功后
-				//var aNumb=1;//奖项 0-6 0未中奖 1一等奖 2二等奖……
-				$('.prize0').hide();
-				$('.page5endImg1').show();
-				$('.page5endImg1').css('background-image','url(/bundles/app/default/images/page5Award'+json.data.prize+'.png)');
-				setTimeout(function(){
-					$('.page5').hide();
-					$('.page5end').fadeIn(500);
-				},3000);
+	if(!isLotteryed){
+		ga('send', 'pageview', '/page_luckydraw');
+		closePop();
+		$('.page4').fadeOut(500);
+		$('.page4b').fadeOut(500);
+		$('.page4Img4').fadeOut(500);
+		$('.page5').fadeIn(500);
+		setTimeout(function(){
+			$('.page5Img2').addClass('page5Img2Act');
+			//$('.page5Img3').addClass('page5Img3Act');
+		},500);
+		
+		//请求抽奖接口
+		$.ajax({
+			url: "http://dev.slek.com.cn/lottery",
+			type: "GET",
+			dataType: 'jsonp',
+			cache: false,
+			jsonp: 'callback',
+			success: function (json) {
+				if(json.ret == 0){
+					//请求成功后
+					//var aNumb=1;//奖项 0-6 0未中奖 1一等奖 2二等奖……
+					isLotteryed=true;
+					$('.prize0').hide();
+					$('.page5endImg1').show();
+					$('.page5endImg1').css('background-image','url(bundles/app/default/images/page5Award'+json.data.prize+'.png)');
+					endPrizeNumb=json.data.prize;
+					setTimeout(function(){
+						$('.page5Img2').removeClass('page5Img2Act');
+						$('.page5').hide();
+						$('.page5end').fadeIn(500);
+						ga('send', 'pageview', '/page_result_'+endPrizeNumb);
+					},6000);
+				}
+				else{
+					//alert(json.msg);
+					isLotteryed=true;
+					$('.prize0').show();
+					$('.page5endImg1').hide();
+					$('.page5endImg1').css('background-image','url(bundles/app/default/images/page5Award0.png)');
+					setTimeout(function(){
+						$('.page5Img2').removeClass('page5Img2Act');
+						$('.page5').hide();
+						$('.page5end').fadeIn(500);
+						ga('send', 'pageview', '/page_result_none');
+					},6000);
+				}
 			}
-			else{
-				//alert(json.msg);
-				$('.prize0').show();
-				$('.page5endImg1').hide();
-				$('.page5endImg1').css('background-image','url(/bundles/app/default/images/page5Award0.png)');
-				setTimeout(function(){
-					$('.page5').hide();
-					$('.page5end').fadeIn(500);
-				},3000);
-			}
+		});
+	}
+	else{
+		//分享过再分享
 		}
-	});
 }
 
 function closeRule(){
@@ -584,7 +664,7 @@ function goPage6(){
 	$('.page0').hide();
 	$('.topBar').fadeIn(500);
 	$('.page6').fadeIn(500);
-	$('body').css('background','url(/bundles/app/default/images/bg2.png) top center no-repeat');
+	$('body').css('background','url(bundles/app/default/images/bg2.png) top center no-repeat');
 }
 
 function goPage7(){

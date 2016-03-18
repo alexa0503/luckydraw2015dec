@@ -37,6 +37,7 @@ class OAuthListener
 	*/
 	public function onKernelRequest(GetResponseEvent $event)
 	{
+		/*
 		$request = $event->getRequest();
 		$session = $request->getSession();
 		if($request->getClientIp() == '127.0.0.1'){
@@ -82,6 +83,7 @@ class OAuthListener
 			$session->set('wx_nonce_str', $wx->nonceStr);
 			$session->set('wx_signature', $wx->signature);
 		}
+		*/
 		
 	}
 	/*

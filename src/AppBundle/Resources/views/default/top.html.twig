@@ -22,13 +22,12 @@
                     		<div class="swiper-slide topBlock">
                         	<div class="innerDiv">
                             	<div class="tNumb">TOP{{ loop.index }}</div>
-                            	<img src="{{ (asset('uploads/story/')~info.headImg) | imagine_filter('thumb1') }}" class="face2 abs">
+                            	<img src="{{ (asset('uploads/story/')~info.headImg) }}" class="face2 abs">
                                 <div class="tName"><span>{{ info.username }}</span></div>
                                 <div class="tVote"><img src="{{ asset('bundles/app/default/') }}images/topIcon1.png">{{ info.likeNum }}赞</div>
-                                <div class="tWish">{{ info.wishText }}</div>
+                                <div class="tWish">{{ info.wishTitle | raw }}</div>
                                 <div class="tTitle">
                                 	<font>Ta的美丽心愿：</font><br>
-                                    {{ info.wishTitle | raw }}
                                 	{{ info.wishText | raw }}
                                 </div>
                                 <div class="tPhoto">
@@ -58,6 +57,9 @@
 	<script>
 		$(document).ready(function(){
 			loadingTop();
+			
+			ga('send', 'pageview', '/page_storylist');
+
 		});
 	</script>
 {% endblock %}

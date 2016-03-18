@@ -20,32 +20,30 @@
 						<div class="page1Img5 abs bgImg"></div>
 						<div class="abs page1Img2 page1Img2Act"></div>
 						<div class="abs page1Img6"></div>
-						<div class="pNumb abs"><a href="http://www.slek.com.cn"><img src="{{ asset('bundles/app/default/') }}images/page1Img3.png"><font>{{ count }}</font><img src="{{ asset('bundles/app/default/') }}images/page1Img4.png"></a></div>
-						<a href="javascript:void(0);" onClick="goPage2();" class="abs page1Btn1"><img src="{{ asset('bundles/app/default/') }}images/page1Btn1.png"></a>
+						<div class="pNumb abs"><a onClick="ga('send', 'event', 'button','click','status',{'hitCallback':function(){window.location.href='http://www.slek.com.cn/makewish#default-btns';}});"><img src="{{ asset('bundles/app/default/') }}images/page1Img3.png"><font>{{ count }}</font><img src="{{ asset('bundles/app/default/') }}images/page1Img4.png"></a></div>
+						<a href="javascript:void(0);" onClick="goPage2();ga('send', 'event', 'button','click','gamestart');" class="abs page1Btn1"><img src="{{ asset('bundles/app/default/') }}images/page1Btn1.png"></a>
 						<div class="abs page1Img7"></div>
 					</div>
 				</div>
 			</div>
-			<form action="/form" enctype="multipart/form-data" method="post" id="form">
+			<form action="http://dev.slek.com.cn/form" enctype="multipart/form-data" method="post" id="form">
 				<div class="page page2" style="display:none;">
 					<div class="h1008">
 						<div class="innerDiv">
 							<div class="page2Img1 abs bgImg"></div>
 							<ul class="abs page2Q">
 								<li>
-									<a href="javascript:void(0);" onClick="choseQ(this);" style="color:#cb152b;">想亲眼看看郭碧婷美丽的黑长直</a>
+									<a href="javascript:void(0);" onClick="choseQ(this);ga('send', 'event', 'button','click','wishchoice');" class="firstWish">想亲眼看看郭碧婷美丽的黑长直</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" onClick="choseQ(this);">逃离PM2.5，和头发一起吹吹自然风</a>
-								</li>
-								<li style="padding-bottom:0;">
-									<a href="javascript:void(0);" onClick="choseQ(this);">头发一天天长长，就像一个孩子的成长，想记录美丽秀发的每一个瞬间</a>
+									<a href="javascript:void(0);" onClick="choseQ(this);ga('send', 'event', 'button','click','wishwrite');">定制一个美丽心愿</a>
 								</li>
 							</ul>
-							<textarea class="wish">每一个空着的心愿瓶，都在等你。快来为你的秀发定制一个独家心愿，用你的创意让心愿被看见。</textarea>
+							<a href="javascript:void(0);" onClick="changeFirstWish();ga('send', 'event', 'button','click','refresh');" class="abs page2Btn2"><img src="{{ asset('bundles/app/default/') }}images/page2Btn2.png"></a>
+							<textarea id='wish' class="wish"></textarea>
 							<input name="wishText" value="" type="hidden" id="wishText">
-							<img src="{{ asset('bundles/app/default/') }}images/page2Img2.png" class="abs page2Img2">
-							<a href="javascript:void(0);" onClick="goPage3();" class="abs page2Btn1"><img src="{{ asset('bundles/app/default/') }}images/page2Btn1.png"></a>
+							<!--<img src="{{ asset('bundles/app/default/') }}images/page2Img2.png" class="abs page2Img2">-->
+							<a href="javascript:void(0);" onClick="goPage3();ga('send', 'event', 'button','click','submit_wish_step1');" class="abs page2Btn1"><img src="{{ asset('bundles/app/default/') }}images/page2Btn1.png"></a>
 						</div>
 					</div>
 				</div>
@@ -65,18 +63,18 @@
 										</div>
 									</div>
 								
-								<input type="file" name="headImg" id="headImg" class="fileBtn" style="display:none;" onChange="setImagePreview();" />
-								<a href="javascript:void(0);" class="wechatPhoto" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/uploadBtn.png"></a>
+								<input type="file" name="headImg" onClick="ga('send', 'event', 'button','click','input_photo');" id="headImg" class="fileBtn" style="display:none;" onChange="setImagePreview();" />
+								<a href="javascript:void(0);" onClick="ga('send', 'event', 'button','click','input_photo');" class="wechatPhoto" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/uploadBtn.png"></a>
 								
-								<input type="text" maxlength="20" class="iTxt iTxt1" name="username" id="username">
-								<input type="tel" maxlength="11" class="iTxt iTxt2" name="mobile" id="mobile">
+								<input type="text" maxlength="20" class="iTxt iTxt1" name="username" id="username" onClick="ga('send', 'event', 'button','click','input_name');">
+								<input type="tel" maxlength="11" class="iTxt iTxt2" name="mobile" id="mobile" onClick="ga('send', 'event', 'button','click','input_phone');">
 								<input type="hidden" value="" name="url" id="url">
 								<input type="hidden" value="" name="failUrl" id="failUrl">
 								<input type="hidden" value="" name="imageId" id="imageId">
 								<input type="hidden" value="0" name="isWechat" id="isWechat">
 								<input type="hidden" value="" name="token" id="token">
 
-								<a href="javascript:void(0);"  class="abs page2Btn1" onClick="go4();" id="form-submit"><img src="{{ asset('bundles/app/default/') }}images/page3Btn1.png"></a>
+								<a href="javascript:void(0);"  class="abs page2Btn1" onClick="go4();ga('send', 'event', 'button','click','submit_wish_final');" id="form-submit"><img src="{{ asset('bundles/app/default/') }}images/page3Btn1.png"></a>
 							</div>
 						</div>
 					</div>
@@ -94,22 +92,24 @@
 		$(document).ready(function(){
 			loadingImg();
 			$('.wish').on('click',function(){
-				if($(this).html()=="每一个空着的心愿瓶，都在等你。快来为你的秀发定制一个独家心愿，用你的创意让心愿被看见。"){
+				if($(this).html()==wish2[ranNumb2]){
 					$(this).html('');
 					$(this).val('');
 					}
 				$('.page2Q li').removeClass('on');
+				$('.page2Q li').eq(1).addClass('on');
 				$('#wishText').val($('.wish').text());
 			});
 			$('.wish').on('change',function(){
 				$('.page2Q li').removeClass('on');
+				$('.page2Q li').eq(1).addClass('on');
 				$('#wishText').val($('.wish').val());
 			});
-			$('.wish').blur(function(){
+			/*$('.wish').blur(function(){
 				if($(this).val()==""){
-					$(this).text('每一个空着的心愿瓶，都在等你。快来为你的秀发定制一个独家心愿，用你的创意让心愿被看见。');
+					document.getElementById('wish').innerText=wish2[ranNumb2];
 					}
-			});
+			});*/
 		});
 		
 	function submitInfo(){
@@ -135,17 +135,17 @@
 				else{
 					if(!isWechat){
 						$('#isWechat').val(0);
-						if( headImg == ''){
+						/*if( headImg == ''){
 							alert('请上传头像~');
 							return false;
-						}
+						}*/
 					}
 					else{
 						$('#isWechat').val(1);
-						if($('#imageId').val()== ''){
+						/*if($('#imageId').val()== ''){
 							alert('请上传头像~');
 							return false;
-						}
+						}*/
 						//微信端提交表单判断头像   imgId
 					}
 					$('.page3Con').fadeOut(500);

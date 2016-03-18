@@ -4,33 +4,37 @@
 	<div class="panel-body">
 		<div class="table-responsive"><!--<div id="table2_wrapper" class="dataTables_wrapper no-footer">
 			<div class="dataTables_length" id="table2_length"></div>
-			<div id="table2_filter" class="dataTables_filter">--><a href="{{ url('admin_export') }}" class="label label-danger">导出信息</a><!--<label>Search:<input type="search" class="" placeholder="" aria-controls="table2"></label>--></div>
+			<div id="table2_filter" class="dataTables_filter">--><!--<a href="#" class="label label-danger">导出信息</a>--><!--<label>Search:<input type="search" class="" placeholder="" aria-controls="table2"></label>--></div>
 			<table id="table2" class="table table-striped dataTable no-footer" role="grid" aria-describedby="table2_info">
 			<thead>
 			 <tr role="row">
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 40px;">ID</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">对应微信昵称</th>
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">姓名</th>
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">手机</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">地址</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">中奖信息</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">SNID</th>
-        <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 200px;">创建时间</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">头像</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">心愿</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">赞</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">是否抽奖</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">奖项</th>
+        <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 200px;"><a href="{% if app.request.get('order') != 'time.desc' %}{{ url('admin_info',{order:'time.desc'}) }}{% else %}{{ url('admin_info',{order:'time.asc'}) }}{% endif %}">创建时间{% if app.request.get('order') != 'time.desc' %}↑{% else %}↓{% endif %}</a></th>
         <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1"  style="width: 120px;">创建IP</th>
+        <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1"  style="width: 120px;">操作</th>
 			</tr>
 		 </thead>
 		 <tbody>
 		 {% for p in pagination %}
 			<tr class="gradeA {% if loop.index is odd %} odd{% else %} even{% endif %}" role="row">
-				<td>{% if p.user.info != null %}{{ p.user.info.id }}{% else %}--{% endif %}</td>
-				<td>{{ p.user.nickname }}</td>
-				<td>{% if p.user.info != null %}{{ p.user.info.username }}{% else %}--{% endif %}</td>
-				<td>{% if p.user.info != null %}{{ p.user.info.mobile }}{% else %}--{% endif %}</td>
-				<td>{% if p.user.info != null %}{{ p.user.info.address }}{% else %}--{% endif %}</td>
-				<td>{{ p.type }}类型{{ p.awardType }}等奖</td>
-				<td>{% if p.type == 'b' %}{{ p.user.snLogs[0].code }}{% else %}--{% endif %}</td>
+				<td>{{ p.id }}</td>
+				<td>{{ p.username }}</td>
+				<td>{{ p.mobile }}</td>
+				<td><img src="{{ asset('uploads/')~p.headImg }}" style="max-width:100px;max-height:100px;" /></td>
+				<td>{{ p.wishText }}</td>
+				<td>{{ p.likeNum }}</td>
+				<td>{% if p.hasLottery == true %}是{% else %}否{% endif %}</td>
+				<td>{% if p.hasLottery == true %}{{ p.prize }}{% else %}--{% endif %}</td>
         <td>{{ p.createTime | date("Y-m-d H:i:s") }}</td>
         <td>{{ p.createIp }}</td>
+        <td><a href="{{ url('admin_info_active',{id:p.id}) }}" class="active">{% if p.isActive == 1 %}关闭{% else %}开启{% endif %}</a></td>
 			</tr>
 			{% endfor %}
 			</tbody>
@@ -64,6 +68,19 @@
 				})
 			}
 			
+			return false;
+		})
+		$('.active').on('click',function(){
+			var obj = $(this);
+			url = $(this).attr('href');
+			$.getJSON(url,function(json){
+				if(json && json.ret == 0){
+					obj.text(json.msg);
+				}
+				else{
+					alert(json.msg);
+				}
+			})
 			return false;
 		})
 	})

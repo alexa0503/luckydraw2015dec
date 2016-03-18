@@ -17,7 +17,11 @@ use Imagine\Image\Box;
 use Imagine\Image\Point;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Palette;
+use Imagine\Imagick\Drawer;
+use Imagine\Imagick\Font;
 use Symfony\Component\Filesystem\Filesystem;
+ use Imagine\Image\Color;
+
 #use Symfony\Component\Validator\Constraints\Image;
 
 class DefaultController extends Controller
@@ -35,12 +39,15 @@ class DefaultController extends Controller
 	 */
 	public function indexAction(Request $request)
 	{
+		$session = $request->getSession();
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('AppBundle:Info');
 		$qb = $repo->createQueryBuilder('a');
 		$qb->select('COUNT(DISTINCT a.mobile)');
 		//var_dump($qb->getQuery());
 		$count = $qb->getQuery()->getSingleScalarResult();
+		$session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_index'));
+		$session->set('wx_share_img','http://'.$request->getHost().'/bundles/app/default/images/share.jpg');
 		return $this->render('AppBundle:default:index.html.twig',array('count'=>$count));
 	}
 	/**
@@ -53,16 +60,26 @@ class DefaultController extends Controller
 		return $this->render('AppBundle:default:error.html.twig',array('errorInfo'=>$errorInfo,'url'=>$url));
 	}
 	/**
-	 * @Route("/mobile/success", name="_success")
+	 * @Route("/mobile/success/{id}", name="_success")
 	 */
-	public function successAction(Request $request)
+	public function successAction(Request $request, $id = null)
 	{
 		$session = $request->getSession();
-		if( null == $session->get('id') ){
+		if( null == $id ){
 			return $this->redirect($this->generateUrl('_index'));
 		}
 
-		$session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_info',array('id'=>$session->get('id'))));
+		$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
+		if( $info == null || $info->getIsActive() == false ){
+			$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find(1);
+		}
+
+		$cacheManager = $this->container->get('liip_imagine.cache.manager');
+		$session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_info',array('id'=>$id)));
+		//$session->set('wx_share_img',$cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb2'));
+		
+		$share_img = 'http://'.$request->getHost().$this->container->get('templating.helper.assets')->getUrl('/luckydraw2015dec/uploads/'.$info->getHeadImg());
+		$session->set('wx_share_img', $share_img);
 		return $this->render('AppBundle:default:success.html.twig', array('success'=>true));
 	}
 	/**
@@ -70,13 +87,17 @@ class DefaultController extends Controller
 	 */
 	public function infoAction(Request $request, $id = null)
 	{
+		$session = $request->getSession();
 		if( null == $id){
 			return $this->redirect($this->generateUrl('_index'));
 		}
 		$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
-		if( $info == $id){
-			return $this->redirect($this->generateUrl('_index'));
+		if( $info == null || $info->getIsActive() == false ){
+			$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find(1);
 		}
+		$session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_info',array('id'=>$id)));
+		$share_img = 'http://'.$request->getHost().$this->container->get('templating.helper.assets')->getUrl('/uploads/'.$info->getHeadImg());
+		$session->set('wx_share_img', $share_img);
 		return $this->render('AppBundle:default:info.html.twig', array('info'=>$info));
 	}
 	/**
@@ -84,12 +105,15 @@ class DefaultController extends Controller
 	 */
 	public function topAction(Request $request)
 	{
+		$session = $request->getSession();
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('AppBundle:Story');
 		$qb = $repo->createQueryBuilder('a');
 		$qb->orderBy('a.likeNum','desc');
 		$qb->setMaxResults(20);
 		$list = $qb->getQuery()->getResult();
+		$session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_index'));
+		$session->set('wx_share_img','http://'.$request->getHost().'/bundles/app/default/images/share.jpg');
 		return $this->render('AppBundle:default:top.html.twig',array('list'=>$list));
 	}
   /**

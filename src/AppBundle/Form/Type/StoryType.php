@@ -27,6 +27,7 @@ class StoryType extends AbstractType
         'multiple' => true, 
         'data_class' => null,
 				'required' => false,
+				//'attr' => array('value' => $builder->getData()->getHeadImg(),'class'=>'preview')
       ))
 			->add('wishTitle', 'textarea', array(
 				'label' => '心愿清单标题',

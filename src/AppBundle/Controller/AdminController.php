@@ -35,6 +35,28 @@ class AdminController extends Controller
 		
 	}
 	
+	/**
+	 * @Route("/admin/info", name="admin_info")
+	 */
+	public function infoAction(Request $request)
+	{
+		$repository = $this->getDoctrine()->getRepository('AppBundle:Info');
+		$queryBuilder = $repository->createQueryBuilder('a');
+		if( $request->get('order') == 'time.desc')
+			$queryBuilder->orderBy('a.createTime','DESC');
+		else
+			$queryBuilder->orderBy('a.createTime','ASC');
+		
+		$query = $queryBuilder->getQuery();
+		$paginator  = $this->get('knp_paginator');
+
+		$pagination = $paginator->paginate(
+			$query,
+			$request->query->get('page', 1),/*page number*/
+			$this->pageSize
+		);
+		return $this->render('AppBundle:admin:info.html.twig', array('pagination'=>$pagination));
+	}
 
 	/**
 	 * @Route("/admin/story", name="admin_story")
@@ -138,4 +160,81 @@ class AdminController extends Controller
 		return new Response(json_encode(array('ret'=>0, 'msg'=>'')));
 	}
 
+	/**
+	 * @Route("/admin/info/active/{id}", name="admin_info_active")
+	 */
+	public function infoActiveAction(Request $request, $id = null)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$info = $em->getRepository('AppBundle:Info')->find($id);
+		$is_active = $info->getIsActive() == 0 ? 1 : 0;
+		$info->setIsActive($is_active);
+		$em->persist($info);
+		$em->flush();
+		$msg = $is_active == 1 ? '关闭' : '开启';
+		return new Response(json_encode(array('ret'=>0, 'msg'=>$msg)));
+	}
+
+	/**
+	 * @Route("/admin/export/", name="admin_export")
+	 */
+	public function exportAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$repository = $em->getRepository('AppBundle:Info');
+		$queryBuilder = $repository->createQueryBuilder('a');
+		$info = $queryBuilder->getQuery()->getResult();
+		//$output = '';
+		$arr = array(
+			'id,姓名,手机,头像,心愿,赞数,是否抽奖,抽奖奖项,创建时间,创建IP'
+			);
+		foreach($info as $v){
+			$_string = $v->getId().','.$v->getUsername().','.$v->getMobile().',http://dev.slek.com.cn/uploads/'.$v->getHeadImg().',"'.trim($v->getWishText()).'",'.$v->getLikeNum().',';
+			$_string .= $v->getHasLottery() == 1 ? '是,' : '否,';
+			$_string .= $v->getHasLottery() == 0 ? '--' : $v->getPrize();
+			$_string .= ','.$v->getCreateTime()->format('Y-m-d H:i:s').','.$v->getCreateIp();
+			$arr[] = $_string;
+		}
+		$output = implode("\n", $arr);
+
+		//$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+		/*
+		$phpExcelObject = new \PHPExcel();
+		$phpExcelObject->getProperties()->setCreator("liuggio")
+			->setLastModifiedBy("Giulio De Donato")
+			->setTitle("Office 2005 XLSX Test Document")
+			->setSubject("Office 2005 XLSX Test Document")
+			->setDescription("Test document for Office 2005 XLSX, generated using PHP classes.")
+			->setKeywords("office 2005 openxml php")
+			->setCategory("Test result file");
+		$phpExcelObject->setActiveSheetIndex(0);
+		foreach($logs as $v){
+			$phpExcelObject->setCellValue('A1', $v->getId());
+		}
+		$phpExcelObject->getActiveSheet()->setTitle('Simple');
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$phpExcelObject->setActiveSheetIndex(0);
+
+		// create the writer
+		$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+		// create the response
+		$response = $this->get('phpexcel')->createStreamedResponse($writer);
+		// adding headers
+		$dispositionHeader = $response->headers->makeDisposition(
+			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+			'stream-file.xls'
+		);
+		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+		$response->headers->set('Pragma', 'public');
+		$response->headers->set('Cache-Control', 'maxage=1');
+		$response->headers->set('Content-Disposition', $dispositionHeader);
+		*/
+
+		$response = new Response($output);
+		$response->headers->set('Content-Disposition', ':attachment; filename=data.csv');
+		$response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+		$response->headers->set('Pragma', 'public');
+		$response->headers->set('Cache-Control', 'maxage=1');
+		return $response;
+	}
 }
