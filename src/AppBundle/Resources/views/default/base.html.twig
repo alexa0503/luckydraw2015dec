@@ -63,6 +63,7 @@
 					trigger: function (res) {
 					},
 					success: function (res) {
+						ga('send','event','share','success','wechat_share_success');
 						if(lottery == true){
 							getLottery();
 						}
@@ -80,6 +81,7 @@
 					trigger: function (res) {
 					},
 					success: function (res) {
+						ga('send','event','share','success','wechat_share_success');
 						if(lottery == true){
 							getLottery();
 						}

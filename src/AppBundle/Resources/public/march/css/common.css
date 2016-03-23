@@ -1,0 +1,138 @@
+/* Global Setting */
+body{margin:0; padding:0;text-align:left; font-size:12px; font-family:Arial; background:#dd1039;}
+table{border-collapse:collapse;}
+td,th{padding:0;}
+ul,li,dd,dl,dt{margin:0; padding:0; list-style:none; word-break:break-all;}
+img{border:0;}
+p{margin:0; word-break:break-all;}
+h1,h2,h3,h4{margin:0;padding:0; font-weight:normal; font-size:14px;}
+em{ font-size:12px; font-style:normal;}
+hr{background:none;border:none;border-bottom:1px solid #CCC;#border-bottom:0;}
+.clear {clear:both;height:0;font-size:1px;line-height: 0px;}
+a{text-decoration:none; border:0; outline:none; blr:expression(this.onFocus=this.blur());}
+select,input,textarea{font-family:inherit; outline:none; padding:0;}
+
+.wrapper{ width:1000px; margin:0 auto; border:none; padding:0;}
+.innerDiv{ width:100%; height:100%; position:relative;}
+.abs{ position:absolute;}
+
+
+.pageOuter{ width:640px; overflow:hidden; margin:0 auto;}
+.page{ position:absolute; width:640px; overflow:hidden; left:0; top:0;}
+.bgImg{ width:640px; height:1039px; display:block; position:absolute; left:0; top:-16px;}
+.h1008{ width:640px; height:1008px;}
+
+.pageBg{ background:url(../images/bg.png) 0 0 no-repeat;}
+
+.topBar{ background:url(../images/topImg1.png) 0 -22px no-repeat; width:640px; height:140px; position:absolute; left:50%; top:0; margin-left:-320px;}
+.topBtn1{ padding:10px; position:absolute; top:10px; right:10px;}
+
+.loading{ background:url(../images/loading.png) 0 0 no-repeat;}
+.loadingProgress{ width:640px; height:380px; position:absolute; left:0; bottom:397px; background:url(../images/loadingImg2.png) 0 0 repeat-x;
+-webkit-animation:loadingProgress 2s 0s linear both infinite;	
+}
+@-webkit-keyframes loadingProgress{
+0%{ background-position:0 0;}
+100%{ background-position:-380px 0;}
+}
+.loadingBg{ width:640px; height:380px; position:absolute; left:0; bottom:397px; background:#FFF;}
+
+/*page1*/
+.page1Img1{ background:url(../images/page1Img1.png) 0 0 no-repeat;}
+.page1Img2{ background:url(../images/page1Img2.png) 0 0 no-repeat; -webkit-animation:page1Img2 1s steps(2) infinite;	
+-webkit-transform-origin:94px 112px;
+}
+@-webkit-keyframes page1Img2{
+0%{ background-position:0 0;}
+100%{ background-position:-1280px 0;}
+}
+.page1Txt{ width:484px; height:69px; background:none; border:none; position:absolute; left:63px; top:416px; color:#e33211; font-size:32px; line-height:68px; text-align:center; padding:0 15px;}
+.page1Btn1{ left:50%; margin-left:-157px; top:535px;}
+
+/*page2*/
+.page2Img1{ background:url(../images/page2Img1.png) 0 0 no-repeat;}
+.page2Img2{ background:url(../images/page2Img2.png) 0 0 no-repeat;}
+.page2Img2Act{
+-webkit-animation:page2Img2Act 6s 0s linear both infinite;
+-webkit-transform-origin:320px 385px;
+}
+@-webkit-keyframes page2Img2Act{
+0%{ -webkit-transform:scale(1); background-position:0 0;}
+3%{ -webkit-transform:scale(1); background-position:-640px 0;}
+12.5%{ -webkit-transform:scale(1); background-position:-640px 0;}
+15.5%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+25%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+28%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+37.5%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+40.5%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+50%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+53%{ -webkit-transform:scale(1); background-position:-3200px 0;}
+60.5%{ -webkit-transform:scale(1); background-position:-3200px 0;}
+63.5%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+75%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+78%{ -webkit-transform:scale(1); background-position:-4480px 0;}
+87.5%{ -webkit-transform:scale(1); background-position:-4480px 0;}
+90.5%{ -webkit-transform:scale(1); background-position:-5120px 0;}
+100%{ -webkit-transform:scale(1); background-position:-5120px 0;}
+}
+
+
+/*page3*/
+.page3Img1{ background:url(../images/page3Img1.png) 0 0 no-repeat;}
+.page3Btn1{ top:575px; left:50%; margin-left:-157px;}
+
+/*page4*/
+.page4Img4{ position:absolute; left:50%; margin-left:-320px; bottom:0;}
+.page4Img1{ background:url(../images/page4Img1.png) 0 0 no-repeat;}
+.page4Res1{ background:url(../images/page4Award1.png) 0 0 no-repeat;}
+.page4Res2{ background:url(../images/page4Award2.png) 0 0 no-repeat;}
+.page4Res3{ background:url(../images/page4Award3.png) 0 0 no-repeat;}
+.page4Res4{ background:url(../images/page4Award4.png) 0 0 no-repeat;}
+.page4Res5{ background:url(../images/page4Award5.png) 0 0 no-repeat;}
+.page4Res6{ background:url(../images/page4Award6.png) 0 0 no-repeat;}
+.page4Res7{ background:url(../images/page4Award7.png) 0 0 no-repeat;}
+.page4Res8{ background:url(../images/page4Award8.png) 0 0 no-repeat;}
+.page4Btn1{ left:50%; margin-left:-157px; top:875px;}
+.page4Txt{ width:321px; height:61px; line-height:61px; padding:0 15px; color:#8a5123; font-size:28px; position:absolute; left:207px; background:none; border:none;}
+.page4Txt1{ top:584px;}
+.page4Txt2{ top:661px;}
+.page4Txt3{ top:735px;}
+
+/*page5*/
+.page5Img1{ background:url(../images/page5Img1.png) 0 0 no-repeat;}
+.page5Img2{ background:url(../images/page5Img2.png) 0 0 no-repeat; width:183px; height:322px; position:absolute; left:370px; top:495px;
+-webkit-animation:page5Img2 4s 0s linear both infinite;	
+-webkit-transform-origin:79px 28px;
+}
+@-webkit-keyframes page5Img2{
+0%{-webkit-transform:rotate(0deg);}
+12%{-webkit-transform:rotate(5deg);}
+37%{-webkit-transform:rotate(-5deg);}
+62%{-webkit-transform:rotate(5deg);}
+87%{-webkit-transform:rotate(-5deg);}
+100%{-webkit-transform:rotate(0deg);}
+}
+
+/*rule*/
+.ruleBg{ position:absolute; top:0; left:50%; margin-left:-320px;}
+.swiper-container{width:640px; height:1039px;}
+.swiper-slide{ width:640px; height:1039px;}
+.rule1{ background:url(../images/rule1.png) 0 0 no-repeat;}
+.rule2{ background:url(../images/rule2.png) 0 0 no-repeat;}
+.rule3{ background:url(../images/rule3.png) 0 0 no-repeat;}
+.rule4{ background:url(../images/rule4.png) 0 0 no-repeat;}
+.rule5{ background:url(../images/rule5.png) 0 0 no-repeat;}
+.closeBtn{ left:557px; top:134px;}
+
+/*page6*/
+.page6Img1{ background:url(../images/page6Img1.png) 0 0 no-repeat;}
+.page6Btn1{ top:435px; left:50%; margin-left:-157px;}
+
+
+
+
+
+
+
+
+

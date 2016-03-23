@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{{ asset('bundles/app/march/') }}css/common.css">
+	<link rel="stylesheet" href="{{ asset('bundles/app/march/') }}css/swiper.min.css">
+	<script src="{{ asset('bundles/app/march/') }}js/jquery-1.9.1.min.js"></script>
+	<script src="{{ asset('bundles/app/march/') }}js/jquery.imgpreload.js"></script>
+	<script src="{{ asset('bundles/app/march/') }}js/swiper.min.js"></script>
+	<script src="{{ asset('bundles/app/march/') }}js/common.js"></script>
+	<!--移动端版本兼容 -->
+	<script type="text/javascript">
+		var phoneWidth =  parseInt(window.screen.width);
+		var phoneScale = phoneWidth/640;
+		var ua = navigator.userAgent;
+		if (/Android (\d+\.\d+)/.test(ua)){
+			var version = parseFloat(RegExp.$1);
+			if(version>2.3){
+				document.write('<meta name="viewport" content="width=640, minimum-scale = '+phoneScale+', maximum-scale = '+phoneScale+', target-densitydpi=device-dpi">');
+			}else{
+				document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+			}
+		} else {
+			document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+		}
+	</script>
+	<!--移动端版本兼容 end -->
+
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
+	
+	{% if success is defined and success == true %}
+	var lottery = true;
+	{% else %}
+	var lottery = false;
+	{% endif %}
+		function wxShare(data){
+			wx.config({
+				debug: false,
+				appId: data.appId,
+				timestamp: data.timestamp,
+				nonceStr: data.nonceStr,
+				signature: data.signature,
+				jsApiList: [
+				'onMenuShareTimeline',
+				'onMenuShareAppMessage',
+				'chooseImage',
+				'previewImage',
+				'uploadImage',
+				'downloadImage',
+				'getNetworkType'
+				]
+			});
+			wx.ready(function () {
+				wx.onMenuShareAppMessage({
+					title: data.title,
+					desc: data.desc,
+					link: data.shareUrl,
+					imgUrl: data.imgUrl,
+					trigger: function (res) {
+					},
+					success: function (res) {
+						if(lottery == true){
+							getLottery();
+						}
+					},
+					cancel: function (res) {
+					},
+					fail: function (res) {
+					}
+				});
+				wx.onMenuShareTimeline({
+					title: data.desc,
+					desc: data.desc,
+					link: data.shareUrl,
+					imgUrl: data.imgUrl,
+					trigger: function (res) {
+					},
+					success: function (res) {
+						if(lottery == true){
+							getLottery();
+						}
+					},
+					cancel: function (res) {
+					},
+					fail: function (res) {
+					}
+				});
+			});
+		}
+		var noWechatShareImg;
+		$().ready(function(){
+			var url = '{{ url("api_wechat_sign") }}'
+			$.getJSON(url,{url:location.href},function(data){
+				$('#token').val(data.access_token);
+				data.desc = '我刚刚参与了舒蕾抽奖活动，你也快来购买舒蕾产品，获取幸运心愿码，参与抽奖吧。';
+				data.title = '我刚刚参与了舒蕾抽奖活动，你也快来购买舒蕾产品，获取幸运心愿码，参与抽奖吧。';
+			{% if null == app.session.get("wx_share_url") %}
+				data.shareUrl = '{{ url("_index") }}';
+			{% else %}
+				data.shareUrl = '{{ app.session.get("wx_share_url") }}';
+			{% endif %}
+
+			{% if null == app.session.get("wx_share_img") %}
+				data.imgUrl = 'http://{{ app.request.host }}{{ asset("bundles/app/default/images/share.jpg?v=1") }}';
+			{% else %}
+				data.imgUrl = '{{ app.session.get("wx_share_img") }}';
+			{% endif %}
+
+			wxShare(data);
+		});
+		})
+	
+	{% if null == app.session.get("wx_share_img") %}
+		var noWechatShareImg = 'http://{{ app.request.host }}/{{ asset("bundles/app/default/images/share.jpg?v=1") }}';
+	{% else %}
+		var noWechatShareImg = '{{ app.session.get("wx_share_img") }}';
+	{% endif %}
+	var notWechatSharlUrl='{% if null == app.session.get("wx_share_url") %}{{ url("_index") }}{% else %}{{ app.session.get("wx_share_url") }}{% endif %}';
+	</script>
+</head>
+<body>
+	{% block body %}{% endblock %}
+		{% block javascripts %}
+		{% endblock %}
+		
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-53385687-6', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+	</body>
+	</html>

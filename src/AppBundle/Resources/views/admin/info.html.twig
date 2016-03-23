@@ -16,7 +16,7 @@
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">赞</th>
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">是否抽奖</th>
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">奖项</th>
-        <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 200px;"><a href="{% if app.request.get('order') != 'time.desc' %}{{ url('admin_info',{order:'time.desc'}) }}{% else %}{{ url('admin_info',{order:'time.asc'}) }}{% endif %}">创建时间{% if app.request.get('order') != 'time.desc' %}↑{% else %}↓{% endif %}</a></th>
+        <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 200px;"><a href="{% if app.request.get('order') != 'time.desc' %}{{ url('admin_info',{order:'time.desc',type:app.request.get('type')}) }}{% else %}{{ url('admin_info',{order:'time.asc',type:app.request.get('type')}) }}{% endif %}">创建时间{% if app.request.get('order') != 'time.desc' %}↑{% else %}↓{% endif %}</a></th>
         <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1"  style="width: 120px;">创建IP</th>
         <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1"  style="width: 120px;">操作</th>
 			</tr>

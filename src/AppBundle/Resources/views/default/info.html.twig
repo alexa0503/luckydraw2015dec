@@ -39,7 +39,8 @@
 			ga('send', 'pageview', '/page_mywish');
 
 			loadingShare();
-			var  url = '{{ url("api_like",{id:info.id}) }}';
+			//var  url = '{{ url("api_like",{id:info.id}) }}';
+			var url = 'http://dev.slek.com.cn/like/'+'{{ info.id }}';
 			$('.page6Btn2').click(function(){
 				$.getJSON(url,function(json){
 					if(json.ret == 0){

@@ -5,15 +5,12 @@
 		<div class="table-responsive">
 			<!--<div id="table2_wrapper" class="dataTables_wrapper no-footer">
 			<div class="dataTables_length" id="table2_length"></div>
-			<div id="table2_filter" class="dataTables_filter"><a href="{{ url('admin_export') }}" class="label label-danger">导出中奖信息</a><label>Search:<input type="search" class="" placeholder="" aria-controls="table2"></label>--></div>
+			<div id="table2_filter" class="dataTables_filter"><a href="" class="label label-danger">导出中奖信息</a><label>Search:<input type="search" class="" placeholder="" aria-controls="table2"></label>--></div>
 			<table id="table2" class="table table-striped dataTable no-footer" role="grid" aria-describedby="table2_info">
 			<thead>
 			 <tr role="row">
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 40px;">ID</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">授权用户</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">抽奖方式</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">奖品类型</th>
-				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">是否中奖</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">抽奖码</th>
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">创建时间</th>
 				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">创建IP</th>
 			</tr>
@@ -22,10 +19,7 @@
 		 {% for p in pagination %}
 			<tr class="gradeA {% if loop.index is odd %} odd{% else %} even{% endif %}" role="row">
 				<td>{{ p.id }}</td>
-				<td>{{ p.user.nickname }}</td>
-				<td>{{ p.type }}</td>
-				<td>{{ p.awardType }}</td>
-				<td>{% if p.hasWin == true %}是{% else %}否{% endif %}</td>
+				<td>{{ p.code }}</td>
 				<td>{{ p.createTime | date("Y-m-d H:i:s") }}</td>
 				<td>{{ p.createIp }}</td>
 			</tr>

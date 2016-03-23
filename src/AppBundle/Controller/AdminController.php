@@ -36,12 +36,14 @@ class AdminController extends Controller
 	}
 	
 	/**
-	 * @Route("/admin/info", name="admin_info")
+	 * @Route("/admin/info/{type}", name="admin_info")
 	 */
-	public function infoAction(Request $request)
+	public function infoAction(Request $request,$type=null)
 	{
 		$repository = $this->getDoctrine()->getRepository('AppBundle:Info');
 		$queryBuilder = $repository->createQueryBuilder('a');
+		$queryBuilder->where('a.type = :type');
+		$queryBuilder->setParameter(':type',$type);
 		if( $request->get('order') == 'time.desc')
 			$queryBuilder->orderBy('a.createTime','DESC');
 		else
@@ -55,7 +57,10 @@ class AdminController extends Controller
 			$request->query->get('page', 1),/*page number*/
 			$this->pageSize
 		);
-		return $this->render('AppBundle:admin:info.html.twig', array('pagination'=>$pagination));
+		if($type == 1)
+			return $this->render('AppBundle:admin:info_1.html.twig', array('pagination'=>$pagination));
+		else
+			return $this->render('AppBundle:admin:info.html.twig', array('pagination'=>$pagination));
 	}
 
 	/**
@@ -176,25 +181,63 @@ class AdminController extends Controller
 	}
 
 	/**
-	 * @Route("/admin/export/", name="admin_export")
+	 * @Route("/admin/log", name="admin_log")
 	 */
-	public function exportAction(Request $request)
+	public function logAction(Request $request)
+	{
+		$repository = $this->getDoctrine()->getRepository('AppBundle:LotteryLog');
+		$queryBuilder = $repository->createQueryBuilder('a');
+
+		if( $request->get('order') == 'time.desc')
+			$queryBuilder->orderBy('a.createTime','DESC');
+		else
+			$queryBuilder->orderBy('a.createTime','ASC');
+
+		$query = $queryBuilder->getQuery();
+		$paginator  = $this->get('knp_paginator');
+
+		$pagination = $paginator->paginate(
+			$query,
+			$request->query->get('page', 1),/*page number*/
+			$this->pageSize
+		);
+		return $this->render('AppBundle:admin:log.html.twig', array('pagination'=>$pagination));
+	}
+	/**
+	 * @Route("/admin/export/{type}", name="admin_export")
+	 */
+	public function exportAction(Request $request, $type = null)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repository = $em->getRepository('AppBundle:Info');
 		$queryBuilder = $repository->createQueryBuilder('a');
+		$queryBuilder->where('a.type = :type');
+		$queryBuilder->setParameter(':type',$type);
 		$info = $queryBuilder->getQuery()->getResult();
 		//$output = '';
-		$arr = array(
-			'id,姓名,手机,头像,心愿,赞数,是否抽奖,抽奖奖项,创建时间,创建IP'
+		if($type == 1){
+			$arr = array(
+				'id,姓名,手机,地址,抽奖码,抽奖奖项,创建时间,创建IP'
 			);
-		foreach($info as $v){
-			$_string = $v->getId().','.$v->getUsername().','.$v->getMobile().',http://dev.slek.com.cn/uploads/'.$v->getHeadImg().',"'.trim($v->getWishText()).'",'.$v->getLikeNum().',';
-			$_string .= $v->getHasLottery() == 1 ? '是,' : '否,';
-			$_string .= $v->getHasLottery() == 0 ? '--' : $v->getPrize();
-			$_string .= ','.$v->getCreateTime()->format('Y-m-d H:i:s').','.$v->getCreateIp();
-			$arr[] = $_string;
+			foreach($info as $v){
+				$_string = $v->getId().','.$v->getUsername().','.$v->getMobile().','.$v->getAddress().','.$v->getPrize();
+				$_string .= ','.$v->getCreateTime()->format('Y-m-d H:i:s').','.$v->getCreateIp();
+				$arr[] = $_string;
+			}
 		}
+		else{
+			$arr = array(
+				'id,姓名,手机,头像,心愿,赞数,是否抽奖,抽奖奖项,创建时间,创建IP'
+			);
+			foreach($info as $v){
+				$_string = $v->getId().','.$v->getUsername().','.$v->getMobile().',http://dev.slek.com.cn/uploads/'.$v->getHeadImg().',"'.trim($v->getWishText()).'",'.$v->getLikeNum().',';
+				$_string .= $v->getHasLottery() == 1 ? '是,' : '否,';
+				$_string .= $v->getHasLottery() == 0 ? '--' : $v->getPrize();
+				$_string .= ','.$v->getCreateTime()->format('Y-m-d H:i:s').','.$v->getCreateIp();
+				$arr[] = $_string;
+			}
+		}
+
 		$output = implode("\n", $arr);
 
 		//$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();

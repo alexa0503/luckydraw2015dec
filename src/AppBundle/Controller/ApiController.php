@@ -45,7 +45,7 @@ class ApiController extends Controller
 				$username = $request->get('username');
 				$mobile = $request->get('mobile');
 				$wish_text = $request->get('wishText');
-				
+
 				$em = $this->getDoctrine()->getManager();
 				$em->getConnection()->beginTransaction();
 				try{
@@ -100,6 +100,7 @@ class ApiController extends Controller
 						$info->setCreateIp($request->getClientIp());
 						$info->setCreateTime(new \DateTime('now'));
 						$info->setIsActive($is_active);
+						$info->setType(0);
 						$em->persist($info);
 						$em->flush();
 						$em->getConnection()->commit();
@@ -108,7 +109,7 @@ class ApiController extends Controller
 						$result['msg'] = '';
 						//'http://'.$request->getHost().'/uploads/'.$value->getHeadImg()
 						//$cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1')
-						
+
 						$cacheManager = $this->container->get('liip_imagine.cache.manager');
 						//$result['data'] = array('id'=>$info->getId(),'username'=>$username,'headImg'=>$cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'));
 						$result['data'] = array('id'=>$info->getId(),'username'=>$username,'headImg'=>'http://'.$request->getHost().'/uploads/'.$info->getHeadImg());
@@ -150,7 +151,7 @@ class ApiController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('AppBundle:Info');
 		$qb = $repo->createQueryBuilder('a');
-		$qb->where('a.isActive = 1');
+		$qb->where('a.isActive = 1 AND a.type = 0');
 		if( null !== $request->get('mobile')){
 			$qb->andWhere('a.mobile LIKE :mobile');
 			$qb->setParameter(':mobile', '%'.$request->get('mobile').'%');
@@ -226,11 +227,8 @@ class ApiController extends Controller
 		}
 		else{
 			$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find($id);
-			if( $info == null || $info->getIsActive() == false ){
-				$result = array(
-					'ret' => 1001,
-					'msg' => '没有您要的数据',
-				);
+			if( $info == null || $info->getIsActive() == false || $info->getType() != 0){
+
 				$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find(1);
 			}
 
@@ -274,7 +272,7 @@ class ApiController extends Controller
 		$em->getConnection()->beginTransaction();
 		try{
 			$info = $em->getRepository('AppBundle:Info')->find($id);
-			if( $info == null ){
+			if( $info == null || $info->getType() != 0){
 				$result = array(
 					'ret' => 1001,
 					'msg' => '该信息不存在',
@@ -295,7 +293,7 @@ class ApiController extends Controller
 				$qb->setParameter(':createTime2', new \DateTime($create_time2), \Doctrine\DBAL\Types\Type::DATETIME);
 				$count = $qb->getQuery()->getSingleScalarResult();
 
-				if( $count < 999999){
+				if( $count < 5){
 					$info->increaseLikeNum();
 					$em->persist($info);
 					$like_log = new Entity\LikeLog();
@@ -316,7 +314,7 @@ class ApiController extends Controller
 						'msg' => '投票已超出限制~',
 					);
 				}
-				
+
 			}
 			$em->getConnection()->commit();
 		}
@@ -327,7 +325,7 @@ class ApiController extends Controller
 				'msg' => $e->getMessage(),
 			);
 		}
-		
+
 		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
 		$response = new Response();
@@ -343,9 +341,6 @@ class ApiController extends Controller
 	 */
 	public function lotteryAction(Request $request)
 	{
-		$award = array(5,42,0,32,42,162,300,362);
-		$award_rule = array(2,0,1,0,0,0,0);//0为每周平均数量,1为每月平均数量,2为每双月平均数量
-		$award_average = array(1,1,1,1,1,3,7,8);
 		$session = $request->getSession();
 		$timestamp = time();
 		if( null == $session->get('id')){
@@ -366,7 +361,7 @@ class ApiController extends Controller
 			try{
 				$info = $em->getRepository('AppBundle:Info')->find($session->get('id'));
 
-				if( $info == null ){
+				if( $info == null || $info->getType() != 0){
 					$result = array(
 						'ret' => 1001,
 						'msg' => '该信息不存在',
@@ -374,14 +369,14 @@ class ApiController extends Controller
 				}
 				else{
 					$mobile = $info->getMobile();
-					#当天已抽过将
+					#当天已中奖
 					$repo = $em->getRepository('AppBundle:Info');
 					$qb = $repo->createQueryBuilder('a');
 					$qb->select('COUNT(a)');
 					$qb->where('a.mobile = :mobile AND a.createTime >= :createTime1 AND a.createTime < :createTime2 AND a.hasLottery = :hasLottery');
 					$qb->setParameter('mobile', $mobile);
 					$qb->setParameter('hasLottery', true);
-					
+					#当天已抽奖
 					$date1 = date('Y-m-d',$timestamp);
 					$date2 = date('Y-m-d', strtotime('+1 day', $timestamp));
 					$qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
@@ -396,62 +391,14 @@ class ApiController extends Controller
 					$qb->setParameter('mobile', $mobile);
 					$count2 = $qb->getQuery()->getSingleScalarResult();
 
-					$rand1 = rand(1,10);
-					$rand2 = rand(1,10);
-					$prize = $rand1 == $rand2 ? rand(1,8) : 0;
-					#该奖品已发数量
-					$repo = $em->getRepository('AppBundle:Info');
-					$qb = $repo->createQueryBuilder('a');
-					$qb->select('COUNT(a)');
-					$qb->where('a.prize = :prize');
-					$qb->setParameter(':prize', $prize);
-					$count3 = $qb->getQuery()->getSingleScalarResult();
+
 					#今天已抽奖,已中奖,奖品已发完
 					if($count1 >0 || $count2 >0){
-						$prize = $info->getPrize();
-					}
-					if($count3 >= $award[$prize-1]){
+						//$prize = $info->getPrize();
 						$prize = 0;
 					}
-					elseif($prize != 0){
-						#该奖品平均发放情况
-						if($award_rule[$prize-1] == 0){
-							$w = date('w');
-							$date1 = date('Y-m-d 00:00:00', $timestamp-$w*24*3600);
-							$date2 = date('Y-m-d 23:59:59', strtotime($date1) + 7*24*3600 -1);
-						}
-						elseif($award_rule[$prize-1] == 1){
-							$t = date('t', $timestamp);
-							$date1 = date('Y-m-01 00:00:00', $timestamp);
-							$date2 = date('Y-m-', $timestamp).$t.' 23:59:59';
-						}
-						else{
-							$n = date('n', $timestamp);
-							if($n%2 == 1){
-								$timestamp1 = $timestamp;
-								$temp_date = date('Y').'-'.(date('n')+1).'-01';
-								$timestamp2 = strtotime($temp_date);
-								$t = date('t', $timestamp2);
-							}
-							else{
-								$t = date('t', $timestamp);
-								$timestamp1 = $timestamp - $t*24*3600;
-								$timestamp2 = $timestamp;
-							}
-							$date1 = date('Y-m-01 00:00:00', $timestamp1);
-							$date2 = date('Y-m-', $timestamp2).$t.' 23:59:59';
-						}
-						$repo = $em->getRepository('AppBundle:Info');
-						$qb = $repo->createQueryBuilder('a');
-						$qb->select('COUNT(a)');
-						$qb->where('a.prize = :prize AND a.createTime >= :createTime1 AND a.createTime <= :createTime2');
-						$qb->setParameter(':prize', $prize);
-						$qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
-						$qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
-						$count4 = $qb->getQuery()->getSingleScalarResult();
-						if($count4 >= $award_average[$prize-1]){
-							$prize = 0;
-						}
+					else{
+						$prize = Helper\Lottery::execute($em, $timestamp);
 					}
 					$info->setPrize($prize);
 					$info->setHasLottery(1);
@@ -462,6 +409,7 @@ class ApiController extends Controller
 						'msg' => '',
 						'data' => array('prize'=>$prize),
 					);
+
 				}
 				$em->getConnection()->commit();
 			}
@@ -491,6 +439,7 @@ class ApiController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('AppBundle:Info');
 		$qb = $repo->createQueryBuilder('a');
+		$qb->where('a.type = 0');
 		$qb->select('COUNT(DISTINCT a.mobile)');
 		$count = $qb->getQuery()->getSingleScalarResult();
 		$result = array(
@@ -534,7 +483,7 @@ class ApiController extends Controller
 		$query = $repository
 			->createQueryBuilder('a')
 			->select('count(a)')
-			->where('a.likeNum > :likeNum')
+			->where('a.likeNum > :likeNum AND a.type = 0')
 			->setParameter('likeNum', $likeNum)
 			->orderBy('a.likeNum','ASC')
 			->getQuery();
@@ -552,5 +501,119 @@ class ApiController extends Controller
 			return $result['content']['address_detail']['city'];
 		else
 			return '--';
+	}
+	/**
+	 * @Route("/march/lottery", name="march_lottery")
+	 */
+	public function marchLotteryAction(Request $request)
+	{
+		$session = $request->getSession();
+		if( null == $request->get('code')){
+			$result = array('ret'=>1001,'msg'=>'请输入幸运心愿码~');
+		}
+		else{
+			$timestamp = time();
+			$em = $this->getDoctrine()->getManager();
+			$em->getConnection()->beginTransaction();
+			try{
+				$repo = $em->getRepository('AppBundle:Code');
+				$qb = $repo->createQueryBuilder('a');
+				$qb->where('a.code = :code');
+				$qb->setParameter('code', $request->get('code'));
+				$qb->select('COUNT(a)');
+				$count = $qb->getQuery()->getSingleScalarResult();
+				//var_dump($count);
+				if($count == 0){
+					$result = array('ret'=>1002,'msg'=>'亲，你输入的幸运心愿码有误哦，请仔细检查重新输入~');
+				}
+				else{
+					$code = $em->getRepository('AppBundle:Code')->findOneBy(array('code'=>$request->get('code')));
+					if( $code->getIsActive() == 1){
+						$result = array('ret'=>1003, 'msg'=>'亲，您输入的幸运心愿码已经被使用过啦~');
+					}
+					else{
+						$prize = Helper\Lottery::execute($em, $timestamp);
+						//$prize = 8;
+						$code->setIsActive(1);
+						$em->persist($code);
+
+						$log = new Entity\LotteryLog();
+						$log->setCreateIp($request->getClientIp());
+						$log->setCreateTime(new \DateTime('now'));
+						$log->setInfo(null);
+						$log->setPrize($prize);
+						$log->setCode($request->get('code'));
+						$em->persist($log);
+
+						$em->flush();
+						$session->set('march_lottery_log', $log->getId());
+						//$session->set('prize', $prize);
+						$result = array('ret'=>0,'msg'=>'','prize'=>$prize);
+					}
+				}
+				$em->getConnection()->commit();
+			}catch (Exception $e){
+				$em->getConnection()->rollback();
+				$result = array(
+					'ret' => 2001,
+					'msg' => $e->getMessage(),
+				);
+			}
+		}
+		$callback = $request->get('callback') ? : 'callback';
+		$response = new Response();
+		if( null == $request->get('callback'))
+			$response->setContent(json_encode($result));
+		else
+			$response->setContent($callback.'('.json_encode($result).')');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
+		return $response;
+		//return new JsonResponse($result);
+	}
+	/**
+	 * @Route("/march/post", name="march_post")
+	 */
+	public function postAction(Request $request)
+	{
+		$session = $request->getSession();
+		if( null == $session->get('march_lottery_log')){
+			$result = array('ret'=>1001,'msg'=>'您还没有中奖喔~');
+		}
+		else{
+			$em = $this->getDoctrine()->getManager();
+			$log = $em->getRepository("AppBundle:LotteryLog")->find($session->get('march_lottery_log'));
+			if(null != $log){
+				$info = new Entity\Info();
+				$info->setAddress($request->get('address'));
+				$info->setUsername($request->get('username'));
+				$info->setMobile($request->get('mobile'));
+				$info->setHeadImg('');
+				$info->setWishText('');
+				$info->setCreateIp($request->getClientIp());
+				$info->setCreateTime(new \DateTime('now'));
+				$info->setIsActive(1);
+				$info->setCode($log->getCode());
+				$info->setType(1);
+				$info->setPrize($log->getPrize());
+				$info->setHasLottery(1);
+
+				$log->setInfo($info);
+
+				$em->persist($info);
+				$em->persist($log);
+				$em->flush();
+			}
+			$session->set('march_lottery_log', null);
+			$result = array('ret'=>0,'msg'=>'');
+		}
+		$callback = $request->get('callback') ? : 'callback';
+		$response = new Response();
+		if( null == $request->get('callback'))
+			$response->setContent(json_encode($result));
+		else
+			$response->setContent($callback.'('.json_encode($result).')');
+		$response->headers->set('Access-Control-Allow-Origin', '*');
+		return $response;
+		//return new JsonResponse($result);
 	}
 }

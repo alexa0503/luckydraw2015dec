@@ -124,23 +124,24 @@ select,input,textarea{font-family:inherit; outline:none;}
 -webkit-animation:page5Img2Act 6s 0s linear both infinite;
 -webkit-transform-origin:320px 385px;
 }
-
 @-webkit-keyframes page5Img2Act{
 0%{ -webkit-transform:scale(1); background-position:0 0;}
-5%{ -webkit-transform:scale(1); background-position:-640px 0;}
-15%{ -webkit-transform:scale(1); background-position:-640px 0;}
-20%{ -webkit-transform:scale(1); background-position:-1280px 0;}
-30%{ -webkit-transform:scale(1); background-position:-1280px 0;}
-35%{ -webkit-transform:scale(1); background-position:-1920px 0;}
-44%{ -webkit-transform:scale(1); background-position:-1920px 0;}
-49%{ -webkit-transform:scale(1); background-position:-2560px 0;}
-58%{ -webkit-transform:scale(1); background-position:-2560px 0;}
-63%{ -webkit-transform:scale(1); background-position:-3200px 0;}
-72%{ -webkit-transform:scale(1); background-position:-3200px 0;}
-77%{ -webkit-transform:scale(1); background-position:-3840px 0;}
-86%{ -webkit-transform:scale(1); background-position:-3840px 0;}
-91%{ -webkit-transform:scale(1); background-position:-4480px 0;}
-100%{ -webkit-transform:scale(1); background-position:-4480px 0;}
+3%{ -webkit-transform:scale(1); background-position:-640px 0;}
+12.5%{ -webkit-transform:scale(1); background-position:-640px 0;}
+15.5%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+25%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+28%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+37.5%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+40.5%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+50%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+53%{ -webkit-transform:scale(1); background-position:-3200px 0;}
+60.5%{ -webkit-transform:scale(1); background-position:-3200px 0;}
+63.5%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+75%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+78%{ -webkit-transform:scale(1); background-position:-4480px 0;}
+87.5%{ -webkit-transform:scale(1); background-position:-4480px 0;}
+90.5%{ -webkit-transform:scale(1); background-position:-5120px 0;}
+100%{ -webkit-transform:scale(1); background-position:-5120px 0;}
 }
 
 /*@-webkit-keyframes page5Img2Act{

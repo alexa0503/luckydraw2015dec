@@ -39,7 +39,7 @@ $(document).ready(function(){
 	
 	var _title="美丽心愿，从头开始";
 	var _pageurl=notWechatSharlUrl;
-	var _picurl=noWechatShareImg;/*"http://dev.slek.com.cnbundles/app/default/images/share.jpg";*/
+	var _picurl=noWechatShareImg;/*"http://dev.slek.com.cnhttp://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/share.jpg";*/
 	var _sharetext="＃带你和闺蜜去见郭碧婷＃刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？";
 	
 		$(".douban").click(function(){
@@ -79,44 +79,44 @@ $(document).ready(function(){
 var lh=380;
 function loadingImg(){
 	var images=[];
-	images.push("bundles/app/default/images/bg.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/bg.png");
 	
-	images.push("bundles/app/default/images/page1Img1.png");
-	images.push("bundles/app/default/images/page1Img2.png");
-	images.push("bundles/app/default/images/page1Img5.png");
-	images.push("bundles/app/default/images/page1Img6.png");
-	images.push("bundles/app/default/images/page1Img7.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page1Img1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page1Img2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page1Img5.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page1Img6.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page1Img7.png");
 	
-	images.push("bundles/app/default/images/page2Img1.png");
-	images.push("bundles/app/default/images/page2Img3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page2Img1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page2Img3.png");
 	
-	images.push("bundles/app/default/images/page3Img1.png");
-	images.push("bundles/app/default/images/page3Img3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page3Img1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page3Img3.png");
 	
-	/*images.push("bundles/app/default/images/page4Img1.png");
-	images.push("bundles/app/default/images/page4Img2.png");
+	/*images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page4Img1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page4Img2.png");
 	
-	images.push("bundles/app/default/images/page5Award0.png");
-	images.push("bundles/app/default/images/page5Award1.png");
-	images.push("bundles/app/default/images/page5Award2.png");
-	images.push("bundles/app/default/images/page5Award3.png");
-	images.push("bundles/app/default/images/page5Award4.png");
-	images.push("bundles/app/default/images/page5Award5.png");
-	images.push("bundles/app/default/images/page5Award6.png");
-	images.push("bundles/app/default/images/page5Img2.png");
-	images.push("bundles/app/default/images/page5Img3.png");
-	images.push("bundles/app/default/images/page5Img4.png");*/
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award0.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award4.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award5.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award6.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Img2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Img3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Img4.png");*/
 	
-	images.push("bundles/app/default/images/rule1.png");
-	images.push("bundles/app/default/images/rule2.png");
-	images.push("bundles/app/default/images/rule3.png");
-	images.push("bundles/app/default/images/rule4.png");
-	images.push("bundles/app/default/images/rule5.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule4.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule5.png");
 	
-	images.push("bundles/app/default/images/share1.png");
-	images.push("bundles/app/default/images/share2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/share1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/share2.png");
 	
-	images.push("bundles/app/default/images/topImg1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/topImg1.png");
 	
 	
 	/*图片预加载*/
@@ -145,15 +145,15 @@ function loadingImg(){
 
 function loadingShare(){
 	var images=[];
-	images.push("bundles/app/default/images/bg2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/bg2.png");
 	
-	images.push("bundles/app/default/images/page6Img1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page6Img1.png");
 	
-	images.push("bundles/app/default/images/rule1.png");
-	images.push("bundles/app/default/images/rule2.png");
-	images.push("bundles/app/default/images/rule3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule3.png");
 	
-	images.push("bundles/app/default/images/topImg1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/topImg1.png");
 	
 	
 	/*图片预加载*/
@@ -181,15 +181,15 @@ function loadingShare(){
 
 function loadingTop(){
 	var images=[];
-	images.push("bundles/app/default/images/bg.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/bg.png");
 	
-	images.push("bundles/app/default/images/topBg.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/topBg.png");
 	
-	images.push("bundles/app/default/images/rule1.png");
-	images.push("bundles/app/default/images/rule2.png");
-	images.push("bundles/app/default/images/rule3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule3.png");
 	
-	images.push("bundles/app/default/images/topImg1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/topImg1.png");
 	
 	
 	/*图片预加载*/
@@ -217,31 +217,31 @@ function loadingTop(){
 
 function loadSuccess(){
 	var images=[];
-	images.push("bundles/app/default/images/bg.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/bg.png");
 	
-	images.push("bundles/app/default/images/page4Img1.png");
-	images.push("bundles/app/default/images/page4Img2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page4Img1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page4Img2.png");
 	
-	images.push("bundles/app/default/images/page5Award0.png");
-	images.push("bundles/app/default/images/page5Award1.png");
-	images.push("bundles/app/default/images/page5Award2.png");
-	images.push("bundles/app/default/images/page5Award3.png");
-	images.push("bundles/app/default/images/page5Award4.png");
-	images.push("bundles/app/default/images/page5Award5.png");
-	images.push("bundles/app/default/images/page5Award6.png");
-	images.push("bundles/app/default/images/page5Award7.png");
-	images.push("bundles/app/default/images/page5Img2.png");
-	/*images.push("bundles/app/default/images/page5Img3.png");*/
-	images.push("bundles/app/default/images/page5Img4.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award0.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award4.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award5.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award6.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award7.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Img2.png");
+	/*images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Img3.png");*/
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Img4.png");
 	
-	images.push("bundles/app/default/images/rule1.png");
-	images.push("bundles/app/default/images/rule2.png");
-	images.push("bundles/app/default/images/rule3.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/rule3.png");
 	
-	images.push("bundles/app/default/images/share1.png");
-	images.push("bundles/app/default/images/share2.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/share1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/share2.png");
 	
-	images.push("bundles/app/default/images/topImg1.png");
+	images.push("http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/topImg1.png");
 	
 	
 	/*图片预加载*/
@@ -272,7 +272,7 @@ function goPage1(){
 	$('.page0').hide();
 	$('.topBar').fadeIn(500);
 	$('.page1').fadeIn(500);
-	$('body').css('background','url(bundles/app/default/images/bg.png) top center no-repeat');
+	$('body').css('background','url(http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/bg.png) top center no-repeat');
 	$('input').val('');
 }
 
@@ -519,7 +519,7 @@ function goPage4(){
 	
 	$('.page0').hide();
 	$('.topBar').fadeIn(500);
-	$('body').css('background','url(bundles/app/default/images/bg.png) top center no-repeat');
+	$('body').css('background','url(http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/bg.png) top center no-repeat');
 	setTimeout(function(){
 		goPage4b();
 	},250);
@@ -625,7 +625,7 @@ function getLottery(){
 					isLotteryed=true;
 					$('.prize0').hide();
 					$('.page5endImg1').show();
-					$('.page5endImg1').css('background-image','url(bundles/app/default/images/page5Award'+json.data.prize+'.png)');
+					$('.page5endImg1').css('background-image','url(http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award'+json.data.prize+'.png)');
 					endPrizeNumb=json.data.prize;
 					setTimeout(function(){
 						$('.page5Img2').removeClass('page5Img2Act');
@@ -639,7 +639,7 @@ function getLottery(){
 					isLotteryed=true;
 					$('.prize0').show();
 					$('.page5endImg1').hide();
-					$('.page5endImg1').css('background-image','url(bundles/app/default/images/page5Award0.png)');
+					$('.page5endImg1').css('background-image','url(http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/page5Award0.png)');
 					setTimeout(function(){
 						$('.page5Img2').removeClass('page5Img2Act');
 						$('.page5').hide();
@@ -664,7 +664,7 @@ function goPage6(){
 	$('.page0').hide();
 	$('.topBar').fadeIn(500);
 	$('.page6').fadeIn(500);
-	$('body').css('background','url(bundles/app/default/images/bg2.png) top center no-repeat');
+	$('body').css('background','url(http://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/bg2.png) top center no-repeat');
 }
 
 function goPage7(){

@@ -24,8 +24,13 @@ class Builder extends ContainerAware
 		$story->setChildrenAttribute('class', 'children');
 		$story->addChild('查看', array('route' => 'admin_story'));
 		$story->addChild('添加', array('route' => 'admin_story_add'));
-		$menu->addChild('用户信息', array('route' => 'admin_info'));
-		$menu->addChild('信息导出', array('route' => 'admin_export'));
+		$menu->addChild('(一期)用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>0)));
+		$menu->addChild('(一期)信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>0)));
+
+
+		$menu->addChild('(二期)用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>1)));
+		$menu->addChild('(二期)信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>1)));
+		$menu->addChild('(二期)抽奖日志', array('route' => 'admin_log'));
 		/*
 		$storage = $menu->addChild('中奖时间段设置', array('route' => 'admin_timeodds'));
 		$storage->setAttribute('class', 'nav-parent');

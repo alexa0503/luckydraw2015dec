@@ -16,7 +16,7 @@ class LikeLog
     protected $id;
    
     /**
-     * @ORM\ManyToOne(targetEntity="info", inversedBy="likeLogs")
+     * @ORM\ManyToOne(targetEntity="Info", inversedBy="likeLogs")
      * @ORM\JoinColumn(name="info_id", referencedColumnName="id")
      */
     private $info;
@@ -92,7 +92,7 @@ class LikeLog
      * @param \AppBundle\Entity\info $info
      * @return LikeLog
      */
-    public function setInfo(\AppBundle\Entity\info $info = null)
+    public function setInfo(\AppBundle\Entity\Info $info = null)
     {
         $this->info = $info;
 

@@ -1,0 +1,114 @@
+{% extends 'AppBundle:march:layout.html.twig' %}
+{% block content %}
+	<div class="pageOuter">
+		<div class="innerDiv">
+
+			<div class="page page0">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="loadingBg"></div>
+						<div class="loadingProgress" style="height:0;"></div>
+						<div class="abs bgImg loading"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="page page1" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page1Img1 abs bgImg"></div>
+						<div class="page1Img2 abs bgImg"></div>
+						<input type="text" class="page1Txt" placeholder="请输入你的幸运心愿码" onclick="ga('send','event','inputcode','click','input_code');">
+						<a href="javascript:void(0);" onClick="goPage2('http://dev.slek.com.cn/march/lottery');ga('send','event','button','click','start_luckydraw');" class="abs page1Btn1"><img src="{{ asset('bundles/app/march/images/') }}page1Btn1.png"></a>
+					</div>
+				</div>
+			</div>
+
+			<div class="page page2" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page2Img1 abs bgImg"></div>
+						<div class="page2Img2 abs bgImg"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="page page3" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page3Img1 abs bgImg"></div>
+						<a href="javascript:void(0);" onClick="goPage6();" class="abs page3Btn1"><img src="{{ asset('bundles/app/march/images/') }}page3Btn1.png"></a>
+					</div>
+				</div>
+			</div>
+
+			<div class="page page4" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page4Img1 abs bgImg"></div>
+						<div class="page4Res abs bgImg"></div>
+						<input type="text" class="page4Txt page4Txt1" maxlength="20">
+						<input type="tel" class="page4Txt page4Txt2" maxlength="11">
+						<input type="text" class="page4Txt page4Txt3" maxlength="50">
+						<a href="javascript:void(0);" onClick="submitInfo('http://dev.slek.com.cn/march/post');ga('send','event','button','click','submit_personal_information');" class="abs page4Btn1"><img src="{{ asset('bundles/app/march/images/') }}page4Btn1.png"></a>
+					</div>
+				</div>
+			</div>
+
+			<div class="page page5" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page5Img1 abs bgImg"></div>
+						<div class="page5Img2 abs"></div>
+						<a href="javascript:void(0);" onclick="ga('send', 'event', 'button','click','redirect_to_makewish',{'hitCallback':function(){window.location.href='http://campaign.slek.com.cn/luckydraw2015dec/mobile';}});" class="abs page6Btn1"><img src="{{ asset('bundles/app/march/images/') }}page5Btn1.png"></a>
+					</div>
+				</div>
+			</div>
+
+			<div class="page page6" style="display:none;">
+				<div class="h1008">
+					<div class="innerDiv">
+						<div class="page6Img1 abs bgImg"></div>
+						<div class="page5Img2 abs"></div>
+						<a href="javascript:void(0);" onclick="ga('send','event','button','click','redirect_to_makewish',{'hitCallback':function(){window.location.href='http://campaign.slek.com.cn/luckydraw2015dec/mobile';}});" class="abs page6Btn1"><img src="{{ asset('bundles/app/march/images/') }}page5Btn1.png"></a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<img src="{{ asset('bundles/app/march/images/') }}bg.png" class="abs ruleBg" style="display:none;">
+	<div class="pop popRule" style="display:none;">
+		<div class="page pageRule">
+			<div class="h1008">
+				<div class="innerDiv">
+					<div class="swiper-container abs bgImg">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide rule1"></div>
+							<div class="swiper-slide rule2"></div>
+							<div class="swiper-slide rule3"></div>
+							<div class="swiper-slide rule4"></div>
+						</div>
+					</div>
+					<a href="javascript:void(0);" class="abs closeBtn" onClick="closeRule();"><img src="{{ asset('bundles/app/march/images/') }}closeBtn.png"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="topBar" style="display:none;">
+		<div class="innerDiv">
+			<a href="javascript:void(0);" class="topBtn1 abs" onClick="showRule();"><img src="{{ asset('bundles/app/march/images/') }}topBtn1.png"></a>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		$(document).ready(function(){
+			loadingImg();
+			//goPage4();
+		});
+	</script>
+{% endblock %}

@@ -13,35 +13,35 @@ class Info
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
     /**
      * @ORM\Column(name="username",type="string", length=40)
      */
-    protected $username;
+    private $username;
     /**
      * @ORM\Column(name="mobile",type="string", length=40)
      */
-    protected $mobile;
+    private $mobile;
     /**
      * @ORM\Column(name="head_img",type="string", length=40)
      */
-    protected $headImg;
+    private $headImg;
     /**
      * @ORM\Column(name="wish_text",type="string", length=500, nullable = true)
      */
-    protected $wishText;
+    private $wishText;
     /**
      * @ORM\Column(name="like_num",type="integer")
      */
-    protected $likeNum = 0;
+    private $likeNum = 0;
     /**
      * @ORM\Column(name="has_lottery",type="boolean")
      */
-    protected $hasLottery = 0;
+    private $hasLottery = 0;
     /**
      * @ORM\Column(name="prize",type="integer")
      */
-    protected $prize = 0;
+    private $prize = 0;
     /**
      * @ORM\OneToMany(targetEntity="LikeLog", mappedBy="photo")
      */
@@ -49,17 +49,40 @@ class Info
     /**
      * @ORM\Column(name="create_time",type="datetime")
      */
-    protected $createTime;
+    private $createTime;
     /**
      * @ORM\Column(name="create_ip",type="string", length=60)
      */
-    protected $createIp;
+    private $createIp;
     /**
      * @ORM\Column(name="is_active",type="boolean")
      */
-    protected $isActive = 1;
+    private $isActive = 1;
+    /**
+     * @ORM\Column(name="code",type="string", length=60, nullable=true)
+     */
+    private $code = null;
+    /**
+     * @ORM\Column(name="address",type="string", length=200, nullable=true)
+     */
+    private $address = null;
+    /**
+     * @ORM\Column(name="type",type="integer")
+     */
+    private $type = 0;
+    /**
+     * @ORM\OneToOne(targetEntity="LotteryLog", mappedBy="info")
+     */
+    private $lotteryLog;
 
- 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->likeLogs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -140,56 +163,26 @@ class Info
     }
 
     /**
-     * Set createTime
+     * Set wishText
      *
-     * @param \DateTime $createTime
+     * @param string $wishText
      * @return Info
      */
-    public function setCreateTime($createTime)
+    public function setWishText($wishText)
     {
-        $this->createTime = $createTime;
+        $this->wishText = $wishText;
 
         return $this;
     }
 
     /**
-     * Get createTime
-     *
-     * @return \DateTime 
-     */
-    public function getCreateTime()
-    {
-        return $this->createTime;
-    }
-
-    /**
-     * Set createIp
-     *
-     * @param string $createIp
-     * @return Info
-     */
-    public function setCreateIp($createIp)
-    {
-        $this->createIp = $createIp;
-
-        return $this;
-    }
-
-    /**
-     * Get createIp
+     * Get wishText
      *
      * @return string 
      */
-    public function getCreateIp()
+    public function getWishText()
     {
-        return $this->createIp;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->infoLogs = new \Doctrine\Common\Collections\ArrayCollection();
+        return $this->wishText;
     }
 
     /**
@@ -262,97 +255,49 @@ class Info
     }
 
     /**
-     * Add infoLogs
+     * Set createTime
      *
-     * @param \AppBundle\Entity\info $infoLogs
+     * @param \DateTime $createTime
      * @return Info
      */
-    public function addInfoLog(\AppBundle\Entity\info $infoLogs)
+    public function setCreateTime($createTime)
     {
-        $this->infoLogs[] = $infoLogs;
+        $this->createTime = $createTime;
 
         return $this;
     }
 
     /**
-     * Remove infoLogs
+     * Get createTime
      *
-     * @param \AppBundle\Entity\info $infoLogs
+     * @return \DateTime 
      */
-    public function removeInfoLog(\AppBundle\Entity\info $infoLogs)
+    public function getCreateTime()
     {
-        $this->infoLogs->removeElement($infoLogs);
+        return $this->createTime;
     }
 
     /**
-     * Get infoLogs
+     * Set createIp
      *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getInfoLogs()
-    {
-        return $this->infoLogs;
-    }
-
-    /**
-     * Add likeLogs
-     *
-     * @param \AppBundle\Entity\InfoLog $likeLogs
+     * @param string $createIp
      * @return Info
      */
-    public function addLikeLog(\AppBundle\Entity\InfoLog $likeLogs)
+    public function setCreateIp($createIp)
     {
-        $this->likeLogs[] = $likeLogs;
+        $this->createIp = $createIp;
 
         return $this;
     }
 
     /**
-     * Remove likeLogs
-     *
-     * @param \AppBundle\Entity\InfoLog $likeLogs
-     */
-    public function removeLikeLog(\AppBundle\Entity\InfoLog $likeLogs)
-    {
-        $this->likeLogs->removeElement($likeLogs);
-    }
-
-    /**
-     * Get likeLogs
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getLikeLogs()
-    {
-        return $this->likeLogs;
-    }
-    public function increaseLikeNum()
-    {
-        ++$this->likeNum;
-        return $this;
-    }
-
-    /**
-     * Set wishText
-     *
-     * @param string $wishText
-     * @return Info
-     */
-    public function setWishText($wishText)
-    {
-        $this->wishText = $wishText;
-
-        return $this;
-    }
-
-    /**
-     * Get wishText
+     * Get createIp
      *
      * @return string 
      */
-    public function getWishText()
+    public function getCreateIp()
     {
-        return $this->wishText;
+        return $this->createIp;
     }
 
     /**
@@ -376,5 +321,135 @@ class Info
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Info
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     * @return Info
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string 
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     * @return Info
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Add likeLogs
+     *
+     * @param \AppBundle\Entity\LikeLog $likeLogs
+     * @return Info
+     */
+    public function addLikeLog(\AppBundle\Entity\LikeLog $likeLogs)
+    {
+        $this->likeLogs[] = $likeLogs;
+
+        return $this;
+    }
+
+    /**
+     * Remove likeLogs
+     *
+     * @param \AppBundle\Entity\LikeLog $likeLogs
+     */
+    public function removeLikeLog(\AppBundle\Entity\LikeLog $likeLogs)
+    {
+        $this->likeLogs->removeElement($likeLogs);
+    }
+
+    /**
+     * Get likeLogs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLikeLogs()
+    {
+        return $this->likeLogs;
+    }
+
+    /**
+     * Set lotteryLog
+     *
+     * @param \AppBundle\Entity\LotteryLog $lotteryLog
+     * @return Info
+     */
+    public function setLotteryLog(\AppBundle\Entity\LotteryLog $lotteryLog = null)
+    {
+        $this->lotteryLog = $lotteryLog;
+
+        return $this;
+    }
+
+    /**
+     * Get lotteryLog
+     *
+     * @return \AppBundle\Entity\LotteryLog 
+     */
+    public function getLotteryLog()
+    {
+        return $this->lotteryLog;
+    }
+    public function increaseLikeNum()
+    {
+        ++$this->likeNum;
+        return $this;
     }
 }
