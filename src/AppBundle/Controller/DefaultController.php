@@ -48,7 +48,7 @@ class DefaultController extends Controller
 		//var_dump($qb->getQuery());
 		$count = $qb->getQuery()->getSingleScalarResult();
 		$session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_index'));
-		$session->set('wx_share_img','http://'.$request->getHost().'/bundles/app/default/images/share.jpg');
+		$session->set('wx_share_img','http://'.$request->getHost().'/luckydraw2015dec/bundles/app/default/images/share.jpg');
 		return $this->render('AppBundle:default:index.html.twig',array('count'=>$count));
 	}
 	/**
@@ -66,7 +66,7 @@ class DefaultController extends Controller
 	public function successAction(Request $request, $id = null)
 	{
 		$session = $request->getSession();
-		if( null == $id ){
+		if( null == $id){
 			return $this->redirect($this->generateUrl('_index'));
 		}
 
@@ -79,7 +79,7 @@ class DefaultController extends Controller
 		$session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_info',array('id'=>$id)));
 		//$session->set('wx_share_img',$cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb2'));
 
-		$share_img = 'http://'.$request->getHost().$this->container->get('templating.helper.assets')->getUrl('/luckydraw2015dec/uploads/'.$info->getHeadImg());
+		$share_img = 'http://'.$request->getHost().$this->container->get('templating.helper.assets')->getUrl('/uploads/thumb/'.$info->getHeadImg());
 		$session->set('wx_share_img', $share_img);
 		return $this->render('AppBundle:default:success.html.twig', array('success'=>true));
 	}
@@ -97,7 +97,7 @@ class DefaultController extends Controller
 			$info = $this->getDoctrine()->getRepository('AppBundle:Info')->find(1);
 		}
 		$session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('_info',array('id'=>$id)));
-		$share_img = 'http://'.$request->getHost().$this->container->get('templating.helper.assets')->getUrl('/uploads/'.$info->getHeadImg());
+		$share_img = 'http://'.$request->getHost().$this->container->get('templating.helper.assets')->getUrl('/uploads/thumb/'.$info->getHeadImg());
 		$session->set('wx_share_img', $share_img);
 		return $this->render('AppBundle:default:info.html.twig', array('info'=>$info));
 	}

@@ -32,7 +32,11 @@ class AdminController extends Controller
 	 */
 	public function accountAction()
 	{
-		
+		$user = new Entity\User();
+		$factory = $this->get('security.encoder_factory');
+		$encoder = $factory->getEncoder($user);
+		$password = $encoder->encodePassword('pPvnwXThqHMHuvJX', $user->getSalt());
+		return new Response($password);
 	}
 	
 	/**

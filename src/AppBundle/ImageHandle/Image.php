@@ -35,6 +35,9 @@ class Image {
 				$image->rotate(180)->save($image_path);
 			}
 		}
+		#生成缩略图
+		$image->thumbnail(new Box(100, 100),ImageInterface::THUMBNAIL_INSET)->save($this->file_path.'/thumb/'.$this->file_name);
+		#生成灰度图片
 		$image->effects()->grayscale();
 		$image->save($this->file_path.'/gray/'.$this->file_name);
 		return $this->file_name;

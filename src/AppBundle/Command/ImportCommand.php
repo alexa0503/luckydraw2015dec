@@ -13,6 +13,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use AppBundle\Entity;
+use Imagine\Imagick\Imagine;
+use Imagine\Image\Box;
+use Imagine\Image\ImageInterface;
 
 class ImportCommand extends ContainerAwareCommand
 {
@@ -37,6 +40,19 @@ class ImportCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $info = $em->getRepository('AppBundle:Info')->findAll();
+        $file_path = preg_replace('/app$/si', 'web/uploads/', $this->getContainer()->get('kernel')->getRootDir());
+        $imagine = new Imagine();
+        foreach($info as $v){
+            if($v->getHeadImg() != '' && file_exists($file_path.$v->getHeadImg())){
+                $image = $imagine->open($file_path.$v->getHeadImg());
+                $image->thumbnail(new Box(100, 100),ImageInterface::THUMBNAIL_INSET)->save($file_path.'/thumb/'.$v->getHeadImg());
+                //$response->setContent();
+                $output->writeln($v->getId().",".$v->getHeadImg());
+            }
+        }
+        /*
         $filename = preg_replace('/app$/si', 'web/', $this->getContainer()->get('kernel')->getRootDir())."1.csv";
         $handle = fopen($filename, "r");
         $em = $this->getContainer()->get('doctrine')->getManager();
@@ -58,5 +74,6 @@ class ImportCommand extends ContainerAwareCommand
         }
         fclose($handle);
         $output->writeln('ok');
+        */
     }
 }

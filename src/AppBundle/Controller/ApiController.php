@@ -194,7 +194,7 @@ class ApiController extends Controller
 				'wishText' => $value->getWishText(),
 				'city' => $this->getCity($value->getCreateIp()),
 				'headImg' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
-				'thumb' => 'http://'.$request->getHost().'/uploads/'.$value->getHeadImg(),
+				'thumb' => 'http://'.$request->getHost().'/uploads/thumb/'.$value->getHeadImg(),
 				//'thumb' => $cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1'),
 				'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$value->getHeadImg(),
 				'sum' => $count,
@@ -243,7 +243,7 @@ class ApiController extends Controller
 				'wishText' => $info->getWishText(),
 				'city' => $this->getCity($info->getCreateIp()),
 				'headImg' => 'http://'.$request->getHost().'/uploads/'.$info->getHeadImg(),
-				'thumb' => 'http://'.$request->getHost().'/uploads/'.$info->getHeadImg(),
+				'thumb' => 'http://'.$request->getHost().'/uploads/thumb/'.$info->getHeadImg(),
 				//'thumb' => $cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'),
 				'grayHeadImg' => 'http://'.$request->getHost().'/uploads/gray/'.$info->getHeadImg(),
 				'top' => $this->getRank($info->getLikeNum()),
@@ -627,12 +627,5 @@ class ApiController extends Controller
 		return $response;
 		//return new JsonResponse($result);
 	}
-	/**
-	 * @Route("/test", name="march_test")
-	 */
-	public function testAction()
-	{
-		Helper\SMS::send(1,15618892632);
-		return new Response();
-	}
+
 }

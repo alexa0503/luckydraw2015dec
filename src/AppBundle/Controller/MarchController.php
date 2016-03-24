@@ -28,7 +28,7 @@ class MarchController extends Controller
     {
         $session = $request->getSession();
         $session->set('wx_share_url','http://'.$request->getHost().$this->generateUrl('march_index'));
-        $session->set('wx_share_img','http://'.$request->getHost().'/bundles/app/default/images/share.jpg');
+        $session->set('wx_share_img','http://'.$request->getHost().'/luckydraw2015dec/bundles/app/default/images/share.jpg');
         return $this->render('AppBundle:march:index.html.twig');
     }
 }
