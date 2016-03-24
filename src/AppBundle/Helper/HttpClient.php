@@ -23,7 +23,7 @@ class HttpClient
         //curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         //curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_URL, $url);
-        //curl_setopt($curl, CURLOPT_HEADER, 1);
+        curl_setopt($curl, CURLOPT_HEADER, 1);
         //设置为POST方式
         curl_setopt($curl, CURLOPT_POST, 1);
         //POST数据

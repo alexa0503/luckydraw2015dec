@@ -134,6 +134,7 @@ class ApiController extends Controller
 			return $this->redirect(urldecode($request->get('failUrl')).'?info='.urlencode($result['msg']));
 		}
 
+		$callback = $request->get('callback') ? : 'callback';
 		$response = new Response();
 		if( null == $request->get('callback'))
 			$response->setContent(json_encode($result));
@@ -409,6 +410,10 @@ class ApiController extends Controller
 						'msg' => '',
 						'data' => array('prize'=>$prize),
 					);
+					#短信发送
+					if($prize > 0){
+						Helper\SMS::send($prize, $mobile);
+					}
 
 				}
 				$em->getConnection()->commit();
@@ -602,6 +607,12 @@ class ApiController extends Controller
 				$em->persist($info);
 				$em->persist($log);
 				$em->flush();
+
+				/*
+				if($log->getPrize() > 0){
+					Helper\SMS::send($log->getPrize(), $request->get('mobile'));
+				}
+				*/
 			}
 			$session->set('march_lottery_log', null);
 			$result = array('ret'=>0,'msg'=>'');
@@ -615,5 +626,13 @@ class ApiController extends Controller
 		$response->headers->set('Access-Control-Allow-Origin', '*');
 		return $response;
 		//return new JsonResponse($result);
+	}
+	/**
+	 * @Route("/test", name="march_test")
+	 */
+	public function testAction()
+	{
+		Helper\SMS::send(1,15618892632);
+		return new Response();
 	}
 }
