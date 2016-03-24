@@ -20,7 +20,7 @@ class SMS
             'username'=>'miketest',
             'password'=>'123456',
             'mobile'=>$mobile,
-            'content'=>'恭喜你赢得舒蕾”美丽心愿，从头开始”活动的奖品-['.$array[$prize].']',
+            'content'=>'恭喜你赢得舒蕾”美丽心愿，从头开始”活动的奖品-['.$array[$prize].']【舒蕾秀发护理】',
         );
         $result = Helper\HttpClient::post($url, http_build_query($data));
         $handle = fopen('sms.log','a+');
