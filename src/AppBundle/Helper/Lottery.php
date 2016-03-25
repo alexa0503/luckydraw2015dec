@@ -12,11 +12,10 @@ class Lottery
     {
         $award = self::getConfig();
         #默认中奖几率
-        $rand_max = 10;
+        $rand_max = 1;
         $rand1 = rand(1, $rand_max);
         $rand2 = rand(1, $rand_max);
         $prize = $rand1 == $rand2 ? rand(1,8) : 0;
-
         #当前周中奖数量
         $w = date('w');
         $date1 = date('Y-m-d 00:00:00', $timestamp-$w*24*3600);
@@ -25,10 +24,9 @@ class Lottery
         $qb = $repo->createQueryBuilder('a');
         $qb->select('COUNT(a)');
         $qb->where('a.prize != 0 AND a.createTime >= :createTime1 AND a.createTime <= :createTime2');
-        //$qb->setParameter(':prize', $prize);
         $qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
         $qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
-        $num1 = $qb->getQuery()->getSingleScalarResult();
+        $num1 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
         //var_dump($num1);
         if( $prize > 0 && $num1 < 20){
             $repo = $em->getRepository('AppBundle:Info');
@@ -36,7 +34,7 @@ class Lottery
             $qb->select('COUNT(a)');
             $qb->where('a.prize = :prize');
             $qb->setParameter(':prize', $prize);
-            $count = $qb->getQuery()->getSingleScalarResult();
+            $count = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
             if($count >= $award[0][$prize-1]){
                 $prize = 0;
             }
@@ -76,11 +74,15 @@ class Lottery
                 $qb->setParameter(':prize', $prize);
                 $qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
                 $qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
-                $num = $qb->getQuery()->getSingleScalarResult();
+                $num = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
+
                 if($num >= $award[2][$prize-1]){
                     $prize = 0;
                 }
             }
+        }
+        else{
+            $prize = 0;
         }
 
         return $prize;
@@ -90,7 +92,8 @@ class Lottery
     {
         $pool = array(5,42,0,32,42,162,300,362);//奖池
         $rule = array(2,0,1,0,0,0,0);//0为每周平均数量,1为每月平均数量,2为每双月平均数量
-        $allocate = array(1,1,1,1,1,3,7,8);//平均分配数量
+        $allocate = array(0,0,0,0,0,3,7,8);//平均分配数量
+        //$allocate = array(1,1,1,1,1,3,7,8);//平均分配数量
         return array($pool,$rule,$allocate);
     }
 }

@@ -344,6 +344,7 @@ class ApiController extends Controller
 	{
 		$session = $request->getSession();
 		$timestamp = time();
+		$session->set('id', rand(1,2100));
 		if( null == $session->get('id')){
 			$result = array(
 				'ret' => 3001,
@@ -361,7 +362,6 @@ class ApiController extends Controller
 			$em->getConnection()->beginTransaction();
 			try{
 				$info = $em->getRepository('AppBundle:Info')->find($session->get('id'));
-
 				if( $info == null || $info->getType() != 0){
 					$result = array(
 						'ret' => 1001,
@@ -377,12 +377,11 @@ class ApiController extends Controller
 					$qb->where('a.mobile = :mobile AND a.createTime >= :createTime1 AND a.createTime < :createTime2 AND a.hasLottery = :hasLottery');
 					$qb->setParameter('mobile', $mobile);
 					$qb->setParameter('hasLottery', true);
-					#当天已抽奖
 					$date1 = date('Y-m-d',$timestamp);
 					$date2 = date('Y-m-d', strtotime('+1 day', $timestamp));
 					$qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
 					$qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
-					$count1 = $qb->getQuery()->getSingleScalarResult();
+					$count1 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
 
 					#该手机号已中将
 					$repo = $em->getRepository('AppBundle:Info');
@@ -390,19 +389,18 @@ class ApiController extends Controller
 					$qb->select('COUNT(a)');
 					$qb->where('a.mobile = :mobile AND a.prize > 0');
 					$qb->setParameter('mobile', $mobile);
-					$count2 = $qb->getQuery()->getSingleScalarResult();
+					$count2 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
 
 
 					#今天已抽奖,已中奖,奖品已发完
 					if($count1 >0 || $count2 >0){
-						//$prize = $info->getPrize();
 						$prize = 0;
 					}
 					else{
 						$prize = Helper\Lottery::execute($em, $timestamp);
 					}
+					$info->setHasLottery(true);
 					$info->setPrize($prize);
-					$info->setHasLottery(1);
 					$em->persist($info);
 					$em->flush();
 					$result = array(

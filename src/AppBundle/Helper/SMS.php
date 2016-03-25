@@ -20,12 +20,14 @@ class SMS
             'username'=>'miketest',
             'password'=>'123456',
             'mobile'=>$mobile,
-            'content'=>'恭喜你赢得舒蕾”美丽心愿，从头开始”活动的奖品-['.$array[$prize].']【舒蕾秀发护理】',
+            'content'=>'【舒蕾秀发护理】恭喜你赢得舒蕾”美丽心愿，从头开始”活动奖品-['.$array[$prize].']，请回复准确寄送地址。',
         );
         $result = Helper\HttpClient::post($url, http_build_query($data));
-        $handle = fopen('sms.log','a+');
-        fwrite($handle,$mobile.'|'.$prize."\n");
-        fclose($handle);
+        if( $handle = @fopen('sms.log','a+')){
+            fwrite($handle,$mobile.'|'.$prize."\n");
+            fclose($handle);
+        }
+
         return $result;
     }
 }
