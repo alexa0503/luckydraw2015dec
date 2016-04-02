@@ -1,0 +1,68 @@
+{% extends 'AppBundle:admin:layout.html.twig' %}
+{% block content %}
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="table-responsive">
+			<!--<div id="table2_wrapper" class="dataTables_wrapper no-footer">
+			<div class="dataTables_length" id="table2_length"></div>
+			<div id="table2_filter" class="dataTables_filter"><a href="" class="label label-danger">导出中奖信息</a><label>Search:<input type="search" class="" placeholder="" aria-controls="table2"></label>--></div>
+			<table id="table2" class="table table-striped dataTable no-footer" role="grid" aria-describedby="table2_info">
+			<thead>
+			 <tr role="row">
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 40px;">ID</th>
+				 <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">活动类型</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">回执地址</th>
+				 <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">奖项</th>
+				 <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">手机号</th>
+				 <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">短信内容</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">创建时间</th>
+			</tr>
+		 </thead>
+		 <tbody>
+		 {% for p in pagination %}
+			<tr class="gradeA {% if loop.index is odd %} odd{% else %} even{% endif %}" role="row">
+				<td>{{ p.id }}</td>
+				<td>{% if p.type == 0 %}上传心愿{% else %}幸运心愿码{% endif %}</td>
+				<td>{{ p.address }}</td>
+				<td>{{ p.prize }}</td>
+				<td>{{ p.mobile }}</td>
+				<td>{{ p.content }}</td>
+				<td>{{ p.createTime | date("Y-m-d H:i:s") }}</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+<div class="dataTables_info" id="table2_info" role="status" aria-live="polite">共{{ pagination.getTotalItemCount }}条记录</div>
+<div class="dataTables_paginate paging_full_numbers" id="table2_paginate">
+{{ knp_pagination_render(pagination) }}
+</div>
+</div>
+</div><!-- table-responsive -->
+
+</div><!-- panel-body -->
+</div>
+{% endblock %}
+{% block title %}{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.delete').click(function(){
+			var obj = $(this).parent('td').parent('tr');
+			url = $(this).attr('href');
+			if(confirm('删除操作无法撤销,是否继续?')){
+				$.getJSON(url,function(json){
+					if(json && json.ret == 0){
+						obj.remove();
+					}
+					else{
+						alert(json.msg);
+					}
+				})
+			}
+			
+			return false;
+		})
+	})
+</script>
+{% endblock %}

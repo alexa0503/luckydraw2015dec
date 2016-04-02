@@ -24,13 +24,24 @@ class Builder extends ContainerAware
 		$story->setChildrenAttribute('class', 'children');
 		$story->addChild('查看', array('route' => 'admin_story'));
 		$story->addChild('添加', array('route' => 'admin_story_add'));
-		$menu->addChild('(一期)用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>0)));
-		$menu->addChild('(一期)信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>0)));
+		//$one = $menu->addChild('上传心愿活动', array('route' => 'admin_info','routeParameters'=>array('type'=>0,'win'=>0)));
+		//$one->setAttribute('class', 'nav-parent');
+		//$one->setChildrenAttribute('class', 'children');
+		$menu->addChild('[上传心愿]用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>0,'win'=>0)));
+		$menu->addChild('[上传心愿]全部用户导出', array('route' => 'admin_export','routeParameters'=>array('type'=>0,'win'=>0)));
+		$menu->addChild('[上传心愿]中奖用户', array('route' => 'admin_info','routeParameters'=>array('type'=>0,'win'=>1)));
+		$menu->addChild('[上传心愿]中奖信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>0,'win'=>1)));
 
 
-		$menu->addChild('(二期)用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>1)));
-		$menu->addChild('(二期)信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>1)));
-		$menu->addChild('(二期)抽奖日志', array('route' => 'admin_log'));
+		//$two = $menu->addChild('幸运心愿码活动', array('route' => 'admin_info','routeParameters'=>array('type'=>1,'win'=>0)));
+		//$two->setAttribute('class', 'nav-parent');
+		//$two->setChildrenAttribute('class', 'children');
+		$menu->addChild('[幸运心愿码]用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>1,'win'=>0)));
+		$menu->addChild('[幸运心愿码]全部用户导出', array('route' => 'admin_export','routeParameters'=>array('type'=>1,'win'=>0)));
+		$menu->addChild('[幸运心愿码]中奖用户', array('route' => 'admin_info','routeParameters'=>array('type'=>1,'win'=>1)));
+		$menu->addChild('[幸运心愿码]中奖信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>1,'win'=>1)));
+		$menu->addChild('[幸运心愿码]抽奖日志', array('route' => 'admin_log'));
+		$menu->addChild('短信日志', array('route' => 'admin_sms_log'));
 		/*
 		$storage = $menu->addChild('中奖时间段设置', array('route' => 'admin_timeodds'));
 		$storage->setAttribute('class', 'nav-parent');

@@ -12,7 +12,7 @@ class Lottery
     {
         $award = self::getConfig();
         #默认中奖几率
-        $rand_max = 1;
+        $rand_max = 10;
         $rand1 = rand(1, $rand_max);
         $rand2 = rand(1, $rand_max);
         $prize = $rand1 == $rand2 ? rand(1,8) : 0;
@@ -92,7 +92,7 @@ class Lottery
     {
         $pool = array(5,42,0,32,42,162,300,362);//奖池
         $rule = array(2,0,1,0,0,0,0);//0为每周平均数量,1为每月平均数量,2为每双月平均数量
-        $allocate = array(0,0,0,0,0,3,7,8);//平均分配数量
+        $allocate = array(0,0,0,0,0,0,0,0);//平均分配数量
         //$allocate = array(1,1,1,1,1,3,7,8);//平均分配数量
         return array($pool,$rule,$allocate);
     }

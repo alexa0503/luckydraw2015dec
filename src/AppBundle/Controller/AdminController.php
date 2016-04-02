@@ -40,14 +40,18 @@ class AdminController extends Controller
 	}
 	
 	/**
-	 * @Route("/admin/info/{type}", name="admin_info")
+	 * @Route("/admin/info/{type}/{win}", name="admin_info")
 	 */
-	public function infoAction(Request $request,$type=null)
+	public function infoAction(Request $request,$type=null, $win=null)
 	{
 		$repository = $this->getDoctrine()->getRepository('AppBundle:Info');
 		$queryBuilder = $repository->createQueryBuilder('a');
-		$queryBuilder->where('a.type = :type');
+		$queryBuilder->where('a.type = :type AND a.createTime < :createTime');
+        $queryBuilder->setParameter(':createTime', new \DateTime('now'), \Doctrine\DBAL\Types\Type::DATETIME);
 		$queryBuilder->setParameter(':type',$type);
+		if($win == 1){
+            $queryBuilder->andWhere('a.prize != 0');
+		}
 		if( $request->get('order') == 'time.desc')
 			$queryBuilder->orderBy('a.createTime','DESC');
 		else
@@ -208,15 +212,42 @@ class AdminController extends Controller
 		return $this->render('AppBundle:admin:log.html.twig', array('pagination'=>$pagination));
 	}
 	/**
-	 * @Route("/admin/export/{type}", name="admin_export")
+	 * @Route("/admin/sms/log", name="admin_sms_log")
 	 */
-	public function exportAction(Request $request, $type = null)
+	public function smsLogAction(Request $request)
+	{
+		$repository = $this->getDoctrine()->getRepository('AppBundle:SMS');
+		$queryBuilder = $repository->createQueryBuilder('a');
+
+		if( $request->get('order') == 'time.desc')
+			$queryBuilder->orderBy('a.createTime','DESC');
+		else
+			$queryBuilder->orderBy('a.createTime','ASC');
+
+		$query = $queryBuilder->getQuery();
+		$paginator  = $this->get('knp_paginator');
+
+		$pagination = $paginator->paginate(
+			$query,
+			$request->query->get('page', 1),/*page number*/
+			$this->pageSize
+		);
+		return $this->render('AppBundle:admin:smsLog.html.twig', array('pagination'=>$pagination));
+	}
+	/**
+	 * @Route("/admin/export/{type}/{win}", name="admin_export")
+	 */
+	public function exportAction(Request $request, $type = null,$win = null)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repository = $em->getRepository('AppBundle:Info');
 		$queryBuilder = $repository->createQueryBuilder('a');
-		$queryBuilder->where('a.type = :type');
+        $queryBuilder->where('a.type = :type AND a.createTime < :createTime');
+        $queryBuilder->setParameter(':createTime', new \DateTime('now'), \Doctrine\DBAL\Types\Type::DATETIME);
 		$queryBuilder->setParameter(':type',$type);
+        if($win == 1){
+            $queryBuilder->andWhere('a.prize != 0');
+        }
 		$info = $queryBuilder->getQuery()->getResult();
 		//$output = '';
 		if($type == 1){

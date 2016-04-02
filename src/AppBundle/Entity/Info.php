@@ -74,6 +74,10 @@ class Info
      * @ORM\OneToOne(targetEntity="LotteryLog", mappedBy="info")
      */
     private $lotteryLog;
+    /**
+     * @ORM\OneToOne(targetEntity="SMS", mappedBy="info")
+     */
+    private $sms;
 
     /**
      * Constructor
@@ -451,5 +455,51 @@ class Info
     {
         ++$this->likeNum;
         return $this;
+    }
+
+    /**
+     * Set sms
+     *
+     * @param \AppBundle\Entity\SMS $sms
+     * @return Info
+     */
+    public function setSms(\AppBundle\Entity\SMS $sms = null)
+    {
+        $this->sms = $sms;
+
+        return $this;
+    }
+
+    /**
+     * Get sms
+     *
+     * @return \AppBundle\Entity\SMS 
+     */
+    public function getSms()
+    {
+        return $this->sms;
+    }
+
+    /**
+     * Add sms
+     *
+     * @param \AppBundle\Entity\SMS $sms
+     * @return Info
+     */
+    public function addSm(\AppBundle\Entity\SMS $sms)
+    {
+        $this->sms[] = $sms;
+
+        return $this;
+    }
+
+    /**
+     * Remove sms
+     *
+     * @param \AppBundle\Entity\SMS $sms
+     */
+    public function removeSm(\AppBundle\Entity\SMS $sms)
+    {
+        $this->sms->removeElement($sms);
     }
 }

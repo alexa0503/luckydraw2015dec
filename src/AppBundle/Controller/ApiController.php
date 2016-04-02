@@ -368,6 +368,12 @@ class ApiController extends Controller
 						'msg' => '该信息不存在',
 					);
 				}
+				elseif ($info->getHasLottery() == true){
+					$result = array(
+						'ret' => 1100,
+						'msg' => '该信息已抽奖~',
+					);
+				}
 				else{
 					$mobile = $info->getMobile();
 					#当天已中奖
@@ -383,7 +389,7 @@ class ApiController extends Controller
 					$qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
 					$count1 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
 
-					#该手机号已中将
+					#该手机号已中奖
 					$repo = $em->getRepository('AppBundle:Info');
 					$qb = $repo->createQueryBuilder('a');
 					$qb->select('COUNT(a)');
@@ -410,7 +416,12 @@ class ApiController extends Controller
 					);
 					#短信发送
 					if($prize > 0){
-						Helper\SMS::send($prize, $mobile);
+						Helper\SMS::send($em, array(
+							'mobile'=>$mobile,
+                            'info'=>$info,
+                            'prize'=>$prize,
+                            'type'=>$info->getType(),
+						));
 					}
 
 				}
@@ -424,6 +435,7 @@ class ApiController extends Controller
 				);
 			}
 		}
+        $session->set('id',null);
 		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
 		$response = new Response();
@@ -524,13 +536,19 @@ class ApiController extends Controller
 				$qb->where('a.code = :code');
 				$qb->setParameter('code', $request->get('code'));
 				$qb->select('COUNT(a)');
-				$count = $qb->getQuery()->getSingleScalarResult();
+				$count = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
 				//var_dump($count);
 				if($count == 0){
 					$result = array('ret'=>1002,'msg'=>'亲，你输入的幸运心愿码有误哦，请仔细检查重新输入~');
 				}
 				else{
-					$code = $em->getRepository('AppBundle:Code')->findOneBy(array('code'=>$request->get('code')));
+                    $repo = $em->getRepository('AppBundle:Code');
+                    $qb = $repo->createQueryBuilder('a');
+                    $qb->where('a.code = :code');
+                    $qb->setParameter('code', $request->get('code'));
+                    $raw = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getResult();
+                    $code = $raw[0];
+					//$code = $em->getRepository('AppBundle:Code')->findOneBy(array('code'=>$request->get('code')));
 					if( $code->getIsActive() == 1){
 						$result = array('ret'=>1003, 'msg'=>'亲，您输入的幸运心愿码已经被使用过啦~');
 					}
@@ -599,17 +617,19 @@ class ApiController extends Controller
 				$info->setType(1);
 				$info->setPrize($log->getPrize());
 				$info->setHasLottery(1);
-
 				$log->setInfo($info);
-
 				$em->persist($info);
 				$em->persist($log);
 				$em->flush();
 
 				/*
 				if($log->getPrize() > 0){
-					Helper\SMS::send($log->getPrize(), $request->get('mobile'));
-				}
+					Helper\SMS::send($em, array(
+                        'mobile'=>$request->get('mobile'),
+                        'info'=>$info,
+                        'prize'=>$log->getPrize(),
+                        'type'=>$info->getType(),
+                    ));
 				*/
 			}
 			$session->set('march_lottery_log', null);
@@ -625,5 +645,31 @@ class ApiController extends Controller
 		return $response;
 		//return new JsonResponse($result);
 	}
+
+    /**
+     * @Route("/sms", name="api_sms")
+     */
+    public function smsAction(Request $request)
+    {
+        $input = mb_convert_encoding(urldecode($request->getContent()),'UTF-8','GBK');
+        //$input = mb_convert_encoding(urldecode('username=miketest&reply=15618892632%2C%B2%E2%CA%D4%B5%D8%D6%B7%2C2016-03-28+00%3A55%3A30%3B '),'UTF-8','GBK');
+        if( $handle = @fopen('sms_01.log','a+')){
+            fwrite($handle, $input."\n");
+            fclose($handle);
+        }
+
+        $array = array();
+        parse_str($input, $array);
+        $reply = explode(',', $array['reply']);
+        //var_dump($reply);
+        $em = $this->getDoctrine()->getManager();
+        $sms = $em->getRepository('AppBundle:SMS')->findOneBy(array('mobile'=>$reply[0],'type'=>0));
+        if(null != $sms){
+            $sms->setAddress($reply[1]);
+            $em->persist($sms);
+            $em->flush();
+        }
+        return new Response();
+    }
 
 }
