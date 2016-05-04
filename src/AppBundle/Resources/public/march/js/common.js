@@ -216,6 +216,7 @@ function submitInfo(url) {
             }
         })
         //ajax成功
+
     }
 }
 
