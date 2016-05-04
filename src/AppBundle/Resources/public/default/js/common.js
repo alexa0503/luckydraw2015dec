@@ -14,8 +14,6 @@ function randomNumb(minNumb,maxNumb){
 	return rn;
 }
 
-var w
-
 var wHeight;
 var tempHeight;
 $(document).ready(function(){
@@ -307,6 +305,9 @@ function goPage2(){
 	$('.topBtn1').hide();
 	$('.page1').fadeOut(500);
 	$('.page2').fadeIn(500);
+	$('.page2Note').addClass('page2NoteAct');
+	
+	ga('send','pageview','/page2-makewish');
 	
 	wx.checkJsApi({
 		jsApiList: [
@@ -387,6 +388,8 @@ function goPage3(){
 	$('.page2').fadeOut(500);
 	$('.page3').fadeIn(500);
 	$('.backPage2').show();
+	
+	ga('send','pageview','/page3-personalinfo');
 }
 
 function resizePhoto(){
@@ -727,3 +730,65 @@ function goPage7(){
 		
 	window.open("http://widget.renren.com/dialog/share?url="+encodeURIComponent(pageurl)+"&title="+encodeURIComponent(title)+"&content="+encodeURIComponent(sharetext)+"&pic="+encodeURIComponent(picurl)+"&message="+encodeURIComponent(sharetext), target_str,window_size);
 	}
+	
+//按钮秒针监测
+$(document).ready(function(){
+//	/* 请将 LabelValue 替换为对应字段的取值 */
+//	window._CiQ11548 = window._CiQ11548 || [];
+//	window._CiQ11548.push(['_trackEvent', {
+//		type: 1,
+//		labels:[
+//			{'按钮名称':'PV-Nivea Slek 2016 20 years Mobile'}
+//			],
+//		values: [
+//			{'数量':1}
+//			]
+//	}]);
+//	window.CClickiV3 && window.CClickiV3[11548] && window.CClickiV3[11548]._flushObserver(function(){});
+
+	
+	$('.topBtn1').click(function(){
+		mztrack('【按钮】-活动规则');
+		});
+		
+	$('.page1Img5').click(function(){
+		mztrack('【按钮】-立即许愿');
+		});
+	$('.page1Img2').click(function(){
+		mztrack('【按钮】-立即许愿');
+		});
+	$('.page1Img6').click(function(){
+		mztrack('【按钮】-立即许愿');
+		});
+	$('.page1Btn1').click(function(){
+		mztrack('【按钮】-立即许愿');
+		});
+		
+	$('.pNumb a').click(function(){
+		mztrack('【按钮】-已有XXX参与许愿');
+		});
+		
+	$('.page2 .page2Btn1').click(function(){
+		mztrack('【按钮】-提交心愿1');
+		});
+		
+	$('.page3 .page2Btn1').click(function(){
+		mztrack('【按钮】-提交心愿2');
+		});
+		
+	$('.page4Btn1').click(function(){
+		mztrack('【按钮】-分享心愿');
+		});
+		
+	$('.sinaShare').click(function(){
+		mztrack('【按钮】-分享微博（提交完成页面）');
+		});
+		
+	$('.douban').click(function(){
+		mztrack('【按钮】-分享豆瓣（提交完成页面）');
+		});
+		
+	$('.qzoneShare').click(function(){
+		mztrack('【按钮】-分享QQ空间（提交完成页面）');
+		});
+	});

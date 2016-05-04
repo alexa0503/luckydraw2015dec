@@ -40,17 +40,46 @@ class ImportCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        ini_set('memory_limit','512M');
+        set_time_limit(0);
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $info = $em->getRepository('AppBundle:Info')->findAll();
+        //$em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Info');
+        $queryBuilder = $repository->createQueryBuilder('a');
+        $queryBuilder->where('a.id > 38306');
+        $em->getConnection()
+            ->getWrappedConnection()
+            ->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+        $query = $queryBuilder->getQuery();
+        $info = $query->iterate();
+        $batchSize = 30;
+        $i = 0;
+
+        //$info = $em->getRepository('AppBundle:Info')->findAll();
         $file_path = preg_replace('/app$/si', 'web/uploads/', $this->getContainer()->get('kernel')->getRootDir());
         $imagine = new Imagine();
-        foreach($info as $v){
-            if($v->getHeadImg() != '' && file_exists($file_path.$v->getHeadImg())){
+        foreach($info as $row){
+            $v = $row[0];
+            if($v->getHeadImg() != '' && $v->getHeadImg() != 'default.png' && file_exists($file_path.$v->getHeadImg())){
+                var_dump($file_path.$v->getHeadImg());
                 $image = $imagine->open($file_path.$v->getHeadImg());
-                $image->thumbnail(new Box(100, 100),ImageInterface::THUMBNAIL_INSET)->save($file_path.'/thumb/'.$v->getHeadImg());
+                $size = $image->getSize();
+                if( $size->getHeight() > 600 || $size->getWidth() > 600){
+                    $image->thumbnail(new Box(600, 600),ImageInterface::THUMBNAIL_INSET)->save($file_path.$v->getHeadImg());
+                }
+                $image = $imagine->open($file_path.$v->getHeadImg());
+                $image->thumbnail(new Box(100, 100),ImageInterface::THUMBNAIL_INSET)->save($file_path.'thumb/'.$v->getHeadImg());
+                $image->effects()->grayscale();
+                $image->save($file_path.'gray/'.$v->getHeadImg());
                 //$response->setContent();
                 $output->writeln($v->getId().",".$v->getHeadImg());
             }
+            if (($i % $batchSize) == 0)
+            {
+                $em->flush(); // if you need to update something
+                $em->clear(); // frees memory. BEWARE: former entity references are lost.
+            }
+            ++$i;
         }
         /*
         $filename = preg_replace('/app$/si', 'web/', $this->getContainer()->get('kernel')->getRootDir())."1.csv";

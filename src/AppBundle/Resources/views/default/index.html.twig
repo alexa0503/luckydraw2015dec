@@ -17,12 +17,13 @@
 				<div class="h1008">
 					<div class="innerDiv">
 						<div class="page1Img1 abs bgImg"></div>
-						<div class="page1Img5 abs bgImg"></div>
-						<div class="abs page1Img2 page1Img2Act"></div>
-						<div class="abs page1Img6"></div>
-						<div class="pNumb abs"><a onClick="ga('send', 'event', 'button','click','status',{'hitCallback':function(){window.location.href='http://www.slek.com.cn/makewish#default-btns';}});"><img src="{{ asset('bundles/app/default/') }}images/page1Img3.png"><font>{{ count }}</font><img src="{{ asset('bundles/app/default/') }}images/page1Img4.png"></a></div>
-						<a href="javascript:void(0);" onClick="goPage2();ga('send', 'event', 'button','click','gamestart');" class="abs page1Btn1"><img src="{{ asset('bundles/app/default/') }}images/page1Btn1.png"></a>
-						<div class="abs page1Img7"></div>
+						<div class="page1Img5 abs bgImg" onClick="goPage2();ga('send', 'event', 'button','click','gamestart');_mz_evt('1001228', '100031408');"></div>
+						<div class="abs page1Img2 page1Img2Act" onClick="goPage2();ga('send', 'event', 'button','click','gamestart');_mz_evt('1001228', '100031408');"></div>
+						<div class="abs page1Img6" onClick="goPage2();ga('send', 'event', 'button','click','gamestart');_mz_evt('1001228', '100031408');"></div>
+						<div class="pNumb abs"><a onClick="_mz_evt('1001228', '100031409');ga('send', 'event', 'button','click','status',{'hitCallback':function(){window.location.href='http://www.slek.com.cn/makewish#default-btns';}});"><img src="{{ asset('bundles/app/default/') }}images/page1Img3.png"><font>{{ count }}</font><img src="{{ asset('bundles/app/default/') }}images/page1Img4.png"></a></div>
+						<a href="javascript:void(0);" onClick="goPage2();ga('send', 'event', 'button','click','gamestart');_mz_evt('1001228', '100031408');" class="abs page1Btn1"><img src="{{ asset('bundles/app/default/') }}images/page1Btn1.png"></a>
+						<a href="javascript:void(0);" onClick="goPage2();ga('send', 'event', 'button','click','gamestart');_mz_evt('1001228', '100031408');" class="abs page1Btn1 page1Btn1b"><img src="{{ asset('bundles/app/default/') }}images/page1Btn1b.png"></a>
+						<!--<div class="abs page1Img7"></div>-->
 					</div>
 				</div>
 			</div>
@@ -39,6 +40,7 @@
 									<a href="javascript:void(0);" onClick="choseQ(this);ga('send', 'event', 'button','click','wishwrite');">定制一个美丽心愿</a>
 								</li>
 							</ul>
+							<div class="page2Note"></div>
 							<a href="javascript:void(0);" onClick="changeFirstWish();ga('send', 'event', 'button','click','refresh');" class="abs page2Btn2"><img src="{{ asset('bundles/app/default/') }}images/page2Btn2.png"></a>
 							<textarea id='wish' class="wish"></textarea>
 							<input name="wishText" value="" type="hidden" id="wishText">
@@ -62,6 +64,8 @@
 											<img src="" class="abs upLoadImg" style="display:none;" id="localImag" />
 										</div>
 									</div>
+									
+								<div class="page2Note"></div>
 								
 								<input type="file" name="headImg" onClick="ga('send', 'event', 'button','click','input_photo');" id="headImg" class="fileBtn" style="display:none;" onChange="setImagePreview();" />
 								<a href="javascript:void(0);" onClick="ga('send', 'event', 'button','click','input_photo');" class="wechatPhoto" style="display:none;"><img src="{{ asset('bundles/app/default/') }}images/uploadBtn.png"></a>

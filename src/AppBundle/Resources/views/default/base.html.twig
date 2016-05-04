@@ -7,10 +7,25 @@
 	<title>{% block title %}{% endblock %}</title>
 	<link rel="stylesheet" href="{{ asset('bundles/app/default/') }}css/common.css">
 	<link rel="stylesheet" href="{{ asset('bundles/app/default/') }}css/swiper.min.css">
+	<script>
+
+		{% if success is defined and success == true %}
+		var lottery = true;
+		{% else %}
+		var lottery = false;
+		{% endif %}
+		var noWechatShareImg;
+		{% if null == app.session.get("wx_share_img") %}
+		var noWechatShareImg = 'http://{{ app.request.host }}/{{ asset("bundles/app/default/images/share.jpg?v=1") }}';
+		{% else %}
+		var noWechatShareImg = '{{ app.session.get("wx_share_img") }}';
+		{% endif %}
+		var notWechatSharlUrl='{% if null == app.session.get("wx_share_url") %}{{ url("_index") }}{% else %}{{ app.session.get("wx_share_url") }}{% endif %}';
+	</script>
 	<script src="{{ asset('bundles/app/default/') }}js/jquery-1.9.1.min.js"></script>
 	<script src="{{ asset('bundles/app/default/') }}js/jquery.imgpreload.js"></script>
 	<script src="{{ asset('bundles/app/default/') }}js/swiper.min.js"></script>
-	<script src="{{ asset('bundles/app/default/') }}js/common.js?v=201603150600"></script>
+	<script src="{{ asset('bundles/app/default/') }}js/common.js"></script>
 	<!--移动端版本兼容 -->
 	<script type="text/javascript">
 		var phoneWidth =  parseInt(window.screen.width);
@@ -31,12 +46,6 @@
 
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script>
-	
-	{% if success is defined and success == true %}
-	var lottery = true;
-	{% else %}
-	var lottery = false;
-	{% endif %}
 		function wxShare(data){
 			wx.config({
 				debug: false,
@@ -64,6 +73,7 @@
 					},
 					success: function (res) {
 						ga('send','event','share','success','wechat_share_success');
+						mztrack('【按钮】-分享朋友圈（提交完成页面）');
 						if(lottery == true){
 							getLottery();
 						}
@@ -82,6 +92,7 @@
 					},
 					success: function (res) {
 						ga('send','event','share','success','wechat_share_success');
+						mztrack('【按钮】-分享朋友圈（提交完成页面）');
 						if(lottery == true){
 							getLottery();
 						}
@@ -93,13 +104,16 @@
 				});
 			});
 		}
-		var noWechatShareImg;
 		$().ready(function(){
 			var url = '{{ url("api_wechat_sign") }}'
 			$.getJSON(url,{url:location.href},function(data){
 				$('#token').val(data.access_token);
-				data.desc = '刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？';
 				data.title = '美丽心愿，从头开始';
+				{% if null == app.session.get('wx_share_wish') %}
+				data.desc = '刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？';
+				{% else %}
+				data.desc = '{{ app.session.get('wx_share_wish') }}'+'是我的心愿，快来为我点赞吧！';
+				{% endif %}
 			{% if null == app.session.get("wx_share_url") %}
 				data.shareUrl = '{{ url("_index") }}';
 			{% else %}
@@ -115,14 +129,76 @@
 			wxShare(data);
 		});
 		})
-	
-	{% if null == app.session.get("wx_share_img") %}
-		var noWechatShareImg = 'http://{{ app.request.host }}/{{ asset("bundles/app/default/images/share.jpg?v=1") }}';
-	{% else %}
-		var noWechatShareImg = '{{ app.session.get("wx_share_img") }}';
-	{% endif %}
-	var notWechatSharlUrl='{% if null == app.session.get("wx_share_url") %}{{ url("_index") }}{% else %}{{ app.session.get("wx_share_url") }}{% endif %}';
+
 	</script>
+<script type='text/javascript'>
+//<![CDATA[
+//Miaozhen Base Code Start
+  _mzh=window._mzh || []; _mzt=window._mzt || []; _mz_dp=window._mz_dp || [];
+  (function (doc) {
+    var t=parseInt((new Date()).getTime()/1000);
+    var v=t-t%300;
+    var js=doc.createElement("script"),
+        fs=doc.getElementsByTagName("script")[0];
+    js.src="http://js.miaozhen.com/t.js?v="+v;
+    fs.parentNode.insertBefore(js, fs);
+  })(document);
+  function _mz_evt(ae,n) {_mzh.push(['evt._set_ae', ae], ['evt._set_n', n], ['evt._send']);}
+  function _mz_imp(k,p) {_mzh.push(['imp._set_k', k], ['imp._set_p', p],['imp._send']);}
+  function _mz_clk(k,p) {_mzh.push(['clk._set_k', k], ['clk._set_p', p],['clk._send']);}
+  function _mz_mevt(ae,n) {_mzh.push(['mevt._set_ae', ae], ['mevt._set_n', n], ['mevt._send']);}
+  function _mz_simple(cmd) {_mzh.push(['_simple',cmd]);}
+  function _mz_simple_param(n,k,v) {_mz_dp[n]=_mz_dp[n]||{};_mz_dp[n][k]=v;}
+  function _mz_timer_start(n,u) {_mzt.push(n);if(u)_mzh.push([n+'._urlpre',u]);_mz_simple(n+'._timer_start');}
+  function _mz_timer_start_x(n,u) {for(i=0;i<=_mzt.length;i++)_mz_timer_stop(_mzt[i]); _mzt=[];_mzt.push(n);_mz_timer_start(n,u);}
+  function _mz_timer_stop(n) {_mz_simple(n+'._timer_stop');}
+  _mz_simple_param(0,'timer_start',[10,30*60,0,'v','st:$1,si:$2,']);
+  
+    function _mz_custom_evt(ae,n,cObj) {
+    _mzh.push(['evt._set_ae', ae], ['evt._set_n', n]);
+    if(cObj instanceof Object){
+        for(var key in cObj)
+            _mzh.push(['evt._set_cm'+key,  encodeURIComponent(cObj[key])]);
+    }
+    _mzh.push(['evt._send']);
+  }
+//Miaozhen Base Code End
+//]]>
+</script>
+
+<script type="text/javascript">
+(function() {
+    window._CiQ11548 = window._CiQ11548 || [];
+    window._CiQ11548.push(['_cookieUseRootDomain', true]);
+    var c = document.createElement('script');
+    c.type = 'text/javascript';
+    c.async = true;
+    c.charset = 'utf-8';
+    c.src = '//collect.cn.miaozhen.com/ca/11548';
+    var h = document.getElementsByTagName('script')[0];
+    h.parentNode.insertBefore(c, h);
+})();
+</script>
+<noscript>
+<link href="//collect.cn.miaozhen.com/refer/collect?i=11548&v=13922245942&pu=http%3A//%28NoScriptPageviews%29&pt=NoScriptPageviews&ru=http%3A//%28NoScriptClients%29&csh=1000&csw=1000&css=10" rel="stylesheet" type="text/css" />
+</noscript>
+<script>
+function mztrack(button){
+    window._CiQ11548 = window._CiQ11548 || [];
+    window._CiQ11548.push(['_trackEvent', {
+        type: 1,
+        labels: [
+            {"按钮名称": button }
+        ],
+        values: [
+            {"数量": 1 }
+        ]
+    }]);
+    //应用立即发送数据方法
+    window.CClickiV3 && window.CClickiV3[11548] && window.CClickiV3[11548]._flushObserver(function(){});
+};
+</script>
+
 </head>
 <body>
 	{% block body %}{% endblock %}
@@ -137,6 +213,10 @@
 
 	ga('create', 'UA-53385687-5', 'auto'); 
 	ga('send', 'pageview'); 
+
+
+//miaozhen
+_mz_evt('1001228', '100031360');
 
 </script> 
 

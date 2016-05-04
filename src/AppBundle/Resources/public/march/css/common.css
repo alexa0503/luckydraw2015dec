@@ -53,7 +53,7 @@ select,input,textarea{font-family:inherit; outline:none; padding:0;}
 .page2Img1{ background:url(../images/page2Img1.png) 0 0 no-repeat;}
 .page2Img2{ background:url(../images/page2Img2.png) 0 0 no-repeat;}
 .page2Img2Act{
--webkit-animation:page2Img2Act 6s 0s linear both infinite;
+-webkit-animation:page2Img2Act 4.5s 0s linear both infinite;
 -webkit-transform-origin:320px 385px;
 }
 @-webkit-keyframes page2Img2Act{

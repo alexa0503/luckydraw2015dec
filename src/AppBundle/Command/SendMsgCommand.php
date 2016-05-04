@@ -41,18 +41,27 @@ class SendMsgCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $repo = $em->getRepository('AppBundle:Info');
         $qb = $repo->createQueryBuilder('a');
-        $qb->where('a.prize != :prize AND a.type = 0 AND a.createTime < :createTime');
+        $qb->where('(a.id < 59201 OR a.id > 59215) AND a.prize != :prize AND a.type = 0 AND a.createTime >= :createTime1 AND a.createTime <= :createTime2');
         $qb->setParameter(':prize', 0);
-        $qb->setParameter(':createTime', new \DateTime('now'));
+        $qb->setParameter(':createTime1', new \DateTime('2016-04-04 00:00:00'));
+        $qb->setParameter(':createTime2', new \DateTime('2016-04-19 23:59:59'));
         $list = $qb->getQuery()->getResult();
+        $i = 0;
         foreach ($list as $v){
-            $output->writeln($v->getPrize().','.$v->getMobile());
-            Helper\SMS::send($em, array(
-                'mobile'=>$v->getMobile(),
-                'info'=>$v,
-                'prize'=>$v->getPrize(),
-            ));
+            if( $v->getSms() != null && empty($v->getSms()->getAddress())){
+                $output->writeln($v->getPrize().','.$v->getId().','.$v->getUsername().','.$v->getMobile());
+
+                $result = Helper\SMS::send($em, array(
+                    'mobile'=>$v->getMobile(),
+                    'info'=>$v,
+                    'prize'=>$v->getPrize(),
+                    'type'=>$v->getType(),
+                ));
+                ++$i;
+                var_dump($result);
+            }
+            //$output->writeln($result);
         }
-        $output->writeln('message send ok');
+        $output->writeln($i.' message send ok');
     }
 }

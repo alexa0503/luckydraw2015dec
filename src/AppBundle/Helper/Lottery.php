@@ -8,11 +8,14 @@
 namespace AppBundle\Helper;
 class Lottery
 {
-    static public function execute($em, $timestamp)
+    static public function execute($em, $timestamp, $code = null)
     {
-        $award = self::getConfig();
+        if( preg_match('/^3\d{6}(0\d{4}|10[01]\d{2}|10200)$/i',$code))
+            $award = self::getConfig(1);
+        else
+            $award = self::getConfig();
         #默认中奖几率
-        $rand_max = 10;
+        $rand_max = $code != null ? 100 : 5;
         $rand1 = rand(1, $rand_max);
         $rand2 = rand(1, $rand_max);
         $prize = $rand1 == $rand2 ? rand(1,8) : 0;
@@ -23,12 +26,22 @@ class Lottery
         $repo = $em->getRepository('AppBundle:Info');
         $qb = $repo->createQueryBuilder('a');
         $qb->select('COUNT(a)');
+        $qb->where('a.prize != 0 AND a.code IS NULL AND a.createTime >= :createTime1 AND a.createTime <= :createTime2');
+        $qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
+        $qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
+        //$qb->setParameter(':code', null);
+        $num1 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
+
+        $repo = $em->getRepository('AppBundle:LotteryLog');
+        $qb = $repo->createQueryBuilder('a');
+        $qb->select('COUNT(a)');
         $qb->where('a.prize != 0 AND a.createTime >= :createTime1 AND a.createTime <= :createTime2');
         $qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
         $qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
-        $num1 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
-        //var_dump($num1);
-        if( $prize > 0 && $num1 < 20){
+        $num2 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
+        //var_dump($num1,$num2,$date1, $date2);
+
+        if( $prize > 0 && $num1 + $num2 < 20){
             $repo = $em->getRepository('AppBundle:Info');
             $qb = $repo->createQueryBuilder('a');
             $qb->select('COUNT(a)');
@@ -70,13 +83,24 @@ class Lottery
                 $repo = $em->getRepository('AppBundle:Info');
                 $qb = $repo->createQueryBuilder('a');
                 $qb->select('COUNT(a)');
+                $qb->where('a.prize = :prize AND a.code = :code AND a.createTime >= :createTime1 AND a.createTime <= :createTime2');
+                $qb->setParameter(':prize', $prize);
+                $qb->setParameter(':code', null);
+                $qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
+                $qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
+                $num3 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
+
+                $repo = $em->getRepository('AppBundle:LotteryLog');
+                $qb = $repo->createQueryBuilder('a');
+                $qb->select('COUNT(a)');
                 $qb->where('a.prize = :prize AND a.createTime >= :createTime1 AND a.createTime <= :createTime2');
                 $qb->setParameter(':prize', $prize);
                 $qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
                 $qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
-                $num = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
+                $num4 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
 
-                if($num >= $award[2][$prize-1]){
+                //var_dump($num3,$num4,$award[2][$prize-1],$prize);
+                if($num3 + $num4 >= $award[2][$prize-1]){
                     $prize = 0;
                 }
             }
@@ -84,16 +108,21 @@ class Lottery
         else{
             $prize = 0;
         }
-
         return $prize;
 
     }
-    static private function getConfig()
+    static private function getConfig($t = 0)
     {
+        //var_dump($t);
         $pool = array(5,42,0,32,42,162,300,362);//奖池
         $rule = array(2,0,1,0,0,0,0);//0为每周平均数量,1为每月平均数量,2为每双月平均数量
-        $allocate = array(0,0,0,0,0,0,0,0);//平均分配数量
-        //$allocate = array(1,1,1,1,1,3,7,8);//平均分配数量
+        if($t == 1){
+            $allocate = array(1,1,1,1,0,0,0,0);//平均分配数量
+        }
+        else{
+            //$allocate = array(1,1,1,1,1,3,7,8);
+            $allocate = array(0,0,0,0,0,3,7,8);//平均分配数量
+        }
         return array($pool,$rule,$allocate);
     }
 }

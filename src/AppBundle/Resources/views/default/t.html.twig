@@ -1,0 +1,22 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+<div class="pageOuter">
+	<div class="innerDiv">
+    	<div class="page page6">
+			<button class="button" style="font-size: 40px;margin: 200px 0 0;text-align: center;width: 100%;">ajax请求测试</button>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block javascripts %}
+	<script>
+		$(document).ready(function(){
+			$('.button').click(function () {
+				$.getJSON('http://dev.slek.com.cn/mobile/sid',function (json) {
+					alert(json.sid);
+				})
+			})
+
+		});
+	</script>
+{% endblock %}

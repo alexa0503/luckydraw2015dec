@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Validator\Constraints\Time;
 use AppBundle\Entity;
 use AppBundle\Form\Type;
+use AppBundle\Helper;
+
 //use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 //use Liuggio\ExcelBundle;
@@ -38,7 +40,7 @@ class AdminController extends Controller
 		$password = $encoder->encodePassword('pPvnwXThqHMHuvJX', $user->getSalt());
 		return new Response($password);
 	}
-	
+
 	/**
 	 * @Route("/admin/info/{type}/{win}", name="admin_info")
 	 */
@@ -56,7 +58,7 @@ class AdminController extends Controller
 			$queryBuilder->orderBy('a.createTime','DESC');
 		else
 			$queryBuilder->orderBy('a.createTime','ASC');
-		
+
 		$query = $queryBuilder->getQuery();
 		$paginator  = $this->get('knp_paginator');
 
@@ -78,7 +80,7 @@ class AdminController extends Controller
 	{
 		$repository = $this->getDoctrine()->getRepository('AppBundle:Story');
 		$queryBuilder = $repository->createQueryBuilder('a');
-		
+
 		$query = $queryBuilder->getQuery();
 		$paginator  = $this->get('knp_paginator');
 
@@ -234,42 +236,90 @@ class AdminController extends Controller
 		);
 		return $this->render('AppBundle:admin:smsLog.html.twig', array('pagination'=>$pagination));
 	}
+    /**
+     * @Route("/admin/send/", name="admin_send")
+     */
+    public function sendAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $info = $em->getRepository("AppBundle:Info")->find(32421);
+        Helper\SMS::send($em, array(
+            'type'=>0,
+            'mobile'=>18016458059,
+            'prize'=>0,
+            'info'=>$info,
+        ));
+        return new Response();
+    }
 	/**
 	 * @Route("/admin/export/{type}/{win}", name="admin_export")
 	 */
 	public function exportAction(Request $request, $type = null,$win = null)
 	{
+		ini_set('memory_limit','512M');
+		//var_dump($q);
+		set_time_limit(0);
 		$em = $this->getDoctrine()->getManager();
 		$repository = $em->getRepository('AppBundle:Info');
 		$queryBuilder = $repository->createQueryBuilder('a');
         $queryBuilder->where('a.type = :type AND a.createTime < :createTime');
         $queryBuilder->setParameter(':createTime', new \DateTime('now'), \Doctrine\DBAL\Types\Type::DATETIME);
 		$queryBuilder->setParameter(':type',$type);
+
         if($win == 1){
             $queryBuilder->andWhere('a.prize != 0');
         }
-		$info = $queryBuilder->getQuery()->getResult();
+		//$result = $queryBuilder->getQuery()->getResult();
+		$em->getConnection()
+			->getWrappedConnection()
+			->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+		$query = $queryBuilder->getQuery();
+		$result = $query->iterate();
+		$batchSize = 30;
+		$i = 0;
+
+
 		//$output = '';
 		if($type == 1){
-			$arr = array(
-				'id,姓名,手机,地址,抽奖码,抽奖奖项,创建时间,创建IP'
-			);
-			foreach($info as $v){
+            $arr = array('id,姓名,手机,地址,抽奖码,抽奖奖项,创建时间,创建IP');
+			foreach($result  as $row){
+				$v = $row[0];
+				//var_dump($v);
 				$_string = $v->getId().','.$v->getUsername().','.$v->getMobile().','.$v->getAddress().','.$v->getPrize();
 				$_string .= ','.$v->getCreateTime()->format('Y-m-d H:i:s').','.$v->getCreateIp();
 				$arr[] = $_string;
+				if (($i % $batchSize) == 0)
+				{
+					$em->flush(); // if you need to update something
+					$em->clear(); // frees memory. BEWARE: former entity references are lost.
+				}
+				++$i;
 			}
 		}
 		else{
-			$arr = array(
-				'id,姓名,手机,头像,心愿,赞数,是否抽奖,抽奖奖项,创建时间,创建IP'
-			);
-			foreach($info as $v){
+            if($win == 1)
+			    $arr = array('id,姓名,手机,头像,心愿,赞数,是否抽奖,抽奖奖项,回执地址,创建时间,创建IP');
+            else
+                $arr = array('id,姓名,手机,头像,心愿,赞数,是否抽奖,抽奖奖项,创建时间,创建IP');
+
+			foreach($result as $row){
+				$v = $row[0];
 				$_string = $v->getId().','.$v->getUsername().','.$v->getMobile().',http://dev.slek.com.cn/uploads/'.$v->getHeadImg().',"'.trim($v->getWishText()).'",'.$v->getLikeNum().',';
 				$_string .= $v->getHasLottery() == 1 ? '是,' : '否,';
 				$_string .= $v->getHasLottery() == 0 ? '--' : $v->getPrize();
+                if($win == 1 && null != $v->getSms() && null != $v->getSms()->getAddress())
+                    $_string .= ','.$v->getSms()->getAddress();
+                elseif($win == 1)
+                    $_string .= ',--';
 				$_string .= ','.$v->getCreateTime()->format('Y-m-d H:i:s').','.$v->getCreateIp();
 				$arr[] = $_string;
+				if (($i % $batchSize) == 0)
+				{
+					$em->flush(); // if you need to update something
+					$em->clear(); // frees memory. BEWARE: former entity references are lost.
+				}
+				++$i;
+
 			}
 		}
 

@@ -28,6 +28,8 @@
 /web/bundles/
 /web/uploads/
 /web/media/
+/web/sms.log
+/web/sms_01.log
 
 # PHPUnit
 /app/phpunit.xml

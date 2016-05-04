@@ -21,10 +21,11 @@
 				<!--<img src="{{ asset('bundles/app/default/') }}images/page6Img3.png" class="face3">-->
                 <p class="sTitle"><span>{{ info.username }}</span><br><img src="{{ asset('bundles/app/default/') }}images/page6Img2.png"></p>
                 <div class="sName"><span>{{ info.username }}</span></div>
-                <div class="sVote"><img src="{{ asset('bundles/app/default/') }}images/page6Icon1.png"><span class="likeNum">{{ info.likeNum }}</span>赞</div>
+				<div class="sVote"><span class="likeNum">{{ info.likeNum }}</span>个赞！</div>
+                <!--<div class="sVote"><img src="{{ asset('bundles/app/default/') }}images/page6Icon1.png"><span class="likeNum">{{ info.likeNum }}</span>赞</div>-->
                 <div class="sWish">{{ info.wishText }}</div>
                 <a href="http://www.slek.com.cn/makewish#default-btns" onClick="var tLink=$(this).attr('href');ga('send', 'event', 'button','click','Wish realized article',{'hitCallback':function(){window.location.href=tLink;}});return false;" class="abs page6Btn1"><img src="{{ asset('bundles/app/default/') }}images/page6Btn1.png"></a><!--{{ url('_top') }}-->
-                <a href="javascript:void(0);" onClick="ga('send', 'event', 'button','click','Click a like');" class="abs page6Btn2"><img src="{{ asset('bundles/app/default/') }}images/page6Btn2.png"></a>
+                <a href="javascript:void(0);" onClick="ga('send', 'event', 'button','click','Click a like');" class="abs page6Btn2"><img src="{{ asset('bundles/app/default/') }}images/zanNewBtn.png"></a>
                 <a href="{{ url('_index') }}" onClick="var tLink=$(this).attr('href');ga('send', 'event', 'button','click','Make a wish',{'hitCallback':function(){window.location.href=tLink;}});return false;" class="abs page6Btn3"><img src="{{ asset('bundles/app/default/') }}images/page6Btn3.png"></a>
               </div>
             </div>
