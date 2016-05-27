@@ -149,7 +149,11 @@ function goPage2(url) {
                 }
             },
             error:function () {
-                alert('亲，你输入的幸运心愿码有误哦，请仔细检查重新输入')
+                setTimeout(function () {
+                    goPage6();
+                    ga('send','pageview','/winner_fail');
+                }, 5500);
+                //alert('亲，你输入的幸运心愿码有误哦，请仔细检查重新输入')
                 /*
                 setTimeout(function () {
                     goPage3();

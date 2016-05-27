@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -86,51 +85,42 @@ class ApiController extends Controller
 						$keywords = explode(',', file_get_contents($file));
 						foreach ($keywords as $keyword) {
 							$pattern = '/('.$keyword.')/i';
-							if(preg_match($pattern, $wish_text)){
+							if(preg_match($pattern, $wish_text) || preg_match($pattern, $username)){
 								$is_active = false;
 								break;
 							}
 						}
 
-                        $text = preg_replace('/\s|[\x00-\x1f]/i', '', $wish_text);
-                        if( !empty($text)){
-                            $info = new Entity\Info();
-                            $info->setUsername($username);
-                            $info->setMobile($mobile);
-                            $info->setHeadImg($image_path);
-                            $info->setWishText($wish_text);
-                            $info->setCreateIp($request->getClientIp());
-                            $info->setCreateTime(new \DateTime('now'));
-                            $info->setIsActive($is_active);
-                            $info->setType(0);
-                            if( !empty($info->getWishText())){
-                                $em->persist($info);
-                                $em->flush();
-                                $em->getConnection()->commit();
-                                $session->set('id',$info->getId());
-                                $result['ret'] = 0;
-                                $result['msg'] = '';
-                                $result['data'] = array('id'=>$info->getId(),'username'=>$username,'headImg'=>'http://'.$request->getHost().'/uploads/'.$info->getHeadImg());
-                            }
-                            else{
-                                $result['ret'] = 1200;
-                                $result['msg'] = '含有非法字符';
-                            }
+						$text = preg_replace('/\s|[\x00-\x1f]/i', '', $wish_text);
+						if( !empty($text)){
+								$info = new Entity\Info();
+								$info->setUsername($username);
+								$info->setMobile($mobile);
+								$info->setHeadImg($image_path);
+								$info->setWishText($wish_text);
+								$info->setCreateIp($request->getClientIp());
+								$info->setCreateTime(new \DateTime('now'));
+								$info->setIsActive($is_active);
+								$info->setType(0);
+								if( !empty($info->getWishText())){
+										$em->persist($info);
+										$em->flush();
+										$em->getConnection()->commit();
+										$session->set('id',$info->getId());
+										$result['ret'] = 0;
+										$result['msg'] = '';
+										$result['data'] = array('id'=>$info->getId(),'username'=>$username,'headImg'=>'http://'.$request->getHost().'/uploads/'.$info->getHeadImg());
+								}
+								else{
+										$result['ret'] = 1200;
+										$result['msg'] = '含有非法字符';
+								}
 
-                        }
-                        else{
-                            $result['ret'] = 1200;
-                            $result['msg'] = '含有非法字符';
-                        }
-						/*
-
-						//'http://'.$request->getHost().'/uploads/'.$value->getHeadImg()
-						//$cacheManager->getBrowserPath('uploads/'.$value->getHeadImg(), 'thumb1')
-
-						$cacheManager = $this->container->get('liip_imagine.cache.manager');
-						//$result['data'] = array('id'=>$info->getId(),'username'=>$username,'headImg'=>$cacheManager->getBrowserPath('uploads/'.$info->getHeadImg(), 'thumb1'));
-						$result['data'] = array('id'=>$info->getId(),'username'=>$username,'headImg'=>'http://'.$request->getHost().'/uploads/'.$info->getHeadImg());
-						 */
+						}
+						else{
+								$result['ret'] = 1200;
+								$result['msg'] = '含有非法字符';
+						}
 					}
 					else{
 						$result['ret'] = 1100;
@@ -447,9 +437,9 @@ class ApiController extends Controller
 					if($prize > 0){
 						Helper\SMS::send($em, array(
 							'mobile'=>$mobile,
-                            'info'=>$info,
-                            'prize'=>$prize,
-                            'type'=>$info->getType(),
+														'info'=>$info,
+														'prize'=>$prize,
+														'type'=>$info->getType(),
 						));
 					}
 				}
@@ -463,7 +453,7 @@ class ApiController extends Controller
 				);
 			}
 		}
-        $session->set('id',null);
+				$session->set('id',null);
 		$callback = $request->get('callback') ? : 'callback';
 		//return new Response($callback.'('.json_encode($result).')');
 		$response = new Response();
@@ -571,38 +561,37 @@ class ApiController extends Controller
 					$result = array('ret'=>1002,'msg'=>'亲，你输入的幸运心愿码有误哦，请仔细检查重新输入~');
 				}
 				else{
-                    $repo = $em->getRepository('AppBundle:Code');
-                    $qb = $repo->createQueryBuilder('a');
-                    $qb->where('a.code = :code');
-                    $qb->setParameter('code', $request->get('code'));
-                    $raw = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getResult();
-                    $code = $raw[0];
+										$repo = $em->getRepository('AppBundle:Code');
+										$qb = $repo->createQueryBuilder('a');
+										$qb->where('a.code = :code');
+										$qb->setParameter('code', $request->get('code'));
+										$raw = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getResult();
+										$code = $raw[0];
 					//$code = $em->getRepository('AppBundle:Code')->findOneBy(array('code'=>$request->get('code')));
 					if( $code->getIsActive() == 1){
 						$result = array('ret'=>1003, 'msg'=>'亲，您输入的幸运心愿码已经被使用过啦~');
 					}
 					else{
-                        $prize = Helper\Lottery::execute($em, $timestamp,$request->get('code'));
+												$prize = Helper\Lottery::execute($em, $timestamp,$request->get('code'));
 
-                        if( preg_match('/^3\d{6}(0\d{4}|10[01]\d{2}|10200)$/i',$request->get('code')) ){
-                            $w = date('w');
-                            $date1 = date('Y-m-d 00:00:00', $timestamp-$w*24*3600);
-                            $date2 = date('Y-m-d 23:59:59', strtotime($date1) + 7*24*3600 -1);
-                            $repo = $em->getRepository('AppBundle:LotteryLog');
-                            $qb = $repo->createQueryBuilder('a');
-                            $qb->select('COUNT(a)');
-                            $qb->where('a.prize != 0 AND a.createTime >= :createTime1 AND a.createTime <= :createTime2 AND a.code LIKE \'3%\'');
-                            $qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
-                            $qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
-                            $num1 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
+												if( preg_match('/^3\d{6}(0\d{4}|10[01]\d{2}|10200)$/i',$request->get('code')) ){
+														$w = date('w');
+														$date1 = date('Y-m-d 00:00:00', $timestamp-$w*24*3600);
+														$date2 = date('Y-m-d 23:59:59', strtotime($date1) + 7*24*3600 -1);
+														$repo = $em->getRepository('AppBundle:LotteryLog');
+														$qb = $repo->createQueryBuilder('a');
+														$qb->select('COUNT(a)');
+														$qb->where('a.prize != 0 AND a.createTime >= :createTime1 AND a.createTime <= :createTime2 AND a.code LIKE \'3%\'');
+														$qb->setParameter(':createTime1', new \DateTime($date1), \Doctrine\DBAL\Types\Type::DATETIME);
+														$qb->setParameter(':createTime2', new \DateTime($date2), \Doctrine\DBAL\Types\Type::DATETIME);
+														$num1 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
 							//var_dump($num1);
-                            if($num1 > 0){
-                                $prize = 0;
-                            }
-                        }
+														if($num1 > 0){
+																$prize = 0;
+														}
+												}
 
 
-						//$prize = 8;
 						$code->setIsActive(1);
 						$em->persist($code);
 
@@ -635,8 +624,8 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		//$response->headers->set('Access-Control-Allow-Credentials', 'true');
-		$response->headers->set('Access-Control-Allow-Origin', '*');
+		$response->headers->set('Access-Control-Allow-Credentials', 'true');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://campaign.slek.com.cn');
 		return $response;
 		//return new JsonResponse($result);
 	}
@@ -646,8 +635,8 @@ class ApiController extends Controller
 	public function postAction(Request $request)
 	{
 		$session = $request->getSession();
-		if( null != $request->get('session_id'))
-			$session->setId($request->get('session_id'));
+		//if( null != $request->get('session_id'))
+			//$session->setId($request->get('session_id'));
 		if( null == $session->get('march_lottery_log')){
 			$result = array('ret'=>1001,'msg'=>'您还没有中奖喔~');
 		}
@@ -676,11 +665,11 @@ class ApiController extends Controller
 				/*
 				if($log->getPrize() > 0){
 					Helper\SMS::send($em, array(
-                        'mobile'=>$request->get('mobile'),
-                        'info'=>$info,
-                        'prize'=>$log->getPrize(),
-                        'type'=>$info->getType(),
-                    ));
+												'mobile'=>$request->get('mobile'),
+												'info'=>$info,
+												'prize'=>$log->getPrize(),
+												'type'=>$info->getType(),
+										));
 				*/
 			}
 			$session->set('march_lottery_log', null);
@@ -692,47 +681,48 @@ class ApiController extends Controller
 			$response->setContent(json_encode($result));
 		else
 			$response->setContent($callback.'('.json_encode($result).')');
-		$response->headers->set('Access-Control-Allow-Origin', '*');
+		$response->headers->set('Access-Control-Allow-Credentials', 'true');
+		$response->headers->set('Access-Control-Allow-Origin', 'http://campaign.slek.com.cn');
 		return $response;
 		//return new JsonResponse($result);
 	}
 
-    /**
-     * @Route("/sms", name="api_sms")
-     */
-    public function smsAction(Request $request)
-    {
-        //$input = mb_convert_encoding(urldecode($request->getContent()),'UTF-8','GBK');
-        //$input = mb_convert_encoding(urldecode('username=miketest&reply=15618892632%2C%B2%E2%CA%D4%B5%D8%D6%B7%2C2016-03-28+00%3A55%3A30%3B '),'UTF-8','GBK');
-        //$array = array();
-        //parse_str($input, $array);
-        //$reply = explode(',', $array['reply']);
-        $mobile = $request->get('mobile');
-        $message = urldecode($request->get('message'));
-        if( $handle = @fopen('sms_01.log','a+')){
-            fwrite($handle, $mobile.','.$message.','.date('Y-m-d H:i:s')."\n");
-            fclose($handle);
-        }
+		/**
+		 * @Route("/sms", name="api_sms")
+		 */
+		public function smsAction(Request $request)
+		{
+				//$input = mb_convert_encoding(urldecode($request->getContent()),'UTF-8','GBK');
+				//$input = mb_convert_encoding(urldecode('username=miketest&reply=15618892632%2C%B2%E2%CA%D4%B5%D8%D6%B7%2C2016-03-28+00%3A55%3A30%3B '),'UTF-8','GBK');
+				//$array = array();
+				//parse_str($input, $array);
+				//$reply = explode(',', $array['reply']);
+				$mobile = $request->get('mobile');
+				$message = urldecode($request->get('message'));
+				if( $handle = @fopen('sms_01.log','a+')){
+						fwrite($handle, $mobile.','.$message.','.date('Y-m-d H:i:s')."\n");
+						fclose($handle);
+				}
 
-        $em = $this->getDoctrine()->getManager();
-        $sms = $em->getRepository('AppBundle:SMS')->findOneBy(array('mobile'=>$mobile,'type'=>0));
-        if(null != $sms){
-            $sms->setAddress($message);
-            $em->persist($sms);
-            $em->flush();
-        }
-        return new Response();
-    }
+				$em = $this->getDoctrine()->getManager();
+				$sms = $em->getRepository('AppBundle:SMS')->findOneBy(array('mobile'=>$mobile,'type'=>0));
+				if(null != $sms){
+						$sms->setAddress($message);
+						$em->persist($sms);
+						$em->flush();
+				}
+				return new Response();
+		}
 
-    /**
-     * @Route("/sms/send", name="api_sms_send")
-     */
+		/**
+		 * @Route("/sms/send", name="api_sms_send")
+		 */
 	/*
-    public function smsSendAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
+		public function smsSendAction(Request $request)
+		{
+				$em = $this->getDoctrine()->getManager();
 		$result = array();
-        $params = array(
+				$params = array(
 			array('mobile'=>'15618892632','prize'=>0,'type'=>0,'info'=>null),
 			//array('mobile'=>'18521595129','prize'=>0,'type'=>0,'info'=>null),
 			array('mobile'=>'13812704388','prize'=>0,'type'=>0,'info'=>null),
@@ -743,6 +733,6 @@ class ApiController extends Controller
 			$result[] = Helper\SMS::send($em,$v);
 		}
 		return new JsonResponse($result);
-    }
+		}
 	*/
 }

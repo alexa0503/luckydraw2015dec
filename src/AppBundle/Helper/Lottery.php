@@ -15,7 +15,7 @@ class Lottery
         else
             $award = self::getConfig();
         #默认中奖几率
-        $rand_max = $code != null ? 100 : 5;
+        $rand_max = $code != null ? 15 : 3;
         $rand1 = rand(1, $rand_max);
         $rand2 = rand(1, $rand_max);
         $prize = $rand1 == $rand2 ? rand(1,8) : 0;
@@ -41,7 +41,7 @@ class Lottery
         $num2 = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
         //var_dump($num1,$num2,$date1, $date2);
 
-        if( $prize > 0 && $num1 + $num2 < 20){
+        if( $prize > 0 && $num1 + $num2 < 17){
             $repo = $em->getRepository('AppBundle:Info');
             $qb = $repo->createQueryBuilder('a');
             $qb->select('COUNT(a)');

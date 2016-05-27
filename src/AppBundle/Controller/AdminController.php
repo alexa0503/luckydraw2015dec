@@ -37,7 +37,8 @@ class AdminController extends Controller
 		$user = new Entity\User();
 		$factory = $this->get('security.encoder_factory');
 		$encoder = $factory->getEncoder($user);
-		$password = $encoder->encodePassword('pPvnwXThqHMHuvJX', $user->getSalt());
+		$password = $encoder->encodePassword('y4RRv7rEhFquwEm2', $user->getSalt());
+		var_dump($password);
 		return new Response($password);
 	}
 
