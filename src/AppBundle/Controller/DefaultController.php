@@ -35,8 +35,8 @@ class DefaultController extends Controller
         $qb = $repo->createQueryBuilder('a');
         //$qb->where('a.isActive = 1 AND a.type = 0');
         $qb->select('COUNT(a)');
-        //var_dump($qb->getQuery());
         $count = $qb->getQuery()->getSingleScalarResult();
+
         $session->set('wx_share_wish', null);
         $session->set('wx_share_url', 'http://'.$request->getHost().$this->generateUrl('_index'));
         $session->set('wx_share_img', 'http://'.$request->getHost().'/luckydraw2015dec/bundles/app/default/images/share.jpg');

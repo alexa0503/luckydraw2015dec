@@ -21,9 +21,14 @@ class LotteryLog
      */
     private $info;
     /**
-     * @ORM\Column(name="code", type="string", length=20)
+     * @ORM\OneToOne(targetEntity="Code", inversedBy="lotteryLog")
+     * @ORM\JoinColumn(name="code_id", referencedColumnName="id")
      */
     private $code;
+    /**
+     * @ORM\Column(name="code", type="string", length=20)
+     */
+    private $codeTxt;
     /**
      * @ORM\Column(name="prize", type="integer")
      */
@@ -38,10 +43,11 @@ class LotteryLog
     private $createIp;
 
 
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -49,95 +55,26 @@ class LotteryLog
     }
 
     /**
-     * Set createTime
+     * Set codeTxt
      *
-     * @param \DateTime $createTime
-     * @return LikeLog
-     */
-    public function setCreateTime($createTime)
-    {
-        $this->createTime = $createTime;
-
-        return $this;
-    }
-
-    /**
-     * Get createTime
-     *
-     * @return \DateTime 
-     */
-    public function getCreateTime()
-    {
-        return $this->createTime;
-    }
-
-    /**
-     * Set createIp
-     *
-     * @param string $createIp
-     * @return LikeLog
-     */
-    public function setCreateIp($createIp)
-    {
-        $this->createIp = $createIp;
-
-        return $this;
-    }
-
-    /**
-     * Get createIp
-     *
-     * @return string 
-     */
-    public function getCreateIp()
-    {
-        return $this->createIp;
-    }
-
-    /**
-     * Set info
-     *
-     * @param \AppBundle\Entity\info $info
-     * @return LikeLog
-     */
-    public function setInfo(\AppBundle\Entity\Info $info = null)
-    {
-        $this->info = $info;
-
-        return $this;
-    }
-
-    /**
-     * Get info
-     *
-     * @return \AppBundle\Entity\info 
-     */
-    public function getInfo()
-    {
-        return $this->info;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
+     * @param string $codeTxt
      * @return LotteryLog
      */
-    public function setCode($code)
+    public function setCodeTxt($codeTxt)
     {
-        $this->code = $code;
+        $this->codeTxt = $codeTxt;
 
         return $this;
     }
 
     /**
-     * Get code
+     * Get codeTxt
      *
-     * @return string 
+     * @return string
      */
-    public function getCode()
+    public function getCodeTxt()
     {
-        return $this->code;
+        return $this->codeTxt;
     }
 
     /**
@@ -156,10 +93,102 @@ class LotteryLog
     /**
      * Get prize
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrize()
     {
         return $this->prize;
+    }
+
+    /**
+     * Set createTime
+     *
+     * @param \DateTime $createTime
+     * @return LotteryLog
+     */
+    public function setCreateTime($createTime)
+    {
+        $this->createTime = $createTime;
+
+        return $this;
+    }
+
+    /**
+     * Get createTime
+     *
+     * @return \DateTime
+     */
+    public function getCreateTime()
+    {
+        return $this->createTime;
+    }
+
+    /**
+     * Set createIp
+     *
+     * @param string $createIp
+     * @return LotteryLog
+     */
+    public function setCreateIp($createIp)
+    {
+        $this->createIp = $createIp;
+
+        return $this;
+    }
+
+    /**
+     * Get createIp
+     *
+     * @return string
+     */
+    public function getCreateIp()
+    {
+        return $this->createIp;
+    }
+
+    /**
+     * Set info
+     *
+     * @param \AppBundle\Entity\Info $info
+     * @return LotteryLog
+     */
+    public function setInfo(\AppBundle\Entity\Info $info = null)
+    {
+        $this->info = $info;
+
+        return $this;
+    }
+
+    /**
+     * Get info
+     *
+     * @return \AppBundle\Entity\Info
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
+     * Set code
+     *
+     * @param \AppBundle\Entity\Code $code
+     * @return LotteryLog
+     */
+    public function setCode(\AppBundle\Entity\Code $code = null)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return \AppBundle\Entity\Code
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

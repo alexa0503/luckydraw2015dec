@@ -43,7 +43,7 @@ class Info
      */
     private $prize = 0;
     /**
-     * @ORM\OneToMany(targetEntity="LikeLog", mappedBy="photo")
+     * @ORM\OneToMany(targetEntity="LikeLog", mappedBy="info")
      */
     private $likeLogs;
     /**
@@ -78,6 +78,10 @@ class Info
      * @ORM\OneToOne(targetEntity="SMS", mappedBy="info")
      */
     private $sms;
+    /**
+     * @ORM\Column(name="lottery_time",type="datetime", nullable=true)
+     */
+    private $lotteryTime;
 
     /**
      * Constructor
@@ -501,5 +505,28 @@ class Info
     public function removeSm(\AppBundle\Entity\SMS $sms)
     {
         $this->sms->removeElement($sms);
+    }
+
+    /**
+     * Set lotteryTime
+     *
+     * @param \DateTime $lotteryTime
+     * @return Info
+     */
+    public function setLotteryTime($lotteryTime)
+    {
+        $this->lotteryTime = $lotteryTime;
+
+        return $this;
+    }
+
+    /**
+     * Get lotteryTime
+     *
+     * @return \DateTime 
+     */
+    public function getLotteryTime()
+    {
+        return $this->lotteryTime;
     }
 }

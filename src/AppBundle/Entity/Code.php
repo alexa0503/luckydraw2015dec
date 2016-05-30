@@ -22,13 +22,17 @@ class Code
      * @ORM\Column(name="is_active",type="boolean")
      */
     protected $isActive = 0;
+    /**
+     * @ORM\OneToOne(targetEntity="LotteryLog", mappedBy="info")
+     */
+    private $lotteryLog;
 
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -51,7 +55,7 @@ class Code
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -74,10 +78,33 @@ class Code
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set lotteryLog
+     *
+     * @param \AppBundle\Entity\LotteryLog $lotteryLog
+     * @return Code
+     */
+    public function setLotteryLog(\AppBundle\Entity\LotteryLog $lotteryLog = null)
+    {
+        $this->lotteryLog = $lotteryLog;
+
+        return $this;
+    }
+
+    /**
+     * Get lotteryLog
+     *
+     * @return \AppBundle\Entity\LotteryLog 
+     */
+    public function getLotteryLog()
+    {
+        return $this->lotteryLog;
     }
 }

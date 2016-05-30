@@ -37,6 +37,7 @@ class OAuthListener
 	*/
 	public function onKernelRequest(GetResponseEvent $event)
 	{
+		return;
 		/*
 		$request = $event->getRequest();
 		$session = $request->getSession();
