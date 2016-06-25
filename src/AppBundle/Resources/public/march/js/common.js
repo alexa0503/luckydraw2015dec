@@ -104,14 +104,15 @@ function goPage1() {
     $('input').val('');
 }
 
-
+var hasSubmit = false;
 function goPage2(url) {
     var iCode = $.trim($('.page1Txt').val());
     if (iCode == '') {
         alert('请输入你的幸运心愿码');
         return false;
     }
-    else {
+    else if( hasSubmit == false) {
+        hasSubmit = true;
         $.support.cors = true;
         $.ajax({
             url:url,
@@ -121,34 +122,36 @@ function goPage2(url) {
             xhrFields:{withCredentials: true},
             success:function (json) {
                 if (json.ret == 0){
-					$('.topBtn1').fadeOut(500);
-					$('.page1').fadeOut(500);
-					$('.page2').fadeIn(500);
-					ga('send','pageview','/luckydraw_request');
-					setTimeout(function () {
-						$('.page2Img2').addClass('page2Img2Act');
-					}, 1000);
+                    $('.topBtn1').fadeOut(500);
+                    $('.page1').fadeOut(500);
+                    $('.page2').fadeIn(500);
+                    ga('send','pageview','/luckydraw_request');
+                    setTimeout(function () {
+                        $('.page2Img2').addClass('page2Img2Act');
+                    }, 1000);
 
                     session_id = json.session_id;
                     if (json.prize == 0) {
                         setTimeout(function () {
                             goPage6();
-							ga('send','pageview','/winner_fail');
+                            ga('send','pageview','/winner_fail');
                         }, 5500);
                     }
                     else {
                         $('.page4Res').addClass('page4Res' + json.prize);
                         setTimeout(function () {
                             goPage4();
-							ga('send','pageview','/winner_'+json.prize);
+                            ga('send','pageview','/winner_'+json.prize);
                         }, 5500);
                     }
                 }
                 else{
                     alert(json.msg);
+                    hasSubmit = false;
                 }
             },
             error:function () {
+                hasSubmit = false;
                 setTimeout(function () {
                     goPage6();
                     ga('send','pageview','/winner_fail');
@@ -209,7 +212,7 @@ function submitInfo(url) {
             success: function (json) {
                 if (json.ret == 0){
                     goPage5();
-					ga('send','event','button','click','redirect_to_makewish');
+                    ga('send','event','button','click','redirect_to_makewish');
                 }
                 else{
                     alert(json.msg);
@@ -231,7 +234,7 @@ function goPage5() {
 
 function goPage6() {
     $('.page2').fadeOut(500);
-	$('.page3').fadeOut(500);
+    $('.page3').fadeOut(500);
     $('.page6').fadeIn(500);
 }
 
