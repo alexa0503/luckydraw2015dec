@@ -132,7 +132,10 @@ class Lottery
 
             if ($total_num >= 1)
                 return 0;
-            return $this->getPrize();
+            $prize = $this->getPrize();
+            if( $prize == 1)
+            	$prize = 0;
+            return $prize;
         }
     }
 
