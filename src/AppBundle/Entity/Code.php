@@ -23,9 +23,19 @@ class Code
      */
     protected $isActive = 0;
     /**
+     * @ORM\Column(name="batch",type="integer")
+     */
+    protected $batch = 1;
+    /**
+     * @ORM\Column(name="code_sort",type="integer")
+     */
+    protected $sort = 1;
+    /**
      * @ORM\OneToOne(targetEntity="LotteryLog", mappedBy="info")
      */
     private $lotteryLog;
+
+    private $num;
 
 
 
@@ -101,10 +111,56 @@ class Code
     /**
      * Get lotteryLog
      *
-     * @return \AppBundle\Entity\LotteryLog 
+     * @return \AppBundle\Entity\LotteryLog
      */
     public function getLotteryLog()
     {
         return $this->lotteryLog;
+    }
+
+    /**
+     * Set batch
+     *
+     * @param integer $batch
+     * @return Code
+     */
+    public function setBatch($batch)
+    {
+        $this->batch = $batch;
+
+        return $this;
+    }
+
+    /**
+     * Get batch
+     *
+     * @return integer
+     */
+    public function getBatch()
+    {
+        return $this->batch;
+    }
+
+    /**
+     * Set sort
+     *
+     * @param integer $sort
+     * @return Code
+     */
+    public function setSort($sort)
+    {
+        $this->sort = $sort;
+
+        return $this;
+    }
+
+    /**
+     * Get sort
+     *
+     * @return integer
+     */
+    public function getSort()
+    {
+        return $this->sort;
     }
 }

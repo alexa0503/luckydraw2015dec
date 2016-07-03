@@ -27,21 +27,30 @@ class Builder extends ContainerAware
 		//$one = $menu->addChild('上传心愿活动', array('route' => 'admin_info','routeParameters'=>array('type'=>0,'win'=>0)));
 		//$one->setAttribute('class', 'nav-parent');
 		//$one->setChildrenAttribute('class', 'children');
-		$menu->addChild('[上传心愿]用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>0,'win'=>0)));
-		$menu->addChild('[上传心愿]全部用户导出', array('route' => 'admin_export','routeParameters'=>array('type'=>0,'win'=>0)));
-		$menu->addChild('[上传心愿]中奖用户', array('route' => 'admin_info','routeParameters'=>array('type'=>0,'win'=>1)));
-		$menu->addChild('[上传心愿]中奖信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>0,'win'=>1)));
 
+		$info = $menu->addChild('↫↫↫信息查看↬↬↬',array('route'=>'admin_menu'));
+		$info->setAttribute('class', 'nav-parent');
+		$info->setChildrenAttribute('class', 'children');
+		$info->addChild('[上传心愿]用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>0,'win'=>0)));
 
+		$info->addChild('[上传心愿]中奖用户', array('route' => 'admin_info','routeParameters'=>array('type'=>0,'win'=>1)));
 		//$two = $menu->addChild('幸运心愿码活动', array('route' => 'admin_info','routeParameters'=>array('type'=>1,'win'=>0)));
 		//$two->setAttribute('class', 'nav-parent');
 		//$two->setChildrenAttribute('class', 'children');
-		$menu->addChild('[幸运心愿码]用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>1,'win'=>0)));
-		$menu->addChild('[幸运心愿码]全部用户导出', array('route' => 'admin_export','routeParameters'=>array('type'=>1,'win'=>0)));
-		$menu->addChild('[幸运心愿码]中奖用户', array('route' => 'admin_info','routeParameters'=>array('type'=>1,'win'=>1)));
-		$menu->addChild('[幸运心愿码]中奖信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>1,'win'=>1)));
-		$menu->addChild('[幸运心愿码]抽奖日志', array('route' => 'admin_log'));
-		$menu->addChild('短信日志', array('route' => 'admin_sms_log'));
+		$info->addChild('[幸运心愿码]用户信息', array('route' => 'admin_info','routeParameters'=>array('type'=>1,'win'=>0)));
+		$info->addChild('[幸运心愿码]中奖用户', array('route' => 'admin_info','routeParameters'=>array('type'=>1,'win'=>1)));
+		$info->addChild('[幸运心愿码]抽奖日志', array('route' => 'admin_log'));
+		$info->addChild('短信日志', array('route' => 'admin_sms_log'));
+
+		$export = $menu->addChild('↫↫↫数据导出↬↬↬',array('route'=>'admin_export'));
+		$export->setAttribute('class', 'nav-parent');
+		$export->setChildrenAttribute('class', 'children');
+		$export->addChild('〖上传心愿〗全部用户导出', array('route' => 'admin_export','routeParameters'=>array('type'=>0,'win'=>0)));
+		$export->addChild('〖上传心愿〗中奖信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>0,'win'=>1)));
+		$export->addChild('〖幸运心愿码〗全部用户导出', array('route' => 'admin_export','routeParameters'=>array('type'=>1,'win'=>0)));
+		$export->addChild('〖幸运心愿码〗中奖信息导出', array('route' => 'admin_export','routeParameters'=>array('type'=>1,'win'=>1)));
+
+		$menu->addChild('幸运码统计', array('route' => 'admin_codes_stat'));
 		/*
 		$storage = $menu->addChild('中奖时间段设置', array('route' => 'admin_timeodds'));
 		$storage->setAttribute('class', 'nav-parent');

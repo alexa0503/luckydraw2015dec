@@ -1,0 +1,56 @@
+{% extends 'AppBundle:admin:layout.html.twig' %}
+{% block content %}
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="table-responsive">总包数据</div>
+			<table id="table2" class="table table-striped dataTable no-footer" role="grid" aria-describedby="table2_info">
+			<thead>
+			 <tr role="row">
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">总包</th>
+				 <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">库存总量</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">刮开量</th>
+			</tr>
+		 </thead>
+		 <tbody>
+		 {% for p in stat %}
+			<tr class="gradeA {% if loop.index is odd %} odd{% else %} even{% endif %}" role="row">
+				<td>{{ p[0] }}</td>
+				<td>{{ p[1] }}</td>
+				<td>{{ p[2] }}</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="table-responsive">批次包数据</div>
+			<table id="table2" class="table table-striped dataTable no-footer" role="grid" aria-describedby="table2_info">
+			<thead>
+			 <tr role="row">
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">总包</th>
+   				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">批次包</th>
+				 <th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">库存总量</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">刮开量</th>
+			</tr>
+		 </thead>
+		 <tbody>
+		 {% for p in stat_batch %}
+			<tr class="gradeA {% if loop.index is odd %} odd{% else %} even{% endif %}" role="row">
+				<td>{{ p[0] }}</td>
+				<td>{{ p[1] }}</td>
+				<td>{{ p[2] }}</td>
+				<td>{{ p[3] }}</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+{% endblock %}
+{% block title %}{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{% endblock %}
