@@ -109,6 +109,10 @@ class Lottery
             $total_num = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->getSingleScalarResult();
             if ($total_num >= 1)
                 $prize = 0;
+
+            if( $prize == 1 || $prize == 5){
+                $prize = 0;
+            }
             return $prize;
         } else {
             $repo = $em->getRepository('AppBundle:Info');
@@ -133,8 +137,10 @@ class Lottery
             if ($total_num >= 1)
                 return 0;
             $prize = $this->getPrize();
-            if( $prize == 1)
-            	$prize = 0;
+
+            if( $prize == 1 || $prize == 5){
+                $prize = 0;
+            }
             return $prize;
         }
     }
