@@ -23,7 +23,7 @@ class Lottery
         $this->timestamp = $timestamp;
         $this->code = $code;
         //$rand_max = $code != null ? 5 : 4;
-        $rand_max = 20;
+        $rand_max = 5;
         $this->rand1 = rand(1, $rand_max);
         $this->rand2 = rand(1, $rand_max);
         $this->month = date('n', $timestamp);
@@ -49,8 +49,8 @@ class Lottery
         $pre_prize = $this->pre_prize;
         $timestamp = $this->timestamp;
         $code = $this->code;
-        //21点前未中
-        if ($rand1 != $rand2 && $hour < 21) {
+        //9点前未中
+        if ($rand1 != $rand2 && $hour < 9) {
             return 0;
         }
 
@@ -160,7 +160,7 @@ class Lottery
             case 1:
                 #中奖日,双月15号
                 if ($month % 2 == 0 && $day == 15) {
-                    if ($rand1 == $rand2 || $hour >= 21) {
+                    if ($rand1 == $rand2 || $hour >= 9) {
                         $prize = $pre_prize;
                     }
                 }
@@ -168,8 +168,8 @@ class Lottery
 
             case 2:
                 #每周周三13点以后
-                if ($week == 3 && $hour  >= 13) {
-                    if ($rand1 == $rand2 || $hour >= 21) {
+                if ($week == 3 && $hour  >= 9) {
+                    if ($rand1 == $rand2 || $hour >= 9) {
                         $prize = $pre_prize;
                     }
                 }
@@ -178,7 +178,7 @@ class Lottery
             case 3:
                 #每月15日
                 if ($day == 15) {
-                    if ($rand1 == $rand2 || $hour >= 21) {
+                    if ($rand1 == $rand2 || $hour >= 9) {
                         $prize = $pre_prize;
                     }
                 }
@@ -186,8 +186,8 @@ class Lottery
 
             case 4:
                 #每周周二12点
-                if ($week == 2 && $hour >= 12) {
-                    if ($rand1 == $rand2 || $hour >= 21) {
+                if ($week == 2 && $hour >= 9) {
+                    if ($rand1 == $rand2 || $hour >= 9) {
                         $prize = $pre_prize;
                     }
                 }
@@ -195,8 +195,8 @@ class Lottery
 
             case 5:
                 #每周周四15点
-                if ($week == 4 && $hour >= 15) {
-                    if ($rand1 == $rand2 || $hour >= 21) {
+                if ($week == 4 && $hour >= 9) {
+                    if ($rand1 == $rand2 || $hour >= 9) {
                         $prize = $pre_prize;
                     }
                 }
@@ -205,7 +205,7 @@ class Lottery
             case 6:
                 #每周周一三五
                 if ($week == 1 || $week == 3 || $week == 5) {
-                    if ($rand1 == $rand2 || $hour >= 21) {
+                    if ($rand1 == $rand2 || $hour >= 9) {
                         $prize = $pre_prize;
                     }
                 }
@@ -213,7 +213,7 @@ class Lottery
 
             default:
                 #每天一个
-                if ($rand1 == $rand2 || $hour >= 21) {
+                if ($rand1 == $rand2 || $hour >= 9) {
                     $prize = $pre_prize;
                 }
                 break;

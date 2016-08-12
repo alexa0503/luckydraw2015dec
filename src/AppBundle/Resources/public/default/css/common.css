@@ -98,13 +98,11 @@ select,input,textarea{font-family:inherit; outline:none;}
 @-webkit-keyframes page2NoteAct{
 0%{ -webkit-transform:scale(1); background-position:0 0;}
 6%{ -webkit-transform:scale(1); background-position:-640px 0;}
-25%{ -webkit-transform:scale(1); background-position:-640px 0;}
-31%{ -webkit-transform:scale(1); background-position:-1280px 0;}
-50%{ -webkit-transform:scale(1); background-position:-1280px 0;}
-56%{ -webkit-transform:scale(1); background-position:-1920px 0;}
-75%{ -webkit-transform:scale(1); background-position:-1920px 0;}
-81%{ -webkit-transform:scale(1); background-position:-2560px 0;}
-100%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+33%{ -webkit-transform:scale(1); background-position:-640px 0;}
+39%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+66%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+72%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+100%{ -webkit-transform:scale(1); background-position:-1920px 0;}
 }
 
 /*page3*/
@@ -162,21 +160,19 @@ select,input,textarea{font-family:inherit; outline:none;}
 @-webkit-keyframes page5Img2Act{
 0%{ -webkit-transform:scale(1); background-position:0 0;}
 3%{ -webkit-transform:scale(1); background-position:-640px 0;}
-12.5%{ -webkit-transform:scale(1); background-position:-640px 0;}
-15.5%{ -webkit-transform:scale(1); background-position:-1280px 0;}
-25%{ -webkit-transform:scale(1); background-position:-1280px 0;}
-28%{ -webkit-transform:scale(1); background-position:-1920px 0;}
-37.5%{ -webkit-transform:scale(1); background-position:-1920px 0;}
-40.5%{ -webkit-transform:scale(1); background-position:-2560px 0;}
-50%{ -webkit-transform:scale(1); background-position:-2560px 0;}
-53%{ -webkit-transform:scale(1); background-position:-3200px 0;}
-60.5%{ -webkit-transform:scale(1); background-position:-3200px 0;}
-63.5%{ -webkit-transform:scale(1); background-position:-3840px 0;}
-75%{ -webkit-transform:scale(1); background-position:-3840px 0;}
-78%{ -webkit-transform:scale(1); background-position:-4480px 0;}
-87.5%{ -webkit-transform:scale(1); background-position:-4480px 0;}
-90.5%{ -webkit-transform:scale(1); background-position:-5120px 0;}
-100%{ -webkit-transform:scale(1); background-position:-5120px 0;}
+14.2%{ -webkit-transform:scale(1); background-position:-640px 0;}
+17.2%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+28.5%{ -webkit-transform:scale(1); background-position:-1280px 0;}
+31.5%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+42.7%{ -webkit-transform:scale(1); background-position:-1920px 0;}
+45.7%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+57%{ -webkit-transform:scale(1); background-position:-2560px 0;}
+60%{ -webkit-transform:scale(1); background-position:-3200px 0;}
+71.2%{ -webkit-transform:scale(1); background-position:-3200px 0;}
+74.2%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+85.5%{ -webkit-transform:scale(1); background-position:-3840px 0;}
+88.5%{ -webkit-transform:scale(1); background-position:-4480px 0;}
+100%{ -webkit-transform:scale(1); background-position:-4480px 0;}
 }
 
 /*@-webkit-keyframes page5Img2Act{

@@ -38,7 +38,7 @@ $(document).ready(function(){
 	var _title="美丽心愿，从头开始";
 	var _pageurl=notWechatSharlUrl;
 	var _picurl=noWechatShareImg;/*"http://dev.slek.com.cnhttp://campaign.slek.com.cn/luckydraw2015dec/bundles/app/default/images/share.jpg";*/
-	var _sharetext="＃带你和闺蜜去见郭碧婷＃刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？";
+	var _sharetext="＃带你和闺蜜去见台湾＃刚刚我许下了一个美丽心愿，听说舒蕾会帮忙实现哦，你的愿望呢？";
 	
 		$(".douban").click(function(){
 
@@ -274,8 +274,8 @@ function goPage1(){
 	$('input').val('');
 }
 
-var wish1=['想和闺蜜一起去见郭碧婷','想亲眼见到郭碧婷的黑长直头发','想和闺蜜去见郭碧婷不加修饰的美','想和闺蜜去见郭碧婷的纯真美'];
-var wish2=['一起去旅行，是闺蜜间都曾有过的约定。来许愿吧，那些年欠下的旅行，让舒蕾心愿团队助你实现。','想要保持苗条？别只羡慕别人了。来许愿，让舒蕾心愿团队助你实现。','想在心情不好的时候打“飞旳”去喂鸽子吗？来许愿，舒蕾心愿团队给你报销打的费。','每一个空着的心愿瓶，都在等你。快来定制一个独家心愿，用你的创意让心愿被看见。','每一个用心许下的愿望，都值得被实现。快来吧，心愿瓶里的心愿，还差你的一个。'];
+var wish1=['和闺蜜实现她计划了很久的台湾行','和闺蜜实现她计划了很久的台湾行','和闺蜜实现她计划了很久的台湾行','和闺蜜实现她计划了很久的台湾行'];
+var wish2=['和闺蜜实现她计划了很久的台湾行','和闺蜜实现她计划了很久的台湾行','和闺蜜实现她计划了很久的台湾行','和闺蜜实现她计划了很久的台湾行','和闺蜜实现她计划了很久的台湾行'];
 
 var wishArr=[0,1,2,3];
 var ranNumb1=parseInt(randomNumb(0,2));
@@ -603,6 +603,7 @@ var endPrizeNumb;
 var isLotteryed=false;
 function getLottery(){
 	if(!isLotteryed){
+		mztrack('立即抽奖');
 		ga('send', 'pageview', '/page_luckydraw');
 		closePop();
 		$('.page4').fadeOut(500);
@@ -748,20 +749,20 @@ $(document).ready(function(){
 
 	
 	$('.topBtn1').click(function(){
-		mztrack('【按钮】-活动规则');
+		mztrack('活动规则');
 		});
 		
 	$('.page1Img5').click(function(){
-		mztrack('【按钮】-立即许愿');
+		mztrack('立即许愿');
 		});
 	$('.page1Img2').click(function(){
-		mztrack('【按钮】-立即许愿');
+		mztrack('立即许愿');
 		});
 	$('.page1Img6').click(function(){
-		mztrack('【按钮】-立即许愿');
+		mztrack('立即许愿');
 		});
 	$('.page1Btn1').click(function(){
-		mztrack('【按钮】-立即许愿');
+		mztrack('立即许愿');
 		});
 		
 	$('.pNumb a').click(function(){
@@ -769,26 +770,26 @@ $(document).ready(function(){
 		});
 		
 	$('.page2 .page2Btn1').click(function(){
-		mztrack('【按钮】-提交心愿1');
+		mztrack('提交心愿1');
 		});
 		
 	$('.page3 .page2Btn1').click(function(){
-		mztrack('【按钮】-提交心愿2');
+		mztrack('提交心愿2');
 		});
 		
 	$('.page4Btn1').click(function(){
-		mztrack('【按钮】-分享心愿');
+		mztrack('分享心愿');
 		});
 		
 	$('.sinaShare').click(function(){
-		mztrack('【按钮】-分享微博（提交完成页面）');
+		mztrack('分享-新浪');
 		});
 		
 	$('.douban').click(function(){
-		mztrack('【按钮】-分享豆瓣（提交完成页面）');
+		mztrack('分享-豆瓣');
 		});
 		
 	$('.qzoneShare').click(function(){
-		mztrack('【按钮】-分享QQ空间（提交完成页面）');
+		mztrack('分享-QQ空间');
 		});
 	});
